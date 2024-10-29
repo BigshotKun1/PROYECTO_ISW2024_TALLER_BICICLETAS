@@ -38,3 +38,13 @@ try {
     );
 }
 }
+
+export const isAdminOrSeller = (req, res, next) => {
+    const userRole = req.user.rol; // Asumiendo que tienes el rol del usuario en req.user
+
+    if (userRole === "administrador" || userRole === "vendedor") {
+      return next(); // Permitir acceso
+    }
+
+    return res.status(403).json({ message: "No tienes permiso para realizar esta acción." });
+};
