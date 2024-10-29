@@ -4,17 +4,18 @@ import { EntitySchema } from "typeorm";
 const ClienteSchema = new EntitySchema({
     name: "Cliente",
     tableName: "clientes",
-    columns: {
+    columns: { 
+      rut: {
+      type: "varchar",
+      length: 12,
+      nullable: false,
+      primary: true,
+      unique: true,
+    },
       nombreCompleto: {
         type: "varchar",
         length: 255,
         nullable: false,
-      },
-      rut: {
-        type: "varchar",
-        length: 12,
-        nullable: false,
-        unique: true,
       },
       telefono: {
         type: "varchar",
@@ -40,18 +41,13 @@ const ClienteSchema = new EntitySchema({
     },
     indices: [
       {
-        name: "IDX_USER",
-        columns: ["id"],
-        unique: true,
-      },
-      {
-        name: "IDX_USER_RUT",
+        name: "IDX_CLIENTE_RUT",
         columns: ["rut"],
         unique: true,
       },
       {
-        name: "IDX_USER_EMAIL",
-        columns: ["email"],
+        name: "IDX_CLIENTE_TELEFONO",
+        columns: ["telefono"],
         unique: true,
       },
     ],

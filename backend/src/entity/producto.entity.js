@@ -1,70 +1,69 @@
 "use strict";
 import { EntitySchema } from "typeorm";
-const Productos = new EntitySchema({
-    name: "Productos",
+
+const ProductosSCHEMA = new EntitySchema({
+    name: "Producto",
     tableName: "productos",
     columns: {
-      id: {
+    id: {
         type: "int",
         primary: true,
         generated: true,
-      },
-      nombre: {
+    },
+    nombre: {
         type: "varchar",
         length: 255,
         nullable: false,
-      },
-      precio: {
+    },
+    precio: {
         type: "int",
         nullable: false,
-      },
-      cantidad: {
+    },
+    cantidad: {
         type: "int",
         nullable: false,
-      },
-      marca: {
+    },
+    marca: {
         type: "varchar",
         length: 255,
         nullable: false,
-      },
-      categoria: {
+    },
+    categoria: {
         type: "varchar",
         length: 255,
         nullable: false,
-      },
-      descuento: {
+    },
+    descuento: {
         type: "int",
         nullable: false,
-      },
-      descuentoP: {
+    },
+    descuentoP: {
         type: "int",
         nullable: false,
-      },
-      total: {
+    },
+    total: {
         type: "int",
         nullable: false,
-      },
-      createdAt: {
+    },
+    createdAt: {
         type: "timestamp with time zone",
         default: () => "CURRENT_TIMESTAMP",
         nullable: false,
-      },
-      updatedAt: {
+    },
+    updatedAt: {
         type: "timestamp with time zone",
         default: () => "CURRENT_TIMESTAMP",
         onUpdate: "CURRENT_TIMESTAMP",
         nullable: false,
-      },
+    },
     },
     indices: [
-      {
+    {
         name: "IDX_PRODUCTOS",
         columns: ["id"],
         unique: true,
-      }
-      
+    } 
     ],
-  
-  });
-  
-  export default Productos;
+});
+
+export default ProductosSCHEMA;

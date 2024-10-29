@@ -1,5 +1,7 @@
 "use strict";
 import User from "../entity/user.entity.js";
+import Producto from "../entity/producto.entity.js";
+import Cliente from "../entity/cliente.entity.js";
 import { AppDataSource } from "./configDb.js";
 import { encryptPassword } from "../helpers/bcrypt.helper.js";
 
@@ -81,4 +83,57 @@ async function createUsers() {
   }
 }
 
-export { createUsers };
+async function createClientes() {
+  try {
+    const userRepository = AppDataSource.getRepository(Cliente);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+          rut: "21.005.789-7",
+          nombreCompleto: "Vicente Castillo",
+          telefono: "987654321",
+          bicicleta: "Bicicleta de montaña",
+          password: await encryptPassword("vice1234"),
+          rol: "administrador",
+        }),
+      ),
+    ]);
+    console.log("* => Clientes creados exitosamente");
+  } catch (error) {
+    console.error("Error al crear Cliente:", error);
+  }
+}
+
+async function createProductos() {
+  try {
+    const userRepository = AppDataSource.getRepository(Producto);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+          id: 1,
+          nombre: "Bicicleta de descenso",
+          precio: 500000,
+          cantidad: 2,
+          marca: "Trek",
+          categoria: "Descenso",
+          descuento: 0,
+          descuentoP: 0,
+          total: 500000
+        }),
+      ),
+    ]);
+    console.log("* => Producto creado exitosamente");
+  } catch (error) {
+    console.error("Error al crear Producto:", error);
+  }
+}
+
+export { createUsers, createClientes, createProductos };
