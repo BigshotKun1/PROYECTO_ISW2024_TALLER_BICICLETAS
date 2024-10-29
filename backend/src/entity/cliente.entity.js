@@ -1,39 +1,30 @@
 "use strict";
 import { EntitySchema } from "typeorm";
 
-const UserSchema = new EntitySchema({
-  name: "User",
-  tableName: "usuarios",
+const ClienteSchema = new EntitySchema({
+  name: "Cliente",
+  tableName: "clientes",
   columns: {
-    id: {
-      type: "int",
+    rut: {
+      type: "varchar",
+      length: 12,
+      nullable: false,
       primary: true,
-      generated: true,
+      unique: true,
     },
     nombreCompleto: {
       type: "varchar",
       length: 255,
       nullable: false,
     },
-    rut: {
+    telefono: {
       type: "varchar",
       length: 12,
-      nullable: false,
-      unique: true,
+      nullable: false, 
     },
-    email: {
+    bicicleta: {
       type: "varchar",
       length: 255,
-      nullable: false,
-      unique: true,
-    },
-    rol: {
-      type: "varchar",
-      length: 50,
-      nullable: false,
-    },
-    password: {
-      type: "varchar",
       nullable: false,
     },
     createdAt: {
@@ -48,25 +39,25 @@ const UserSchema = new EntitySchema({
       nullable: false,
     },
   },
+  relations: {
+    pedidosReparacion: {
+      target: "PedidoReparacion",
+      type: "one-to-many", // Un cliente puede tener muchos pedidos de reparación
+      inverseSide: "cliente", // El lado inverso de la relación
+    },
+  },
   indices: [
     {
-      name: "IDX_USER",
-      columns: ["id"],
-      unique: true,
-    },
-    {
-      name: "IDX_USER_RUT",
+      name: "IDX_CLIENTE_RUT",
       columns: ["rut"],
       unique: true,
     },
     {
-      name: "IDX_USER_EMAIL",
-      columns: ["email"],
+      name: "IDX_CLIENTE_TELEFONO",
+      columns: ["telefono"],
       unique: true,
     },
   ],
 });
 
-
-
-export default UserSchema;
+export default ClienteSchema;
