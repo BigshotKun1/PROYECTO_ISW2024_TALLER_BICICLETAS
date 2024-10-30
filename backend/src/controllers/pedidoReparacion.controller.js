@@ -192,6 +192,12 @@ export const actualizarPedidoReparacion = async (req, res) => {
       return handleErrorClient(res, 400, "Descripción y estado son obligatorios");
   }
 
+  // Verificar si el usuario es mecánico
+  const usuario = req.user; // Asumiendo que el usuario está disponible en req.user
+  if (usuario.rol !== "mecanico") {
+      return handleErrorClient(res, 403, "No tienes permiso para actualizar el pedido de reparación");
+  }
+
   try {
       const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
       const pedido = await pedidoReparacionRepository.findOneBy({ id });
@@ -211,3 +217,38 @@ export const actualizarPedidoReparacion = async (req, res) => {
       handleErrorServer(res, 500, "Error al actualizar el pedido de reparación");
   }
 };
+
+
+async function actualizarEstadoPedido(req, res) {
+  try {
+      const { idPedido, nuevoEstado } = req.body;
+
+      // Verificar si el usuario es mecánico usando el middleware IsMecanic
+      if (!req.isMecanic) {
+          return res.status(403).json({ message: "Acceso denegado" });
+      }
+
+      // Buscar el pedido por su ID
+      const pedido = await PedidoReparacionSchema.findOneBy({ id_PedidoReparacion: idPedido });
+      if (!pedido) {
+          return res.status(404).json({ message: "Pedido no encontrado" });
+      }
+
+      // Verificar si el nuevo estado es "En espera por falta de repuestos"
+      const estado = await EstadoSchema.findOneBy({ estados: "En espera por falta de repuestos" });
+      if (!estado) {
+          return res.status(404).json({ message: "Estado 'En espera por falta de repuestos' no encontrado" });
+      }
+
+      // Actualizar el estado del pedido a "En espera"
+      pedido.idE = estado.idE; // Asegúrate de que `idE` corresponde a la columna de clave foránea para el estado
+      await pedido.save();
+
+      res.status(200).json({ message: "El pedido ha sido actualizado a 'En espera por falta de repuestos'" });
+  } catch (error) {
+      console.error("Error al actualizar el pedido:", error);
+      res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+
+export default actualizarEstadoPedido;
