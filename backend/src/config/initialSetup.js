@@ -95,8 +95,9 @@ async function createProductos() {
           nombre: "Bicicleta de descenso",
           precio: 500000,
           cantidad: 2,
-          marca: "Trek",
-          categoria: "Descenso",
+          idM: 1,
+          idC: 1,
+          idE: 1,
           descuento: 0,
           descuentoP: 0,
           total: 500000

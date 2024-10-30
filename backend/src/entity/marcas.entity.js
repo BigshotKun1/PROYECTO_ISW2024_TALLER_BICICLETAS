@@ -19,7 +19,7 @@ const MarcasSchema = new EntitySchema({
     relations: {
         productos: { 
             type: "one-to-many",
-            target: "Producto",
+            target: "Productos",
             inverseSide: "marca",
         },
     },
