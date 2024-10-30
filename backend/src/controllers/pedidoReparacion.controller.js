@@ -70,3 +70,31 @@ export const obtenerPedidoPorId = async (req, res) => {
     return handleErrorServer(res, 500, "Error al obtener el pedido de reparación");
   }
 };
+
+export const actualizarPedidoReparacion = async (req, res) => {
+  const { id } = req.params;
+  const { descripcionReparacion, piezasUtilizadas, estado } = req.body;
+
+  if (!descripcionReparacion || !estado) {
+      return handleErrorClient(res, 400, "Descripción y estado son obligatorios");
+  }
+
+  try {
+      const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
+      const pedido = await pedidoReparacionRepository.findOneBy({ id });
+
+      if (!pedido) {
+          return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
+      }
+
+      pedido.descripcionReparacion = descripcionReparacion;
+      pedido.piezasUtilizadas = piezasUtilizadas;
+      pedido.estado = estado;
+
+      await pedidoReparacionRepository.save(pedido);
+      return handleSuccess(res, 200, "Pedido de reparación actualizado exitosamente", pedido);
+  } catch (error) {
+      console.error(error);
+      handleErrorServer(res, 500, "Error al actualizar el pedido de reparación");
+  }
+};
