@@ -22,11 +22,6 @@ const ClienteSchema = new EntitySchema({
       length: 12,
       nullable: false, 
     },
-    bicicleta: {
-      type: "varchar",
-      length: 255,
-      nullable: false,
-    },
     createdAt: {
       type: "timestamp with time zone",
       default: () => "CURRENT_TIMESTAMP",
@@ -45,6 +40,11 @@ const ClienteSchema = new EntitySchema({
       type: "one-to-many", // Un cliente puede tener muchos pedidos de reparación
       inverseSide: "cliente", // El lado inverso de la relación
     },
+    bicicletas: {
+      target: "Bicicleta",
+      type: "one-to-many",
+      inverseSide: "cliente",
+  },
   },
   indices: [
     {

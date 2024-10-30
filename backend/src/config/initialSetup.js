@@ -70,7 +70,6 @@ async function createClientes() {
           rut: "21.005.789-7",
           nombreCompleto: "Vicente Castillo",
           telefono: "987654321",
-          bicicleta: "Bicicleta de montaña",
           password: await encryptPassword("vice1234"),
           rol: "administrador",
         }),

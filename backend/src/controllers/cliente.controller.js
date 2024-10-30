@@ -19,7 +19,7 @@ import {
 
 // Crear un nuevo cliente
 export const createCliente = async (req, res) => {
- const { rut, nombreCompleto, telefono, bicicleta } = req.body;
+  const { rut, nombreCompleto, telefono } = req.body;
 
   // Aquí puedes realizar la validación con el clienteBodyValidation si lo necesitas
 const { error } = clienteBodyValidation.validate(req.body);
@@ -28,7 +28,7 @@ const { error } = clienteBodyValidation.validate(req.body);
   }
 
   try {
-    const [cliente, errorCliente] = await createClienteService({ rut, nombreCompleto, telefono, bicicleta });
+    const [cliente, errorCliente] = await createClienteService({ rut, nombreCompleto, telefono });
 
     if (errorCliente) return handleErrorClient(res, 400, errorCliente);
 
