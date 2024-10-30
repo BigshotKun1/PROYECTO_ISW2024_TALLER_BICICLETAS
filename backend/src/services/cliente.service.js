@@ -16,7 +16,6 @@ export async function createClienteService(body) {
             rut: body.rut,
             nombreCompleto: body.nombreCompleto,
             telefono: body.telefono,
-            bicicleta: body.bicicleta,
         });
 
         const clienteCreated = await clienteRepository.save(newCliente);
