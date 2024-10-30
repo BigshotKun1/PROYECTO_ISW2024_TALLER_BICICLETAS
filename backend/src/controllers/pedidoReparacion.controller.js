@@ -8,6 +8,8 @@ import {
   handleErrorServer,
   handleSuccess,
 } from "../handlers/responseHandlers.js";
+import PDFDocument from "pdfkit";
+import ExcelJS from "exceljs";
 
 // Crear un nuevo pedido de reparación
 export const crearPedidoReparacion = async (req, res) => {
@@ -80,12 +82,120 @@ export const obtenerPedidoPorId = async (req, res) => {
   }
 };
 
+// Obtener el historial de reparaciones de un cliente
+export const obtenerHistorialReparaciones = async (req, res) => {
+  const { clienteRut } = req.query;
+
+  try {
+    const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
+    const historial = await pedidoReparacionRepository.find({ where: { clienteRut } });
+
+    if (historial.length === 0) {
+      return res.status(404).json({ message: "No se encontraron reparaciones para el cliente especificado" });
+    }
+
+    return res.status(200).json({ success: true, data: historial });
+  } catch (error) {
+    console.error("Error al obtener el historial de reparaciones", error);
+    return res.status(500).json({ success: false, message: "Error al obtener el historial de reparaciones" });
+  }
+};
+
+// Obtener el reporte de reparaciones
+export const obtenerReporteReparaciones = async (req, res) => {
+  const { fechaInicio, fechaFin, tipoReparacion, mecanico, estado, clienteRut } = req.query;
+  try {
+    const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
+
+    // Construir las condiciones de busqueda basada en filtros
+    const conditions = {};
+    if (fechaInicio && fechaFin) {
+      conditions.fechaReparacion = Between(new Date(fechaInicio), new Date(fechaFin));
+    }
+    if (tipoReparacion) {
+      conditions.tipoReparacion = tipoReparacion;
+    }
+    if (mecanico) {
+      conditions.mecanico = mecanico;
+    }
+    if (estado) {
+      conditions.estado = estado;
+    }
+    if (clienteRut) {
+      conditions.clienteRut = clienteRut;
+    }
+
+    const reporte = await pedidoReparacionRepository.find({ where: conditions });
+    return handleSuccess(res, 200, "Reporte de reparaciones obtenido exitosamente", reporte);
+  } catch (error) {
+    return handleErrorServer(res, 500, "Error al obtener el reporte de reparaciones");
+  }
+};
+
+// Exportar el reporte de reparaciones a PDF o Excel
+export const exportarHistorialReparaciones = async (req, res) => {
+  const { clienteRut, formato } = req.query;
+  try{
+    const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
+    const historial = await pedidoReparacionRepository.find({ where: { clienteRut } });
+
+    if (formato === "pdf"){
+      const doc = new PDFDocument();
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", `attachment; filename=historial_reparaciones_${clienteRut}.pdf`);
+
+      doc.text("Historial de reparaciones");
+      historial.forEach((reparacion, index) => {
+        doc.text(`Reparación ${index + 1}`);
+        doc.text(`Fecha de reparación: ${reparacion.fechaReparacion}`);
+        doc.text(`Detalles: ${reparacion.detalles}`);
+        doc.text(`Mecánico: ${reparacion.mecanico}`);
+        doc.text(`Estado: ${reparacion.estado}`);
+        doc.text(`Costo: ${reparacion.costo}`);
+        doc.text(`Tipo de reparación: ${reparacion.tipoReparacion}`);
+        doc.moveDown();
+      });
+
+      doc.pipe(res);
+      doc.end();
+    } else if (formato === "excel") {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Historial de reparaciones");
+      worksheet.columns = [
+        { header: "Fecha de reparación", key: "fechaReparacion", width: 15 },
+        { header: "Detalles", key: "detalles", width: 30 },
+        { header: "Mecánico", key: "mecanico", width: 20 },
+        { header: "Estado", key: "estado", width: 15 },
+        { header: "Costo", key: "costo", width: 10 },
+        { header: "Tipo de reparación", key: "tipoReparacion", width: 20 }
+      ];
+
+      historial.forEach(reparacion => {
+        worksheet.addRow(reparacion);
+      });
+
+      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      res.setHeader("Content-Disposition", `attachment; filename=historial_reparaciones_${clienteRut}.xlsx`);
+      
+      await workbook.xlsx.write(res);
+    }
+  } catch (error) {
+    return handleErrorServer(res, 500, "Error al exportar el reporte de reparaciones");
+  }
+}
+
 export const actualizarPedidoReparacion = async (req, res) => {
   const { id } = req.params;
   const { descripcionReparacion, piezasUtilizadas, estado } = req.body;
 
   if (!descripcionReparacion || !estado) {
       return handleErrorClient(res, 400, "Descripción y estado son obligatorios");
+  }
+
+  // Verificar si el usuario es mecánico
+  const usuario = req.user; // Asumiendo que el usuario está disponible en req.user
+  if (usuario.rol !== "mecanico") {
+      return handleErrorClient(res, 403, "No tienes permiso para actualizar el pedido de reparación");
   }
 
   try {
@@ -107,3 +217,38 @@ export const actualizarPedidoReparacion = async (req, res) => {
       handleErrorServer(res, 500, "Error al actualizar el pedido de reparación");
   }
 };
+
+
+async function actualizarEstadoPedido(req, res) {
+  try {
+      const { idPedido, nuevoEstado } = req.body;
+
+      // Verificar si el usuario es mecánico usando el middleware IsMecanic
+      if (!req.isMecanic) {
+          return res.status(403).json({ message: "Acceso denegado" });
+      }
+
+      // Buscar el pedido por su ID
+      const pedido = await PedidoReparacionSchema.findOneBy({ id_PedidoReparacion: idPedido });
+      if (!pedido) {
+          return res.status(404).json({ message: "Pedido no encontrado" });
+      }
+
+      // Verificar si el nuevo estado es "En espera por falta de repuestos"
+      const estado = await EstadoSchema.findOneBy({ estados: "En espera por falta de repuestos" });
+      if (!estado) {
+          return res.status(404).json({ message: "Estado 'En espera por falta de repuestos' no encontrado" });
+      }
+
+      // Actualizar el estado del pedido a "En espera"
+      pedido.idE = estado.idE; // Asegúrate de que `idE` corresponde a la columna de clave foránea para el estado
+      await pedido.save();
+
+      res.status(200).json({ message: "El pedido ha sido actualizado a 'En espera por falta de repuestos'" });
+  } catch (error) {
+      console.error("Error al actualizar el pedido:", error);
+      res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+
+export default actualizarEstadoPedido;

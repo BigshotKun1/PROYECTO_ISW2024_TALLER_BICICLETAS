@@ -19,7 +19,7 @@ const EstadoSchema = new EntitySchema({
     relations: {
         productos: { // Relación inversa
             type: "one-to-many",
-            target: "Producto",
+            target: "Productos",
             inverseSide: "estado",
         },
     },

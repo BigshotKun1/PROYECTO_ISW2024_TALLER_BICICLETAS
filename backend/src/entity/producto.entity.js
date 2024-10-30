@@ -2,7 +2,7 @@
 import { EntitySchema } from "typeorm";
 
 const ProductosSCHEMA = new EntitySchema({
-    name: "Producto",
+    name: "Productos",
     tableName: "productos",
     columns: {
         id: {
@@ -77,6 +77,21 @@ const ProductosSCHEMA = new EntitySchema({
             joinColumn: { name: "idE", referencedColumnName: "idE" },
         },
     },
+    relations: {
+        pedidosReparacion: {
+            target: "PedidoReparacion",
+            type: "many-to-many",
+            joinTable: {
+                name: "productos_pedidos", // Nombre de la tabla intermedia
+                joinColumn: {
+                    name: "productoId",
+                    referencedColumnName: "id",
+                },
+                inverseJoinColumn: {
+                    name: "pedidoReparacionId",
+                    referencedColumnName: "id_PedidoReparacion",
+                }, }
+     }, },
     indices: [
         {
             name: "IDX_PRODUCTOS_IDM",
