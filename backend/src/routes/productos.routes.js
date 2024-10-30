@@ -1,12 +1,5 @@
 import { Router } from "express";
-
-import {
-    creProd,
-    delProd,
-    getProd,
-    getProds,
-    updProd,
-} from "../controllers/productos.controller.js";
+import { creProd, delProd, getProd,getProds , updProd, } from "../controllers/productos.controller.js";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import { isAdminOrSeller } from "../middlewares/authorization.middleware.js";
 
