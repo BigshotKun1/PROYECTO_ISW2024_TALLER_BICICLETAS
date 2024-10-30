@@ -22,7 +22,7 @@ const ClienteSchema = new EntitySchema({
       length: 12,
       nullable: false, 
     },
-    bicicleta: {
+    tipobicicleta: {
       type: "varchar",
       length: 255,
       nullable: false,

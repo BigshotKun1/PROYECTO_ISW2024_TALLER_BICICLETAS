@@ -80,9 +80,15 @@ export const obtenerHistorialReparaciones = async (req, res) => {
   try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
     const historial = await pedidoReparacionRepository.find({ where: { clienteRut } });
-    return handleSuccess(res, 200, "Historial de reparaciones obtenido exitosamente", historial);
+
+    if (historial.length === 0) {
+      return res.status(404).json({ message: "No se encontraron reparaciones para el cliente especificado" });
+    }
+
+    return res.status(200).json({ success: true, data: historial });
   } catch (error) {
-    return handleErrorServer(res, 500, "Error al obtener el historial de reparaciones");
+    console.error("Error al obtener el historial de reparaciones", error);
+    return res.status(500).json({ success: false, message: "Error al obtener el historial de reparaciones" });
   }
 };
 
