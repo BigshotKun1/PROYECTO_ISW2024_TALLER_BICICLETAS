@@ -4,7 +4,7 @@ const PedidoReparacionSchema = new EntitySchema({
 name: "PedidoReparacion",
 tableName: "PedidosReparaciones",
 columns: {
-    id_Bicicleta: {
+    id_PedidoReparacion: {
     type: "int",
     primary: true,
     generated: true,
@@ -45,10 +45,16 @@ relations: {
     type: "many-to-one",
     joinColumn: {
         name: "clienteRut", // Nombre del campo FK en la tabla PedidosReparaciones
-        referencedColumnName: "rut", // Nombre de la columna en Cliente que se referencia
-    },
+        },
     nullable: false,
     onDelete: "CASCADE",
+    },
+    bicicleta: {
+        target: "Bicicleta",
+        type: "many-to-one", // Un pedido puede referirse a una bicicleta
+        joinColumn: { name: "id_Bicicletas" }, // Aquí defines la columna que almacenará el id de bicicleta
+        nullable: false, // Asegúrate de que este campo no sea nulo
+        
     },
 },
 });

@@ -36,23 +36,12 @@ const telefonoValidator = Joi.string()
     "string.pattern.base": "El teléfono debe tener exactamente 9 dígitos.",
 });
 
-// Validación para el campo bicicleta
-const bicicletaValidator = Joi.string()
-.min(3)
-.max(50)
-.messages({
-    "string.empty": "El campo bicicleta no puede estar vacío.",
-    "string.base": "El campo bicicleta debe ser de tipo string.",
-    "string.min": "El campo bicicleta debe tener como mínimo 3 caracteres.",
-    "string.max": "El campo bicicleta debe tener como máximo 50 caracteres.",
-});
 
 // Validación del cuerpo del cliente
 export const clienteBodyValidation = Joi.object({
 rut: rutValidator.required(),
 nombreCompleto: nombreCompletoValidator.required(),
 telefono: telefonoValidator.required(),
-bicicleta: bicicletaValidator.required(),
 })
 .unknown(false)
 .messages({
