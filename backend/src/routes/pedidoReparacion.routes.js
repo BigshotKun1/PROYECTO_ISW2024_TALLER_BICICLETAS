@@ -3,7 +3,7 @@ import { Router } from "express";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import { isAdminOrSeller } from "../middlewares/authorization.middleware.js";
 import { isMecanic } from "../middlewares/authorization.middleware.js";
-import { actualizarPedidoReparacion } from "../controllers/pedidoReparacion.controller.js";
+import { actualizarEstadoPedido, actualizarPedidoReparacion } from "../controllers/pedidoReparacion.controller.js";
 import { 
     crearPedidoReparacion,
     exportarHistorialReparaciones,
@@ -25,7 +25,8 @@ router
     .post("/", crearPedidoReparacion)
     .get("/", obtenerPedidosReparacion)
     .get("/:id", obtenerPedidoPorId)
-    .patch("/:id", isMecanic, actualizarPedidoReparacion);
+    .patch("/:id", isMecanic, actualizarPedidoReparacion)
+    .patch("/:id", isMecanic, actualizarEstadoPedido);
 // Obtener todos los pedidos de reparación
 
 // Ruta para obtener el historial de reparaciones
