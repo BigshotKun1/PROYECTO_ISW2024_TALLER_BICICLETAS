@@ -34,7 +34,12 @@ const BicicletaSchema = new EntitySchema({
             nullable: false,
             onDelete: "CASCADE",
         },
-    },
+        pedidosReparacion: {
+            target: "PedidoReparacion",
+            type: "one-to-many", // Una bicicleta puede tener múltiples pedidos de reparación
+            inverseSide: "Bicicleta", // Indica la propiedad en la entidad relacionada
+        },
+},
 });
 
 

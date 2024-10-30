@@ -14,14 +14,13 @@ const router = Router();
 
 router
     .use(authenticateJwt)
-    .use(isAdminOrSeller)
-    .use(isMecanic);
+    .use(isAdminOrSeller);
 
 router
     .post("/", crearPedidoReparacion)
     .get("/", obtenerPedidosReparacion)
     .get("/:id", obtenerPedidoPorId)
-    .patch("/:id", actualizarPedidoReparacion);
+    .patch("/:id", isMecanic, actualizarPedidoReparacion);
 // Obtener todos los pedidos de reparación
 
 
