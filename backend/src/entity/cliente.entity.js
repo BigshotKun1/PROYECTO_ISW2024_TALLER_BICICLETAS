@@ -22,6 +22,11 @@ const ClienteSchema = new EntitySchema({
       length: 12,
       nullable: false, 
     },
+    tipobicicleta: {
+      type: "varchar",
+      length: 255,
+      nullable: false,
+    },
     createdAt: {
       type: "timestamp with time zone",
       default: () => "CURRENT_TIMESTAMP",

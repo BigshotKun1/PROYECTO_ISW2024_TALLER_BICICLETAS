@@ -40,7 +40,7 @@ relations: {
     target: "Cliente",
     type: "many-to-one",
     joinColumn: {
-        name: "clienteRut", // Nombre del campo FK en la tabla PedidosReparaciones
+        name: "clienteRut",
         },
     nullable: false,
     onDelete: "CASCADE",
@@ -62,6 +62,7 @@ relations: {
             inverseJoinColumn: {
                 name: "productoId",
                 referencedColumnName: "id",
+
     },
 },
 },
