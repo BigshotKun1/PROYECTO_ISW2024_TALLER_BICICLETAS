@@ -2,10 +2,12 @@
 import { AppDataSource } from "../data-source";
 import { PedidoReparacion } from "../entities/PedidoReparacion";
 
+// Obtener estadísticas de reparaciones
 export const obtenerEstadisticas = async (req, res) => {
 try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
 
+    // Obtener estadísticas
     const totalReparaciones = await pedidoReparacionRepository.count();
     const reparacionesPendientes = await pedidoReparacionRepository.count({ where: { estado: "pendiente" } });
     const reparacionesCompletadas = await pedidoReparacionRepository.count({ where: { estado: "completada" } });
@@ -31,6 +33,7 @@ try {
         tiempoPromedioReparacion: tiempoPromedioReparacion[0].tiempoPromedio,
     };
 
+    // Enviar respuesta
     return res.status(200).json({ success: true, data: estadisticas });
     } catch (error) {
     return res.status(500).json({ success: false, message: "Error al obtener las estadísticas" });
