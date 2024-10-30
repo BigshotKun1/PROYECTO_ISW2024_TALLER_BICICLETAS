@@ -18,10 +18,6 @@ columns: {
         type: "text",
         nullable: true,
     },
-    piezasUtilizadas: {
-        type: "text",
-        nullable: true,
-    },
     estado: {
         type: "varchar",
         length: 20,
@@ -54,8 +50,21 @@ relations: {
         type: "many-to-one", // Un pedido puede referirse a una bicicleta
         joinColumn: { name: "id_Bicicletas" }, // Aquí defines la columna que almacenará el id de bicicleta
         nullable: false, // Asegúrate de que este campo no sea nulo
-        
+    },productos: {
+        target: "Productos",
+        type: "many-to-many",
+        joinTable: {
+            name: "productos_pedidos", // Nombre de la tabla intermedia
+            joinColumn: {
+                name: "pedidoReparacionId",
+                referencedColumnName: "id_PedidoReparacion",
+            },
+            inverseJoinColumn: {
+                name: "productoId",
+                referencedColumnName: "id",
     },
+},
+},
 },
 });
 
