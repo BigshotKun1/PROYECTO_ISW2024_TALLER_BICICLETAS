@@ -3,6 +3,9 @@ import User from "../entity/user.entity.js";
 import Producto from "../entity/producto.entity.js";
 import Cliente from "../entity/cliente.entity.js";
 import Estado from "../entity/estado.entity.js";
+import Bicicleta from "../entity/bicicleta.entity.js";
+import Categoria from "../entity/categoria.entity.js";
+import Marcas from "../entity/marcas.entity.js";
 import { AppDataSource } from "./configDb.js";
 import { encryptPassword } from "../helpers/bcrypt.helper.js";
 import passport from "passport";
@@ -85,7 +88,7 @@ async function createClientes() {
       userRepository.save(
         userRepository.create({
           rut: "21.123.456-7",
-          nombreCompleto: "Pedro Salazar",
+          nombreCompleto: "Omar Castro",
           telefono: "987458325",
         }),
       ),
@@ -138,6 +141,20 @@ async function createProductos() {
           descuento: 0,
           descuentoP: 0,
           total: 15000
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          id: 3,
+          nombre: "Rueda trasera",
+          precio: 20000,
+          cantidad: 10,
+          idM: 2,
+          idC: 2,
+          idE: 1,
+          descuento: 0,
+          descuentoP: 0,
+          total: 20000
         }),
       ),
     ]);
@@ -194,4 +211,163 @@ async function createEstados() {
   }
 }
 
-export { createUsers, createClientes, createProductos, createEstados };
+async function createBicicleta() {
+  try {
+    const userRepository = AppDataSource.getRepository(Bicicleta);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+          id_Bicicleta: 1,
+          marca: "Trek",
+          modelo: "Marlin 7",
+          color : "Rojo",
+          cliente: { rut: "21.005.789-7" } // Usar un rut existente en la tabla clientes
+        }),
+  )],
+      ),
+      userRepository.save(
+        userRepository.create({
+          id_Bicicleta: 2,
+          marca: "Specialized",
+          modelo: "Rockhopper",
+          color : "Azul",
+          cliente: { rut: "20.000.000-0" },
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          id_Bicicleta: 3,
+          marca: "Giant",
+          modelo: "Talon 3",
+          color: "Negro",
+          cliente: { rut: "21.123.456-7" },
+        }),
+      )
+    console.log("* => Bicicletas creadas exitosamente");
+  } catch (error) {
+    console.error("Error al crear Bicicleta:", error);
+  }
+}
+
+async function createCategoria() {
+  try {
+    const userRepository = AppDataSource.getRepository(Categoria);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+        idC: 0,
+        categorias: "Sin categoria",
+
+        }),
+      ),
+      userRepository.save(  
+        userRepository.create(
+          {
+            idC: 1,
+            categorias: "Frenos",
+          }
+        )
+      ),
+      userRepository.save(
+        userRepository.create(
+          {
+            idC: 2,
+            categorias: "Ruedas",
+          }
+        )
+      ),
+  
+    ]);
+    console.log("* => Categorias creadas exitosamente");
+  } catch (error) {
+    console.error("Error al crear Categoria:", error);
+  }
+}
+
+async function createMarcas() {
+  try {
+    const userRepository = AppDataSource.getRepository(Marcas);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+        idM: 0,
+        marcas: "Sin marca",
+        }),
+      ),
+      userRepository.save(  
+        userRepository.create(
+          {
+        idM: 1,
+        marcas: "Maxxis",
+          }
+        )
+      ),
+      userRepository.save(
+        userRepository.create(
+          {
+        idM: 2,
+        marcas: "Shimano",
+          }
+        )
+      ),
+  
+    ]);
+    console.log("* => Marcas creadas exitosamente");
+  } catch (error) {
+    console.error("Error al crear Marcas:", error);
+  }
+}
+
+async function createpedidoReparacion() {
+  try {
+    const userRepository = AppDataSource.getRepository(PedidoReparacion);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+          id: 1,
+          idC: 1,
+          id_Bicicleta: 1,
+          idE: 1,
+          fechaIngreso: "2021-09-20",
+          fechaEntrega: "2021-09-25",
+          descripcion: "Cambio de frenos",
+        }),
+      ),
+      userRepository.save(  
+        userRepository.create(
+          {
+        
+          }
+        )
+      ),
+      userRepository.save(
+        userRepository.create(
+          {
+          }
+        )
+      ),
+  
+    ]);
+    console.log("* => Marcas creadas exitosamente");
+  } catch (error) {
+    console.error("Error al crear Marcas:", error);
+  }
+}
+
+export { createUsers, createClientes, createProductos, createEstados, createBicicleta, createCategoria, createMarcas };

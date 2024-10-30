@@ -30,7 +30,7 @@ const BicicletaSchema = new EntitySchema({
         cliente: {
             target: "Cliente",
             type: "many-to-one",
-            joinColumn: { name: "clienteRut" },
+            joinColumn: { name: "clienteRut", referenceColumName: "rut" },
             nullable: false,
             onDelete: "CASCADE",
         },
