@@ -2,21 +2,25 @@
 import PedidoReparacion from "../entity/pedidoReparacion.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 
-export async function createPedidoReparacionService(clienteRut, motivoReparacion, id_Bicicleta) {
-  try {
+export async function createPedidoReparacionService(body) {
+try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
 
+    /*const existingCliente = await pedidoReparacionRepository.findOne({
+        where: [{ rut: body.rut }],
+    });*/
+
     const nuevoPedido = pedidoReparacionRepository.create({
-      clienteRut,
-      motivoReparacion,
-      id_Bicicleta,
+        clienteRut: body.clienteRut,
+        motivoReparacion: body.motivoReparacion,
+        id_Bicicleta: body.id_Bicicleta,
     });
 
-    await pedidoReparacionRepository.save(nuevoPedido);
+    const pedidoReparacionCreado = await pedidoReparacionRepository.save(nuevoPedido);
 
-    return [nuevoPedido, null];
-  } catch (error) {
+    return [pedidoReparacionCreado, null];
+    } catch (error) {
     console.error("Error al crear el pedido de reparación:", error);
     return [null, "Error interno del servidor"];
-  }
+    }
 }

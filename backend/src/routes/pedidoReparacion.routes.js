@@ -1,19 +1,25 @@
 "use strict";
 import { Router } from "express";
-// eslint-disable-next-line max-len
-import { crearPedidoReparacion, obtenerPedidoPorId, obtenerPedidosReparacion } from "../controllers/pedidoReparacion.controller.js";
+import { authenticateJwt } from "../middlewares/authentication.middleware.js";
+import { isAdminOrSeller } from "../middlewares/authorization.middleware.js";
+import { 
+    crearPedidoReparacion, 
+    obtenerPedidoPorId, 
+    obtenerPedidosReparacion 
+} from "../controllers/pedidoReparacion.controller.js";
 
 const router = Router();
 
-// Crear un nuevo pedido de reparación
-router.post("/", crearPedidoReparacion);
+router
+.use(authenticateJwt)
+.use(isAdminOrSeller);
 
+router
+    .post("/", crearPedidoReparacion)
+    .get("/", obtenerPedidosReparacion)
+    .get("/:id", obtenerPedidoPorId);
 // Obtener todos los pedidos de reparación
-router.get("/", obtenerPedidosReparacion);
+
 
 // Obtener un pedido de reparación por ID
-router.get("/:id", obtenerPedidoPorId);
-
-// Puedes agregar más rutas según sea necesario, como actualizar o eliminar
-
 export default router;
