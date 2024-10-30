@@ -1,6 +1,6 @@
-import { createProductoService, getProductoService, getProductosService } from "../services/productos.service.js";
+import { creProdSer, delProdSer, getProdSer, getProdsSer, updProdSer } from "../services/productos.service.js";
 
-export async function createProducto(req, res) {
+export async function creProd(req, res) {
     try {
         const producto = req.body;
 
@@ -11,7 +11,7 @@ export async function createProducto(req, res) {
             });
         }
 
-        const productoSaved = await createProductoService(producto);
+        const productoSaved = await creProdSer(producto);
 
         res.status(201).json({
             message: "Producto agregado con éxito",
@@ -26,10 +26,10 @@ export async function createProducto(req, res) {
     }
 }
 
-export async function getProducto(req, res) {
+export async function getProd(req, res) {
     try {
         const { id } = req.params;
-        const producto = await getProductoService(id);
+        const producto = await getProdSer(id);
 
         if (!producto) {
             return res.status(404).json({ message: "Producto no encontrado" });
@@ -48,9 +48,13 @@ export async function getProducto(req, res) {
     }
 }
 
-export async function getProductos(req, res) {
+export async function getProds(req, res) {
     try {
-        const productos = await getProductosService();
+        const productos = await getProdsSer();
+
+                if (!producto) {
+            return res.status(404).json({ message: "Producto no encontrado" });
+        }
 
         res.status(200).json({
             message: "Productos encontrados",
@@ -60,6 +64,55 @@ export async function getProductos(req, res) {
         console.error("Error al obtener productos, el error es: ", error);
         res.status(500).json({
             message: "Hubo un error al obtener los productos",
+            error: error.message
+        });
+    }
+}
+
+export async function delProd(req, res) {
+    const { id } = req.params;
+    try {
+        const productoEliminado = await delProdSer(id);
+        
+        res.status(200).json({
+            message: "Producto eliminado con éxito",
+            data: productoEliminado
+        });
+    } catch (error) {
+        if (error.message === "Producto no encontrado") {
+            return res.status(404).json({
+                message: error.message,
+                data: null
+            });
+        }
+        console.error("Error al eliminar el producto:", error);
+        res.status(500).json({
+            message: "Hubo un error al eliminar el producto",
+            error: error.message
+        });
+    }
+}
+
+export async function updProd(req, res) {
+    const { id } = req.params;
+    const updateData = req.body;
+    try {
+        const productoActualizado = await updProdSer(id, updateData);
+        
+        res.status(200).json({
+            message: "Producto actualizado con éxito",
+            data: productoActualizado
+        });
+    } catch (error) {
+        if (error.message === "Producto no encontrado") {
+            return res.status(404).json({
+                message: error.message,
+                data: null
+            });
+        }
+        console.error("Error al actualizar el producto:", error);
+        res.status(500).json({
+            message: "Hubo un error al actualizar el producto",
             error: error.message
         });
     }

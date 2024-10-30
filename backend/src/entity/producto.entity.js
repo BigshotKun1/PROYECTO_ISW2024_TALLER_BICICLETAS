@@ -45,6 +45,11 @@ const ProductosSCHEMA = new EntitySchema({
         type: "int",
         nullable: false,
     },
+    estado:{
+        type: "varchar",
+        lengsth: 255,
+        nullable: false, 
+    },
     createdAt: {
         type: "timestamp with time zone",
         default: () => "CURRENT_TIMESTAMP",
