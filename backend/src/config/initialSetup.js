@@ -2,8 +2,11 @@
 import User from "../entity/user.entity.js";
 import Producto from "../entity/producto.entity.js";
 import Cliente from "../entity/cliente.entity.js";
+import Estado from "../entity/estado.entity.js";
 import { AppDataSource } from "./configDb.js";
 import { encryptPassword } from "../helpers/bcrypt.helper.js";
+import passport from "passport";
+const { use } = passport;
 
 async function createUsers() {
   try {
@@ -70,8 +73,28 @@ async function createClientes() {
           rut: "21.005.789-7",
           nombreCompleto: "Vicente Castillo",
           telefono: "987654321",
-          password: await encryptPassword("vice1234"),
-          rol: "administrador",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          rut: "20.000.000-0",
+          nombreCompleto: "Juan Perez",
+          telefono: "930737579",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          rut: "21.123.456-7",
+          nombreCompleto: "Pedro Salazar",
+          telefono: "987458325",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          rut: "21.036.331-9",
+          nombreCompleto: "Bairon andres sanhuesa torres",
+          telefono: "962774850",
+
         }),
       ),
     ]);
@@ -103,6 +126,20 @@ async function createProductos() {
           total: 500000
         }),
       ),
+      userRepository.save(
+        userRepository.create({
+          id: 2,
+          nombre: "Frenos de disco",
+          precio: 15000,
+          cantidad: 20,
+          idM: 2,
+          idC: 2,
+          idE: 2,
+          descuento: 0,
+          descuentoP: 0,
+          total: 15000
+        }),
+      ),
     ]);
     console.log("* => Producto creado exitosamente");
   } catch (error) {
@@ -110,4 +147,51 @@ async function createProductos() {
   }
 }
 
-export { createUsers, createClientes, createProductos };
+async function createEstados() {
+  try {
+    const userRepository = AppDataSource.getRepository(Estado);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+          idE: 1,
+          estados: "En stock",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          idE: 2,
+          estados: "Agotado", 
+        })
+      ),
+      userRepository.save(
+        userRepository.create({
+          idE: 3,
+          estados: "En reparación",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          idE: 4,
+          estados: "Para reparaciones",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          idE: 5,
+          estados: "En espera por falta de repuestos",
+        }),
+      ),
+
+
+    ]);
+    console.log("* => Estados creados exitosamente");
+  } catch (error) {
+    console.error("Error al crear el estado:", error);
+  }
+}
+
+export { createUsers, createClientes, createProductos, createEstados };
