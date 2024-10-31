@@ -219,7 +219,7 @@ export const actualizarPedidoReparacion = async (req, res) => {
 };
 
 
-async function actualizarEstadoPedido(req, res) {
+export async function actualizarEstadoPedido(req, res) {
   try {
       const { idPedido, nuevoEstado } = req.body;
 
@@ -251,4 +251,3 @@ async function actualizarEstadoPedido(req, res) {
   }
 }
 
-export default actualizarEstadoPedido;

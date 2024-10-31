@@ -18,11 +18,6 @@ columns: {
         type: "text",
         nullable: true,
     },
-    estado: {
-        type: "varchar",
-        length: 20,
-        default: "pendiente",
-    },
     createdAt: {
     type: "timestamp with time zone",
     default: () => "CURRENT_TIMESTAMP",
@@ -63,9 +58,18 @@ relations: {
                 name: "productoId",
                 referencedColumnName: "id",
 
+                                },
+                    },
+                },
+        estadoReparacion: { // Relación inversa
+        type: "many-to.one",
+        target: "EstadoReparacion",
+        joinColumn: {
+            name: "idE_R",
+        },
+        nullable: false,
+        inverseSide: "pedidoReparacion",
     },
-},
-},
 },
 });
 
