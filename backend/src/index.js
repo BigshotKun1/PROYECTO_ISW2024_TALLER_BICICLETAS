@@ -8,8 +8,21 @@ import passport from "passport";
 import express, { json, urlencoded } from "express";
 import { cookieKey, HOST, PORT } from "./config/configEnv.js";
 import { connectDB } from "./config/configDb.js";
+<<<<<<< Updated upstream
 import { createClientes, createProductos, createUsers } from "./config/initialSetup.js";
+=======
+import {
+  createBicicleta,
+  createCategoria,
+  createClientes,
+  createEstados,
+  createMarcas,
+  createProductos,
+  createUsers,
+} from "./config/initialSetup.js";
+>>>>>>> Stashed changes
 import { passportJwtSetup } from "./auth/passport.auth.js";
+import pedidoReparacionRoutes from "./routes/pedidoReparacion.routes.js";
 
 async function setupServer() {
   try {
@@ -60,6 +73,7 @@ async function setupServer() {
     passportJwtSetup();
 
     app.use("/api", indexRoutes);
+    app.use("/api/pedidoReparacion", pedidoReparacionRoutes);
 
     app.listen(PORT, () => {
       console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);

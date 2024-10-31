@@ -1,4 +1,5 @@
 import * as bicicletaService from "../services/bicicleta.service.js";
+import Bicicleta from "../entity/bicicleta.entity.js";
 import { handleErrorClient, handleErrorServer, handleSuccess, } from "../handlers/responseHandlers.js";
 
 // Crear una nueva bicicleta

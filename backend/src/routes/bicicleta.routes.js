@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-    
     crearBicicletaController,
     eliminarBicicletaController,
     obtenerBicicletasController,
@@ -11,15 +10,15 @@ import { isAdminOrSeller } from "../middlewares/authorization.middleware.js";
 
 const router = Router();
 
-
 router
     .use(authenticateJwt)
     .use(isAdminOrSeller);
 
 router  
-    .post("/", isAdminOrSeller, crearBicicletaController) // Crear bicicleta
-    .get("/", obtenerBicicletasController) // Obtener todas las bicicletas
-    .get("/cliente/:rut", obtenerBicicletasPorClienteController) // Obtener bicicletas de un cliente por RUT
-    .delete("/:id_bicicleta", isAdminOrSeller, eliminarBicicletaController); // Eliminar una bicicleta por ID
+    .post("/", isAdminOrSeller, crearBicicletaController) //* http://localhost:3000/api/bicicleta/ - post
+    .get("/", obtenerBicicletasController) //* http://localhost:3000/api/bicicleta/all - get
+    .get("/cliente/:rut", obtenerBicicletasPorClienteController) //* http://localhost:3000/api/bicicleta/:rut - get
+    .delete("/:id_bicicleta", isAdminOrSeller, eliminarBicicletaController);
+    //* http://localhost:3000/api/bicicleta/:id_bicicleta - delete
 
 export default router;
