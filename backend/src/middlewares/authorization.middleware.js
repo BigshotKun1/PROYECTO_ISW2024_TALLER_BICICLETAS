@@ -53,7 +53,7 @@ export const isMecanic = (req, res, next) => {
     try {
         const userRole = req.user?.rol; // Asegúrate de que el rol del usuario esté disponible en req.user
 
-        if (userRole === "mecánico") {
+        if (userRole === "mecanico") {
             return next(); // Permitir acceso
         } else {
             return res.status(403).json({ message: "Acceso denegado: Se requiere rol de mecánico" });

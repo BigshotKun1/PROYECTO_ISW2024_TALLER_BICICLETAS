@@ -21,7 +21,6 @@ import {
 export const createCliente = async (req, res) => {
   const { rut, nombreCompleto, telefono } = req.body;
 
-  // Aquí puedes realizar la validación con el clienteBodyValidation si lo necesitas
 const { error } = clienteBodyValidation.validate(req.body);
   if (error) {
     return handleErrorClient(res, 400, error.details[0].message);
