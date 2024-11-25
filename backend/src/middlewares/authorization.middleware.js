@@ -43,7 +43,7 @@ export const isAdminOrSeller = (req, res, next) => {
     const userRole = req.user.rol; 
 
     if (userRole === "administrador" || userRole === "vendedor") {
-      return next(); // Permitir acceso
+        return next(); 
     }
 
     return res.status(403).json({ message: "No tienes permiso para realizar esta acción." });
