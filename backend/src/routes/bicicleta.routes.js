@@ -17,9 +17,9 @@ router
     .use(isAdminOrSeller);
 
 router  
-    .post("/", isAdminOrSeller, crearBicicletaController) // Crear bicicleta
-    .get("/", obtenerBicicletasController) // Obtener todas las bicicletas
-    .get("/cliente/:rut", obtenerBicicletasPorClienteController) // Obtener bicicletas de un cliente por RUT
-    .delete("/:id_bicicleta", isAdminOrSeller, eliminarBicicletaController); // Eliminar una bicicleta por ID
+.post("/", isAdminOrSeller, crearBicicletaController) //* http://localhost:3000/api/bicicleta/
+.get("/", obtenerBicicletasController) //* http://localhost:3000/api/bicicleta/
+.get("/cliente/:rut", obtenerBicicletasPorClienteController) //* http://localhost:3000/api/bicicleta/cliente/:rut
+.delete("/:id_bicicleta",isAdminOrSeller,eliminarBicicletaController); //* http://localhost:3000/api/bicicleta/:id_bici
 
 export default router;
