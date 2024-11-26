@@ -16,7 +16,6 @@ import {
   createMarcas,
   createProductos,
   createUsers,
-
 } from "./config/initialSetup.js";
 import { passportJwtSetup } from "./auth/passport.auth.js";
 
