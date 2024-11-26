@@ -17,10 +17,10 @@ router
   .use(isAdminOrSeller);
 
 router
-    .post("/", createCliente)
-    .get("/", getClientes)
-    .get("/detail/", getCliente)
-    .patch("/detail/", updateCliente)
-    .delete("/detail/", deleteCliente);
+    .post("/", createCliente) //* http://localhost:3000/api/cliente/
+    .get("/", getClientes) //* http://localhost:3000/api/cliente/
+    .get("/detail/:rut", getCliente) //* http://localhost:3000/api/cliente/detail/:rut
+    .patch("/detail/", updateCliente) // Falta el controlador updateCliente
+    .delete("/detail/", deleteCliente); // Falta el controlador deleteCliente
 
 export default router;
