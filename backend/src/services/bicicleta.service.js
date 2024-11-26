@@ -39,9 +39,9 @@ export const obtenerBicicletasPorCliente = async (clienteRut) => {
 };
 
 // Eliminar una bicicleta por ID
-export const eliminarBicicleta = async (id_bicicleta) => {
+export const eliminarBicicleta = async (id_Bicicleta) => {
     const bicicletaRepository = AppDataSource.getRepository(Bicicleta);
-    const bicicleta = await bicicletaRepository.findOneBy({ id_bicicleta });
+    const bicicleta = await bicicletaRepository.findOneBy({ id_Bicicleta });
     if (bicicleta) await bicicletaRepository.remove(bicicleta);
     return bicicleta;
 };
