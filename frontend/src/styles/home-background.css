@@ -1,0 +1,53 @@
+.home-background {
+    background-image: url('../assets/BICI.jpg'); /* Ajusta la ruta de la imagen */
+    background-size: cover;
+    background-position: center;
+    image-rendering: smooth;
+    height: 100vh; /* Esto asegura que el fondo ocupe toda la altura de la ventana */
+    width: 100%; /* Esto asegura que el fondo ocupe todo el ancho */
+    background-repeat: no-repeat; /* Asegura que la imagen no se repita */
+    background-attachment: fixed;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Capa oscura para el contraste */
+    z-index: 1;
+}
+
+.text-container {
+    position: relative;
+    z-index: 2;
+    color: white; /* Color del texto */
+    font-size: 2rem;
+    text-align: center;
+    padding: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Agregar sombra al texto */
+}
+
+/* Estilo para el nombre de usuario */
+.user-name {
+    font-size: 1.5rem; /* Tamaño de fuente más pequeño */
+    color: white; /* Color blanco para que sea visible sobre el fondo oscuro */
+    margin-top: 10px; /* Un pequeño espacio entre el "Bienvenido" y el nombre */
+    font-weight: normal; /* Si deseas que el nombre no sea tan destacado */
+}
+
+.user-role {
+    font-size: 1.4rem; /* Tamaño de fuente más pequeño para el rol */
+    color: #00bcd4; /* Color para el rol, puedes cambiarlo según el diseño */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    margin-top: 10px; /* Un pequeño espacio entre el nombre y el rol */
+}
+
+.user-info {
+    display: flex; /* Utiliza Flexbox para la alineación */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Alinea los elementos verticalmente */
+    gap: 20px; /* Aumenta el espacio entre el nombre y el rol */
+    margin-top: 80px;
+}

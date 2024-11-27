@@ -18,7 +18,9 @@ const Form = ({ title, fields, buttonText, onSubmit, footerContent, backgroundCo
     };
 
     const onFormSubmit = (data) => {
+        console.log("Datos enviados", data);
         onSubmit(data);
+
     };
 
     return (
