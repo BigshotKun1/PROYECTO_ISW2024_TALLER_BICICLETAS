@@ -32,18 +32,18 @@ export const obtenerEstadisticasTaller = async (req, res) => {
     const reparacionesCompletadas = await pedidoReparacionRepository.find({
         where: { estadoReparacion: { estados_r: "Finalizado" } }
     });
-    const tiempoTotal = reparacionesCompletadas.reduce((total, reparacion) => {
+    /*const tiempoTotal = reparacionesCompletadas.reduce((total, reparacion) => {
         const tiempoReparacion = 
         (new Date(reparacion.updatedAt) - new Date(reparacion.createdAt)) / (1000 * 60 * 60); // en horas
         return total + tiempoReparacion;
     }, 0);
     const tiempoPromedio = reparacionesCompletadas.length ? tiempoTotal / reparacionesCompletadas.length : 0;
-
+*/
     const estadisticas = {
         totalReparaciones,
         totalPendientes,
         totalCompletadas,
-        tiempoPromedio,
+        //tiempoPromedio,
     };
 
     return handleSuccess(res, 200, "Estadísticas del taller obtenidas exitosamente", estadisticas);
