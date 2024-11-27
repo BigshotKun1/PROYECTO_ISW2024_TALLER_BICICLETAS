@@ -15,7 +15,7 @@ export async function login(dataUser) {
             const userData = { nombreCompleto, email, rut, rol };
             sessionStorage.setItem('usuario', JSON.stringify(userData));
             axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-            cookies.set('jwt-auth', data.data.token, {path:'/'});
+            cookies.set('jwt-auth', data.data.token, {path:'/', expires: 1/48});
             return response.data
         }
     } catch (error) {

@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
     const isAuthenticated = user ? true : false;
 
 useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && window.location.pathname !== '/home') {
         navigate('/auth');
     }
 }, [isAuthenticated, navigate]);
@@ -23,3 +23,6 @@ return (
     </AuthContext.Provider>
 );
 }
+
+
+

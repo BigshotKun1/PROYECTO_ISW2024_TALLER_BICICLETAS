@@ -4,9 +4,11 @@ import { AuthProvider } from '@context/AuthContext';
 
 function Root()  {
 return (
-    <AuthProvider>
-        <PageRoot/>
-    </AuthProvider>
+
+    
+<AuthProvider>
+    <PageRoot/>
+</AuthProvider>
 );
 }
 
