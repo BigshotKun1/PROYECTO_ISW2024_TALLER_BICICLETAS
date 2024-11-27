@@ -22,12 +22,11 @@ router
 
 // Rutas para gestionar pedidos de reparación
 router
-    .post("/", crearPedidoReparacion)
-    .get("/", obtenerPedidosReparacion)
-    .get("/:id", obtenerPedidoPorId)
-    .patch("/:id", isMecanic, actualizarPedidoReparacion)
+    .post("/", crearPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion - post
+    .get("/", obtenerPedidosReparacion) //* http://localhost:3000/api/pedidoReparacion - get
+    .get("/:id", obtenerPedidoPorId) //* http://localhost:3000/api/pedidoReparacion/:id - get
+    .patch("/:id", isMecanic, actualizarPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion/:id - patch
     .patch("/:id", isMecanic, actualizarEstadoPedido);
-// Obtener todos los pedidos de reparación
 
 // Ruta para obtener el historial de reparaciones
 router.get("/historial", obtenerHistorialReparaciones);
