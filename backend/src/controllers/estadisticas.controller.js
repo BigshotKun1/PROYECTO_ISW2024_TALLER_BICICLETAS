@@ -1,41 +1,54 @@
-// backend/src/controllers/estadisticas.controller.js
-import { AppDataSource } from "../data-source";
-import { PedidoReparacion } from "../entities/PedidoReparacion";
+"use strict";
+import { AppDataSource } from "../config/configDb.js";
+import PedidoReparacion from "../entity/pedidosReparacion.entity.js";
+import {
+    handleErrorClient,
+    handleErrorServer,
+    handleSuccess,
+} from "../handlers/responseHandlers.js";
 
-// Obtener estadísticas de reparaciones
-export const obtenerEstadisticas = async (req, res) => {
-try {
+// Obtener estadísticas del taller
+export const obtenerEstadisticasTaller = async (req, res) => {
+    try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
 
-    // Obtener estadísticas
+    // Total de reparaciones
     const totalReparaciones = await pedidoReparacionRepository.count();
-    const reparacionesPendientes = await pedidoReparacionRepository.count({ where: { estado: "pendiente" } });
-    const reparacionesCompletadas = await pedidoReparacionRepository.count({ where: { estado: "completada" } });
-    const piezasMasUtilizadas = await pedidoReparacionRepository.query
-    (` 
-        SELECT pieza, COUNT(*) as uso
-        FROM PedidoReparacion
-        GROUP BY pieza
-        ORDER BY uso DESC
-        LIMIT 5 
-    `);
-    const tiempoPromedioReparacion = await pedidoReparacionRepository.query(`
-        SELECT AVG(DATEDIFF(fechaFin, fechaInicio)) as tiempoPromedio
-        FROM PedidoReparacion
-        WHERE estado = 'completada'
-    `);
+
+    // Total de reparaciones pendientes
+    const totalPendientes = await pedidoReparacionRepository.count({
+        where: [
+        { estadoReparacion: { estados_r: "En reparacion" } },
+        { estadoReparacion: { estados_r: "En espera por falta de repuestos" } }
+        ]
+    });
+
+    // Total de reparaciones completadas
+    const totalCompletadas = await pedidoReparacionRepository.count({
+        where: { estadoReparacion: { estados_r: "Finalizado" } }
+    });
+
+    // Tiempo promedio de reparación
+    const reparacionesCompletadas = await pedidoReparacionRepository.find({
+        where: { estadoReparacion: { estados_r: "Finalizado" } }
+    });
+    const tiempoTotal = reparacionesCompletadas.reduce((total, reparacion) => {
+        const tiempoReparacion = 
+        (new Date(reparacion.updatedAt) - new Date(reparacion.createdAt)) / (1000 * 60 * 60); // en horas
+        return total + tiempoReparacion;
+    }, 0);
+    const tiempoPromedio = reparacionesCompletadas.length ? tiempoTotal / reparacionesCompletadas.length : 0;
 
     const estadisticas = {
         totalReparaciones,
-        reparacionesPendientes,
-        reparacionesCompletadas,
-        piezasMasUtilizadas,
-        tiempoPromedioReparacion: tiempoPromedioReparacion[0].tiempoPromedio,
+        totalPendientes,
+        totalCompletadas,
+        tiempoPromedio,
     };
 
-    // Enviar respuesta
-    return res.status(200).json({ success: true, data: estadisticas });
+    return handleSuccess(res, 200, "Estadísticas del taller obtenidas exitosamente", estadisticas);
     } catch (error) {
-    return res.status(500).json({ success: false, message: "Error al obtener las estadísticas" });
+    console.error("Error al obtener las estadísticas del taller:", error);
+    return handleErrorServer(res, 500, `Error al obtener las estadísticas del taller: ${error.message}`);
     }
 };

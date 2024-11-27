@@ -226,7 +226,7 @@ async function createBicicleta() {
           modelo: "Marlin 7",
           color : "Rojo",
           cliente: { rut: "21.005.789-7" } // Usar un rut existente en la tabla clientes
-        })
+        }) 
       ),
       userRepository.save(
         userRepository.create({

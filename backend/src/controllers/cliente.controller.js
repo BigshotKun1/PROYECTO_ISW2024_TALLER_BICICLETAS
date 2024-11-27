@@ -20,6 +20,7 @@ import {
 // Crear un nuevo cliente
 export const createCliente = async (req, res) => {
   const { rut, nombreCompleto, telefono } = req.body;
+  console.log(req.body);
 const { error } = clienteBodyValidation.validate(req.body);
   if (error) {
     return handleErrorClient(res, 400, error.details[0].message);
@@ -35,6 +36,35 @@ const { error } = clienteBodyValidation.validate(req.body);
     return handleErrorServer(res, 500, err.message);
   }
 };
+/*
+// Crear un nuevo cliente
+export const createCliente = async (req, res) => {
+  const { rut, nombreCompleto, telefono } = req.body;
+
+  // Validación de los datos del cliente
+  const { error } = clienteBodyValidation.validate(req.body);
+  if (error) {
+    return handleErrorClient(res, 400, error.details[0].message);
+  }
+
+  try {
+    // Opcional: Verificar si el cliente ya existe antes de intentar crearlo
+    const existingCliente = await getClienteByRutService(rut);
+    if (existingCliente) {
+      return handleErrorClient(res, 400, "El cliente ya existe con el RUT proporcionado.");
+    }
+
+    // Crear el cliente
+    const [cliente, errorCliente] = await createClienteService({ rut, nombreCompleto, telefono });
+    if (errorCliente) return handleErrorClient(res, 400, errorCliente);
+
+    // Respuesta exitosa
+    return handleSuccess(res, 201, "Cliente creado exitosamente", cliente);
+  } catch (err) {
+    // Manejo de errores del servidor
+    return handleErrorServer(res, 500, err.message);
+  }
+};*/
 
 // Obtener todos los clientes
 export const getClientes = async (req, res) => {

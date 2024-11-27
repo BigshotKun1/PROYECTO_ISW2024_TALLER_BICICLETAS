@@ -1,15 +1,15 @@
-// backend/src/routes/estadisticas.routes.js
 import { Router } from "express";
-import { obtenerEstadisticas } from "../controllers/estadisticas.controller.js";
-import { authenticateJwt, isAdmin } from "../middlewares/auth.middleware.js";
+import { obtenerEstadisticasTaller } from "../controllers/estadisticas.controller.js";
+import { authenticateJwt } from "../middlewares/authentication.middleware.js";
+import { isAdmin } from "../middlewares/authorization.middleware.js";
 
 const router = Router();
 
-// Middleware para verificar si el usuario es administrador
-router.use(authenticateJwt);
-router.use(isAdmin);
+router
+    .use(authenticateJwt)
+    .use(isAdmin);
 
 // Ruta para obtener las estadísticas del taller
-router.get("/estadisticas", obtenerEstadisticas);
+router.get("/", obtenerEstadisticasTaller); //* http://localhost:3000/api/estadisticas
 
 export default router;
