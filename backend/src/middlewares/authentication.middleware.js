@@ -21,7 +21,7 @@ export function authenticateJwt(req, res, next) {
         401,
         "No tienes permiso para acceder a este recurso",
         { info: info ? info.message : "No se encontró el usuario" }
-      )
+      );
     }
 
     req.user = user;
