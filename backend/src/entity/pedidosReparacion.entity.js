@@ -48,7 +48,8 @@ relations: {
     bicicleta: {
         target: "Bicicleta",
         type: "many-to-one", // Un pedido puede referirse a una bicicleta
-        joinColumn: { name: "id_Bicicletas" }, // Aquí defines la columna que almacenará el id de bicicleta
+        joinColumn: 
+        { name: "id_Bicicletas" }, // Aquí defines la columna que almacenará el id de bicicleta
         nullable: false, // Asegúrate de que este campo no sea nulo
     },
     productos: {
