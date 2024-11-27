@@ -16,13 +16,14 @@ const router = Router();
 
 router
     .use(authenticateJwt)
-    .use(isMecanic);
+    .use(isMecanic)
+    .use(isAdminOrSeller);
     
 
 // Rutas para gestionar pedidos de reparación
 router
     .post("/", crearPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion - post
-    .get("/", obtenerPedidosReparacion) //* http://localhost:3000/api/pedidoReparacion - get
+    .get("/all", obtenerPedidosReparacion) //* http://localhost:3000/api/pedidoReparacion - get
     .get("/:rut", obtenerPedidoPorRUT) //* http://localhost:3000/api/pedidoReparacion/:rut - get
     .put("/:id_PedidoReparacion", actualizarPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion/:id - put
 
