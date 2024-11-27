@@ -1,0 +1,47 @@
+.cliente-table-background {
+    background-image: url('../assets/BICI.jpg'); /* Ajusta la ruta de la imagen */
+    background-size: cover;
+    background-position: center;
+    image-rendering: smooth;
+    height: 100vh; /* Esto asegura que el fondo ocupe toda la altura de la ventana */
+    width: 100%; /* Esto asegura que el fondo ocupe todo el ancho */
+    background-repeat: no-repeat; /* Asegura que la imagen no se repita */
+    background-attachment: fixed;
+}
+
+.background-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5); /* Opcional, para oscurecer el fondo */
+}
+
+.cliente-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20vh;
+}
+
+.cliente-table th, .cliente-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.cliente-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.5em;
+    color: #888;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    font-size: 1.2em;
+}
