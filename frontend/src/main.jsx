@@ -10,6 +10,7 @@ import Root from '@pages/Root';
 import ProtectedRoute from '@components/ProtectedRoute';
 import '@styles/styles.css';
 import ClientesList from './components/ClientesList';
+import PedidoReparacion from '@pages/pedidoReparacion';
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: '/users',
+        path: '/user',
         element: (
         <ProtectedRoute allowedRoles={['administrador']}>
           <Users />
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
       <ClientesList />
     </ProtectedRoute>
     ),
+},
+{
+  path: '/pedidoReparacion',
+  element: (
+  <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+    <PedidoReparacion />
+  </ProtectedRoute>
+  ),
 }
     ]
   },
