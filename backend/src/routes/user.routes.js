@@ -16,7 +16,7 @@ router
   .use(isAdmin);
 
 router
-  .get("/", getUsers)
+  .get("/all", getUsers)
   .get("/detail/", getUser)
   .patch("/detail/", updateUser)
   .delete("/detail/", deleteUser);
