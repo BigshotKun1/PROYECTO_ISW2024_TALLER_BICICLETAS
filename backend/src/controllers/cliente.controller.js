@@ -20,13 +20,11 @@ import {
 // Crear un nuevo cliente
 export const createCliente = async (req, res) => {
   const { rut, nombreCompleto, telefono } = req.body;
-
-  // Aquí puedes realizar la validación con el clienteBodyValidation si lo necesitas
 const { error } = clienteBodyValidation.validate(req.body);
   if (error) {
     return handleErrorClient(res, 400, error.details[0].message);
   }
-
+  
   try {
     const [cliente, errorCliente] = await createClienteService({ rut, nombreCompleto, telefono });
 
@@ -60,13 +58,13 @@ export const getClientes = async (req, res) => {
 // Obtener un cliente por ID
 export const getCliente = async (req, res) => {
     try {
-        const { rut, telefono } = req.query;
+        const { rut } = req.params;
     
-        const { error } = userQueryValidation.validate({ rut, telefono });
+        const { error } = clienteQueryValidation.validate({ rut });
     
         if (error) return handleErrorClient(res, 400, error.message);
     
-        const [user, errorUser] = await getUserService({ rut, telefono });
+        const [user, errorUser] = await getClienteService({ rut });
     
         if (errorUser) return handleErrorClient(res, 404, errorUser);
     

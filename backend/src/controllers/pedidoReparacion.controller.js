@@ -13,10 +13,10 @@ import ExcelJS from "exceljs";
 
 // Crear un nuevo pedido de reparación
 export const crearPedidoReparacion = async (req, res) => {
-  const { clienteRut, motivoReparacion, id_Bicicleta } = req.body;
+  const { clienteRut, motivoReparacion, descripcionReparacion, id_Bicicleta } = req.body;
 
   // Validación de campos
-  if (!clienteRut || !motivoReparacion || !id_Bicicleta) {
+  if (!clienteRut || !motivoReparacion || !descripcionReparacion ||!id_Bicicleta) {
       return handleErrorClient(res, 400, "Todos los campos son obligatorios");
   }
 
@@ -39,9 +39,10 @@ export const crearPedidoReparacion = async (req, res) => {
 
       // Crear y guardar el pedido de reparación
       const pedidoReparacion = pedidoReparacionRepository.create({
-          cliente,  // Asignar el objeto cliente completo
+          cliente,
           motivoReparacion,
-          bicicleta, // Asignar el objeto bicicleta completo
+          descripcionReparacion,
+          bicicleta,
       });
 
       await pedidoReparacionRepository.save(pedidoReparacion);
@@ -71,7 +72,7 @@ export const obtenerPedidoPorId = async (req, res) => {
 
   try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
-    const pedido = await pedidoReparacionRepository.findOneBy({ id });
+    const pedido = await pedidoReparacionRepository.findOneBy({ id_PedidoReparacion: id });
     if (!pedido) {
       return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
     }
