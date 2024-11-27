@@ -71,16 +71,17 @@ export const obtenerPedidosReparacion = async (req, res) => {
 };
 
 // Obtener un pedido de reparación por ID
-export const obtenerPedidoPorId = async (req, res) => {
-  const { id_PedidoReparacion } = req.params;
+export const obtenerPedidoPorRUT = async (req, res) => {
+  const { rut } = req.params;
 
   try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
-    const pedido = await pedidoReparacionRepository.findOne({ where: 
-      { id_PedidoReparacion }, relations: ["cliente", "bicicleta", "estadoReparacion"] });
+    const pedido = await pedidoReparacionRepository.find({ where: { cliente: { rut } },
+          relations: ["cliente", "bicicleta", "estadoReparacion"] });
 
-    if (!pedido) {
-      return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
+    if (pedido.length === 0) {
+      return handleErrorClient(res, 404, 
+      "No se encontraron pedidos de reparación para el cliente con el RUT proporcionado");
     }
     return handleSuccess(res, 200, "Pedido de reparación obtenido exitosamente", pedido);
   } catch (error) {
