@@ -43,10 +43,11 @@ relations: {
     },
     bicicleta: {
         target: "Bicicleta",
-        type: "many-to-one",
-        joinColumn: { name: "id_Bicicleta" },
-        nullable: false,
-    },productos: {
+        type: "many-to-one", 
+        joinColumn: { name: "id_Bicicleta" }, 
+        nullable: false, 
+    },
+    productos: {
         target: "Productos",
         type: "many-to-many",
         joinTable: {
