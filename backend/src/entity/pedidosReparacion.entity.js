@@ -19,6 +19,11 @@ columns: {
         length: 255,
         nullable: false,
     },
+    //mecanico: {
+      //  type: "varchar",
+        //length: 12,
+        //nullable: false,
+    //},
     createdAt: {
     type: "timestamp with time zone",
     default: () => "CURRENT_TIMESTAMP",
@@ -46,7 +51,8 @@ relations: {
         type: "many-to-one",
         joinColumn: { name: "id_Bicicleta" },
         nullable: false,
-    },productos: {
+    },
+    productos: {
         target: "Productos",
         type: "many-to-many",
         joinTable: {
@@ -61,15 +67,15 @@ relations: {
 
                                 },
                     },
-                },
-        estadoReparacion: { // Relación inversa
-        type: "many-to.one",
-        target: "EstadoReparacion",
-        joinColumn: {
-            name: "idE_R",
-        },
-        nullable: false,
-        inverseSide: "pedidoReparacion",
+    },
+    estadoReparacion: { // Relación inversa
+    type: "many-to-one",
+    target: "EstadoReparacion",
+    joinColumn: {
+    name: "idE_R",
+    },
+    nullable: false,
+    inverseSide: "pedidoReparacion",
     },
 },
 });

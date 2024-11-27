@@ -6,6 +6,8 @@ import Estado from "../entity/estado.entity.js";
 import Bicicleta from "../entity/bicicleta.entity.js";
 import Categoria from "../entity/categoria.entity.js";
 import Marcas from "../entity/marcas.entity.js";
+import PedidoReparacion from "../entity/pedidosReparacion.entity.js";
+import EstadosReparacion from "../entity/estado_reparacion.entity.js";
 import { AppDataSource } from "./configDb.js";
 import { encryptPassword } from "../helpers/bcrypt.helper.js";
 import passport from "passport";
@@ -53,9 +55,7 @@ async function createUsers() {
           email: "vendedor2024@gmail.cl",
           password: await encryptPassword("vendedor2024"),
           rol: "vendedor",
-        }),
-      ),
-  
+        }),      ),
     ]);
     console.log("* => Usuarios creados exitosamente");
   } catch (error) {
@@ -175,7 +175,7 @@ async function createEstados() {
       userRepository.save(
         userRepository.create({
           idE: 1,
-          estados: "En stock",
+          estados: "Disponible",
         }),
       ),
       userRepository.save(
@@ -187,13 +187,13 @@ async function createEstados() {
       userRepository.save(
         userRepository.create({
           idE: 3,
-          estados: "En reparación",
+          estados: "Para Reparaciones",
         }),
       ),
       userRepository.save(
         userRepository.create({
           idE: 4,
-          estados: "Para reparaciones",
+          estados: "Inhabilitado",
         }),
       ),
       userRepository.save(
@@ -226,8 +226,7 @@ async function createBicicleta() {
           modelo: "Marlin 7",
           color : "Rojo",
           cliente: { rut: "21.005.789-7" } // Usar un rut existente en la tabla clientes
-        }),
-  )],
+        })
       ),
       userRepository.save(
         userRepository.create({
@@ -246,7 +245,8 @@ async function createBicicleta() {
           color: "Negro",
           cliente: { rut: "21.123.456-7" },
         }),
-      )
+      ),
+    ]);  
     console.log("* => Bicicletas creadas exitosamente");
   } catch (error) {
     console.error("Error al crear Bicicleta:", error);
@@ -330,6 +330,40 @@ async function createMarcas() {
   }
 }
 
+async function createEstados_Reparacion() {
+  try {
+    const userRepository = AppDataSource.getRepository(EstadosReparacion);
+
+    const count = await userRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      userRepository.save(
+        userRepository.create({
+            idE_R: 1,
+            estados_r: "En reparacion",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
+          idE_R: 2,
+          estados_r: "Finalizado", 
+        })
+      ),
+      userRepository.save(
+        userRepository.create({
+          idE_R: 3,
+          estados_r: "En espera por falta de repuestos",
+        }),
+      ),
+      
+    ]);
+    console.log("* => Estados_Reparacion creados exitosamente");
+  } catch (error) {
+    console.error("Error al crear el estado_reparacion:", error);
+  }
+}
+
 async function createpedidoReparacion() {
   try {
     const userRepository = AppDataSource.getRepository(PedidoReparacion);
@@ -340,34 +374,51 @@ async function createpedidoReparacion() {
     await Promise.all([
       userRepository.save(
         userRepository.create({
-          id: 1,
-          idC: 1,
-          id_Bicicleta: 1,
-          idE: 1,
-          fechaIngreso: "2021-09-20",
-          fechaEntrega: "2021-09-25",
-          descripcion: "Cambio de frenos",
-        }),
+          id_PedidoReparacion: 1,
+          motivoReparacion: "Necesita un Cambio de cadena",
+          descripcionReparacion: "Se realiza Cambio de cadena",
+          cliente: { rut: "21.005.789-7" },
+          bicicleta: { id_Bicicleta: 1 },
+          estadoReparacion: { idE_R: 1 },
+          mecanico: { rut: "14.263.218-9" }
+        })
       ),
-      userRepository.save(  
-        userRepository.create(
-          {
-        
-          }
-        )
+      /*pedidoReparacionRepository.save(
+        pedidoReparacionRepository.create({
+          motivoReparacion: "Cambio de frenos",
+          descripcionReparacion: "Cambio de frenos en ambas ruedas",
+          fecha: "2024-12-12",
+          bicicleta: { id_Bicicleta: 2 },
+          estadoReparacion: { idE_R: 2 },
+          mecanico: { rut: "14.263.218-9" },
+        })
       ),
-      userRepository.save(
-        userRepository.create(
-          {
-          }
-        )
-      ),
-  
+      pedidoReparacionRepository.save(
+        pedidoReparacionRepository.create({
+          motivoReparacion: "Cambio de rueda trasera",
+          descripcionReparacion: "Cambio de rueda trasera debido a desgaste",
+          fecha: "2024-12-12",
+          bicicleta: { id_Bicicleta: 3 },
+          estadoReparacion: { idE_R: 3 },
+          mecanico: { rut: "14.263.218-9" },
+        })
+      ),*/
     ]);
-    console.log("* => Marcas creadas exitosamente");
+    console.log("* => Pedidos de reparacion creados exitosamente");
   } catch (error) {
-    console.error("Error al crear Marcas:", error);
+    console.error("Error al crear Pedido Reparacion:", error);
   }
 }
 
-export { createUsers, createClientes, createProductos, createEstados, createBicicleta, createCategoria, createMarcas };
+export { 
+  createUsers, 
+  createClientes, 
+  createProductos, 
+  createEstados, 
+  createBicicleta, 
+  createCategoria,
+  createMarcas, 
+  createEstados_Reparacion,
+  createpedidoReparacion
+  
+};
