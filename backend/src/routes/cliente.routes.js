@@ -1,6 +1,6 @@
 "use strict";
 import { Router } from "express";
-import { isAdmin, isAdminOrSeller } from "../middlewares/authorization.middleware.js";
+import { isAdminOrSeller } from "../middlewares/authorization.middleware.js";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import {  
   createCliente,

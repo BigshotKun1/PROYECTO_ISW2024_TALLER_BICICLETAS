@@ -43,7 +43,7 @@ export const isAdminOrSeller = (req, res, next) => {
     const userRole = req.user.rol; 
 
     if (userRole === "administrador" || userRole === "vendedor") {
-      return next(); // Permitir acceso
+        return next(); 
     }
 
     return res.status(403).json({ message: "No tienes permiso para realizar esta acción." });
@@ -53,7 +53,7 @@ export const isMecanic = (req, res, next) => {
     try {
         const userRole = req.user?.rol; // Asegúrate de que el rol del usuario esté disponible en req.user
 
-        if (userRole === "mecánico") {
+        if (userRole === "mecanico") {
             return next(); // Permitir acceso
         } else {
             return res.status(403).json({ message: "Acceso denegado: Se requiere rol de mecánico" });
