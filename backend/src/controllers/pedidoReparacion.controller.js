@@ -1,8 +1,10 @@
 "use strict";
+import { In } from "typeorm";
 import { AppDataSource } from "../config/configDb.js";
 import PedidoReparacion from "../entity/pedidosReparacion.entity.js";
 import Cliente from "../entity/cliente.entity.js";
 import Bicicleta from "../entity/bicicleta.entity.js";
+import EstadoReparacion from "../entity/estado_reparacion.entity.js";
 import {
   handleErrorClient,
   handleErrorServer,
@@ -13,10 +15,10 @@ import ExcelJS from "exceljs";
 
 // Crear un nuevo pedido de reparación
 export const crearPedidoReparacion = async (req, res) => {
-  const { clienteRut, motivoReparacion, descripcionReparacion, id_Bicicleta } = req.body;
+  const { clienteRut, motivoReparacion, descripcionReparacion, id_Bicicleta, idE_R } = req.body;
 
   // Validación de campos
-  if (!clienteRut || !motivoReparacion || !descripcionReparacion ||!id_Bicicleta) {
+  if (!clienteRut || !motivoReparacion || !descripcionReparacion || !id_Bicicleta || !idE_R) {
       return handleErrorClient(res, 400, "Todos los campos son obligatorios");
   }
 
@@ -43,6 +45,7 @@ export const crearPedidoReparacion = async (req, res) => {
           motivoReparacion,
           descripcionReparacion,
           bicicleta,
+          estadoReparacion: idE_R,
       });
 
       await pedidoReparacionRepository.save(pedidoReparacion);
@@ -58,7 +61,8 @@ export const crearPedidoReparacion = async (req, res) => {
 export const obtenerPedidosReparacion = async (req, res) => {
   try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
-    const pedidos = await pedidoReparacionRepository.find();
+    const pedidos = await pedidoReparacionRepository.find({ relations: ["cliente", "bicicleta", "estadoReparacion"] });
+
     return handleSuccess(res, 200, "Pedidos de reparación obtenidos exitosamente", pedidos);
   } catch (error) {
     console.error(error);
@@ -67,38 +71,22 @@ export const obtenerPedidosReparacion = async (req, res) => {
 };
 
 // Obtener un pedido de reparación por ID
-export const obtenerPedidoPorId = async (req, res) => {
-  const { id } = req.params;
+export const obtenerPedidoPorRUT = async (req, res) => {
+  const { rut } = req.params;
 
   try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
-    const pedido = await pedidoReparacionRepository.findOneBy({ id_PedidoReparacion: id });
-    if (!pedido) {
-      return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
+    const pedido = await pedidoReparacionRepository.find({ where: { cliente: { rut } },
+          relations: ["cliente", "bicicleta", "estadoReparacion"] });
+
+    if (pedido.length === 0) {
+      return handleErrorClient(res, 404, 
+      "No se encontraron pedidos de reparación para el cliente con el RUT proporcionado");
     }
     return handleSuccess(res, 200, "Pedido de reparación obtenido exitosamente", pedido);
   } catch (error) {
     console.error(error);
     return handleErrorServer(res, 500, "Error al obtener el pedido de reparación");
-  }
-};
-
-// Obtener el historial de reparaciones de un cliente
-export const obtenerHistorialReparaciones = async (req, res) => {
-  const { clienteRut } = req.query;
-
-  try {
-    const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
-    const historial = await pedidoReparacionRepository.find({ where: { clienteRut } });
-
-    if (historial.length === 0) {
-      return res.status(404).json({ message: "No se encontraron reparaciones para el cliente especificado" });
-    }
-
-    return res.status(200).json({ success: true, data: historial });
-  } catch (error) {
-    console.error("Error al obtener el historial de reparaciones", error);
-    return res.status(500).json({ success: false, message: "Error al obtener el historial de reparaciones" });
   }
 };
 
@@ -186,69 +174,58 @@ export const exportarHistorialReparaciones = async (req, res) => {
 }
 
 export const actualizarPedidoReparacion = async (req, res) => {
-  const { id } = req.params;
-  const { descripcionReparacion, piezasUtilizadas, estado } = req.body;
+  const { id_PedidoReparacion } = req.params;
+  const { motivoReparacion, descripcionReparacion, clienteRut, id_Bicicleta, idE_R } = req.body;
 
-  if (!descripcionReparacion || !estado) {
-      return handleErrorClient(res, 400, "Descripción y estado son obligatorios");
-  }
-
-  // Verificar si el usuario es mecánico
-  const usuario = req.user; // Asumiendo que el usuario está disponible en req.user
-  if (usuario.rol !== "mecanico") {
-      return handleErrorClient(res, 403, "No tienes permiso para actualizar el pedido de reparación");
+  // Validación de campos
+  if (!motivoReparacion || !descripcionReparacion || !clienteRut || !id_Bicicleta || !idE_R) {
+    return handleErrorClient(res, 400, "Todos los campos son obligatorios");
   }
 
   try {
-      const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
-      const pedido = await pedidoReparacionRepository.findOneBy({ id });
+    const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
+    const pedido = await pedidoReparacionRepository.findOne({
+      where: { id_PedidoReparacion },
+      relations: ["estadoReparacion", "cliente", "bicicleta"],
+    });
 
-      if (!pedido) {
-          return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
-      }
+    if (!pedido) {
+      return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
+    }
 
-      pedido.descripcionReparacion = descripcionReparacion;
-      pedido.piezasUtilizadas = piezasUtilizadas;
-      pedido.estado = estado;
+    // Actualizar los campos del pedido de reparación
+    pedido.motivoReparacion = motivoReparacion;
+    pedido.descripcionReparacion = descripcionReparacion;
 
-      await pedidoReparacionRepository.save(pedido);
-      return handleSuccess(res, 200, "Pedido de reparación actualizado exitosamente", pedido);
+    // Actualizar la relación con Cliente
+    const clienteRepository = AppDataSource.getRepository("Cliente");
+    const cliente = await clienteRepository.findOne({ where: { rut: clienteRut } });
+    if (!cliente) {
+      return handleErrorClient(res, 404, "Cliente no encontrado");
+    }
+    pedido.cliente = cliente;
+
+    // Actualizar la relación con Bicicleta
+    const bicicletaRepository = AppDataSource.getRepository("Bicicleta");
+    const bicicleta = await bicicletaRepository.findOne({ where: { id_Bicicleta } });
+    if (!bicicleta) {
+      return handleErrorClient(res, 404, "Bicicleta no encontrada");
+    }
+    pedido.bicicleta = bicicleta;
+
+    // Actualizar la relación con EstadoReparacion
+    const estadoReparacionRepository = AppDataSource.getRepository("EstadoReparacion");
+    const estadoReparacion = await estadoReparacionRepository.findOne({ where: { idE_R } });
+    if (!estadoReparacion) {
+      return handleErrorClient(res, 404, "Estado de reparación no encontrado");
+    }
+    pedido.estadoReparacion = estadoReparacion;
+
+    // Guardar los cambios
+    await pedidoReparacionRepository.save(pedido);
+    return handleSuccess(res, 200, "Pedido de reparación actualizado exitosamente", pedido);
   } catch (error) {
-      console.error(error);
-      handleErrorServer(res, 500, "Error al actualizar el pedido de reparación");
+    console.error("Error al actualizar el pedido de reparación:", error);
+    handleErrorServer(res, 500, `Error al actualizar el pedido de reparación: ${error.message}`);
   }
 };
-
-
-export async function actualizarEstadoPedido(req, res) {
-  try {
-      const { idPedido, nuevoEstado } = req.body;
-
-      // Verificar si el usuario es mecánico usando el middleware IsMecanic
-      if (!req.isMecanic) {
-          return res.status(403).json({ message: "Acceso denegado" });
-      }
-
-      // Buscar el pedido por su ID
-      const pedido = await PedidoReparacionSchema.findOneBy({ id_PedidoReparacion: idPedido });
-      if (!pedido) {
-          return res.status(404).json({ message: "Pedido no encontrado" });
-      }
-
-      // Verificar si el nuevo estado es "En espera por falta de repuestos"
-      const estado = await EstadoSchema.findOneBy({ estados: "En espera por falta de repuestos" });
-      if (!estado) {
-          return res.status(404).json({ message: "Estado 'En espera por falta de repuestos' no encontrado" });
-      }
-
-      // Actualizar el estado del pedido a "En espera"
-      pedido.idE = estado.idE; // Asegúrate de que `idE` corresponde a la columna de clave foránea para el estado
-      await pedido.save();
-
-      res.status(200).json({ message: "El pedido ha sido actualizado a 'En espera por falta de repuestos'" });
-  } catch (error) {
-      console.error("Error al actualizar el pedido:", error);
-      res.status(500).json({ message: "Error interno del servidor" });
-  }
-}
-

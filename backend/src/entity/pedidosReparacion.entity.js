@@ -19,11 +19,6 @@ columns: {
         length: 255,
         nullable: false,
     },
-    //mecanico: {
-      //  type: "varchar",
-        //length: 12,
-        //nullable: false,
-    //},
     createdAt: {
     type: "timestamp with time zone",
     default: () => "CURRENT_TIMESTAMP",

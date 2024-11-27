@@ -3,39 +3,33 @@ import { Router } from "express";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import { isAdminOrSeller } from "../middlewares/authorization.middleware.js";
 import { isMecanic } from "../middlewares/authorization.middleware.js";
-import { actualizarEstadoPedido, actualizarPedidoReparacion } from "../controllers/pedidoReparacion.controller.js";
-import { 
+import {
+    actualizarPedidoReparacion,
     crearPedidoReparacion,
-    exportarHistorialReparaciones,
-    obtenerHistorialReparaciones, 
-    obtenerPedidoPorId, 
+    exportarHistorialReparaciones, 
+    obtenerPedidoPorRUT, 
     obtenerPedidosReparacion,
     obtenerReporteReparaciones
 } from "../controllers/pedidoReparacion.controller.js";
 
 const router = Router();
 
-// Middleware para verificar si el usuario es administrador o vendedor
 router
     .use(authenticateJwt)
-    .use(isAdminOrSeller);
+    .use(isMecanic);
+    
 
 // Rutas para gestionar pedidos de reparación
 router
     .post("/", crearPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion - post
     .get("/", obtenerPedidosReparacion) //* http://localhost:3000/api/pedidoReparacion - get
-    .get("/:id", obtenerPedidoPorId) //* http://localhost:3000/api/pedidoReparacion/:id - get
-    .patch("/:id", isMecanic, actualizarPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion/:id - patch
-    .patch("/:id", isMecanic, actualizarEstadoPedido);
-
-// Ruta para obtener el historial de reparaciones
-router.get("/historial", obtenerHistorialReparaciones);
+    .get("/:rut", obtenerPedidoPorRUT) //* http://localhost:3000/api/pedidoReparacion/:rut - get
+    .put("/:id_PedidoReparacion", actualizarPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion/:id - put
 
 // Ruta para obtener el reporte de reparaciones
-router.get("/reporte", obtenerReporteReparaciones);
+router.get("/reporte", obtenerReporteReparaciones); // en proceso
 
 // Ruta para exportar el historial de reparaciones
-router.get("/exportar-historial", exportarHistorialReparaciones);
+router.get("/exportar-historial", exportarHistorialReparaciones); // en proceso
 
-// Obtener un pedido de reparación por ID
 export default router;
