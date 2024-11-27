@@ -3,7 +3,7 @@ import { EntitySchema } from "typeorm";
 
 const Estado_RSchema = new EntitySchema({
     name: "EstadoReparacion",
-    tableName: "estadoresparacion",
+    tableName: "estadoreparacion",
     columns: {
         idE_R: {
             type: "int",
