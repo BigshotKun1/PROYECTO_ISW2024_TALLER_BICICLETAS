@@ -7,7 +7,7 @@ import {
     actualizarPedidoReparacion,
     crearPedidoReparacion,
     exportarHistorialReparaciones, 
-    obtenerPedidoPorId, 
+    obtenerPedidoPorRUT, 
     obtenerPedidosReparacion,
     obtenerReporteReparaciones
 } from "../controllers/pedidoReparacion.controller.js";
@@ -23,7 +23,7 @@ router
 router
     .post("/", crearPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion - post
     .get("/", obtenerPedidosReparacion) //* http://localhost:3000/api/pedidoReparacion - get
-    .get("/:id_PedidoReparacion", obtenerPedidoPorId) //* http://localhost:3000/api/pedidoReparacion/:id - get
+    .get("/:rut", obtenerPedidoPorRUT) //* http://localhost:3000/api/pedidoReparacion/:rut - get
     .put("/:id_PedidoReparacion", actualizarPedidoReparacion) //* http://localhost:3000/api/pedidoReparacion/:id - put
 
 // Ruta para obtener el reporte de reparaciones
