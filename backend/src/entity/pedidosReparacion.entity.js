@@ -15,8 +15,9 @@ columns: {
     nullable: false,
     },
     descripcionReparacion: {
-        type: "text",
-        nullable: true,
+        type: "varchar",
+        length: 255,
+        nullable: false,
     },
     createdAt: {
     type: "timestamp with time zone",
@@ -42,9 +43,9 @@ relations: {
     },
     bicicleta: {
         target: "Bicicleta",
-        type: "many-to-one", // Un pedido puede referirse a una bicicleta
-        joinColumn: { name: "id_Bicicletas" }, // Aquí defines la columna que almacenará el id de bicicleta
-        nullable: false, // Asegúrate de que este campo no sea nulo
+        type: "many-to-one",
+        joinColumn: { name: "id_Bicicleta" },
+        nullable: false,
     },productos: {
         target: "Productos",
         type: "many-to-many",
