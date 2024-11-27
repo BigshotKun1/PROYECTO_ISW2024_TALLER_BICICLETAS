@@ -35,8 +35,8 @@ export const obtenerBicicletasPorClienteController = async (req, res) => {
 // Eliminar una bicicleta por ID
 export const eliminarBicicletaController = async (req, res) => {
     try {
-        const { id_bicicleta } = req.params;
-        const bicicletaEliminada = await bicicletaService.eliminarBicicleta(id_bicicleta);
+        const { id_Bicicleta } = req.params;
+        const bicicletaEliminada = await bicicletaService.eliminarBicicleta(id_Bicicleta);
         if (!bicicletaEliminada) return handleErrorClient(res, 404, "Bicicleta no encontrada");
         handleSuccess(res, 200, "Bicicleta eliminada exitosamente", bicicletaEliminada);
     } catch (error) {

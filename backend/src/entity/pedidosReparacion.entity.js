@@ -15,8 +15,9 @@ columns: {
     nullable: false,
     },
     descripcionReparacion: {
-        type: "text",
-        nullable: true,
+        type: "varchar",
+        length: 255,
+        nullable: false,
     },
     //mecanico: {
       //  type: "varchar",
