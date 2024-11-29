@@ -38,7 +38,6 @@ const ClientesList = () => {
 
 export default ClientesList;
 */
-import React from 'react';
 import { useClientes } from '@hooks/clientes/useGetClientes';
 import '@styles/cliente-table.css';
 

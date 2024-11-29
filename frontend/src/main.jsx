@@ -10,6 +10,8 @@ import Root from '@pages/Root';
 import ProtectedRoute from '@components/ProtectedRoute';
 import ClientesList from '@components/ClientesList';
 import PedidoReparacion from '@pages/pedidoReparacion';
+import EstadisticasTaller from './components/EstadisticasTaller';
+
 import '@styles/styles.css';
 
 const router = createBrowserRouter([
@@ -57,7 +59,15 @@ const router = createBrowserRouter([
     <PedidoReparacion />
   </ProtectedRoute>
   ),
-}
+},
+{
+  path: '/estadisticas',
+  element: (
+  <ProtectedRoute allowedRoles={['administrador']}>
+    <EstadisticasTaller />
+  </ProtectedRoute>
+  ),
+},
     ]
   },
   {

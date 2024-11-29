@@ -14,6 +14,8 @@ export async function login(dataUser) {
             const { nombreCompleto, email, rut, rol } = jwtDecode(data.data.token);
             const userData = { nombreCompleto, email, rut, rol };
             sessionStorage.setItem('usuario', JSON.stringify(userData));
+            localStorage.setItem('token', data.data.token); // Almacena el token en localStorage
+            localStorage.setItem('role', rol); // Almacena el rol en localStorage
             axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
             cookies.set('jwt-auth', data.data.token, {path:'/', expires: 1/48});
             return response.data
@@ -43,6 +45,8 @@ export async function logout() {
     try {
         await axios.post('/auth/logout');
         sessionStorage.removeItem('usuario');
+        localStorage.removeItem('token'); // Elimina el token de localStorage
+        localStorage.removeItem('role'); // Elimina el rol de localStorage
         cookies.remove('jwt');
         cookies.remove('jwt-auth');
     } catch (error) {
