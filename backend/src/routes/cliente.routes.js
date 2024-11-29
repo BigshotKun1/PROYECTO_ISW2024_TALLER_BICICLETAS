@@ -18,7 +18,7 @@ router
 
 router
     .post("/", createCliente) //* http://localhost:3000/api/cliente/
-    .get("/all", getClientes) //* http://localhost:3000/api/cliente/
+    .get("/all", getClientes) //* http://localhost:3000/api/cliente/all
     .get("/detail/:rut", getCliente) //* http://localhost:3000/api/cliente/detail/:rut
     .patch("/detail/", updateCliente) // Falta el controlador updateCliente
     .delete("/detail/", deleteCliente); // Falta el controlador deleteCliente
