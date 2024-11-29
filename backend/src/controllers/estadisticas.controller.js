@@ -32,6 +32,7 @@ export const obtenerEstadisticasTaller = async (req, res) => {
     const reparacionesCompletadas = await pedidoReparacionRepository.find({
         where: { estadoReparacion: { estados_r: "Finalizado" } }
     });
+    
     const tiempoTotal = reparacionesCompletadas.reduce((total, reparacion) => {
         const tiempoReparacion = 
         (new Date(reparacion.updatedAt) - new Date(reparacion.createdAt)) / (1000 * 60 * 60); // en horas

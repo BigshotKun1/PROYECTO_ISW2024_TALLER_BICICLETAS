@@ -177,11 +177,6 @@ export const actualizarPedidoReparacion = async (req, res) => {
   const { id_PedidoReparacion } = req.params;
   const { motivoReparacion, descripcionReparacion, clienteRut, id_Bicicleta, idE_R } = req.body;
 
-  // Validación de campos
-  if (!motivoReparacion || !descripcionReparacion || !clienteRut || !id_Bicicleta || !idE_R) {
-    return handleErrorClient(res, 400, "Todos los campos son obligatorios");
-  }
-
   try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
     const pedido = await pedidoReparacionRepository.findOne({
@@ -193,39 +188,47 @@ export const actualizarPedidoReparacion = async (req, res) => {
       return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
     }
 
-    // Actualizar los campos del pedido de reparación
-    pedido.motivoReparacion = motivoReparacion;
-    pedido.descripcionReparacion = descripcionReparacion;
+    // Actualizar los campos del pedido de reparación solo si están presentes en la solicitud
+    if (motivoReparacion) pedido.motivoReparacion = motivoReparacion;
+    if (descripcionReparacion) pedido.descripcionReparacion = descripcionReparacion;
 
-    // Actualizar la relación con Cliente
-    const clienteRepository = AppDataSource.getRepository("Cliente");
-    const cliente = await clienteRepository.findOne({ where: { rut: clienteRut } });
-    if (!cliente) {
-      return handleErrorClient(res, 404, "Cliente no encontrado");
+    // Actualizar la relación con Cliente si está presente en la solicitud
+    if (clienteRut) {
+      const clienteRepository = AppDataSource.getRepository("Cliente");
+      const cliente = await clienteRepository.findOne({ where: { rut: clienteRut } });
+      if (!cliente) {
+        return handleErrorClient(res, 404, "Cliente no encontrado");
+      }
+      pedido.cliente = cliente;
     }
-    pedido.cliente = cliente;
 
-    // Actualizar la relación con Bicicleta
-    const bicicletaRepository = AppDataSource.getRepository("Bicicleta");
-    const bicicleta = await bicicletaRepository.findOne({ where: { id_Bicicleta } });
-    if (!bicicleta) {
-      return handleErrorClient(res, 404, "Bicicleta no encontrada");
+    // Actualizar la relación con Bicicleta si está presente en la solicitud
+    if (id_Bicicleta) {
+      const bicicletaRepository = AppDataSource.getRepository("Bicicleta");
+      const bicicleta = await bicicletaRepository.findOne({ where: { id_Bicicleta } });
+      if (!bicicleta) {
+        return handleErrorClient(res, 404, "Bicicleta no encontrada");
+      }
+      pedido.bicicleta = bicicleta;
     }
-    pedido.bicicleta = bicicleta;
 
-    // Actualizar la relación con EstadoReparacion
-    const estadoReparacionRepository = AppDataSource.getRepository("EstadoReparacion");
-    const estadoReparacion = await estadoReparacionRepository.findOne({ where: { idE_R } });
-    if (!estadoReparacion) {
-      return handleErrorClient(res, 404, "Estado de reparación no encontrado");
+    // Actualizar la relación con EstadoReparacion si está presente en la solicitud
+    if (idE_R) {
+      const estadoReparacionRepository = AppDataSource.getRepository("EstadoReparacion");
+      const estadoReparacion = await estadoReparacionRepository.findOne({ where: { idE_R } });
+      if (!estadoReparacion) {
+        return handleErrorClient(res, 404, "Estado de reparación no encontrado");
+      }
+      pedido.estadoReparacion = estadoReparacion;
     }
-    pedido.estadoReparacion = estadoReparacion;
 
-    // Guardar los cambios
+    // Actualizar la fecha de actualización
+    pedido.updatedAt = new Date();
+
     await pedidoReparacionRepository.save(pedido);
+
     return handleSuccess(res, 200, "Pedido de reparación actualizado exitosamente", pedido);
   } catch (error) {
-    console.error("Error al actualizar el pedido de reparación:", error);
-    handleErrorServer(res, 500, `Error al actualizar el pedido de reparación: ${error.message}`);
+    return handleErrorServer(res, 500, "Error al actualizar el pedido de reparación", error);
   }
 };

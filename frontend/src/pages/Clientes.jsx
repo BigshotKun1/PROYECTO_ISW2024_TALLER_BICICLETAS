@@ -14,7 +14,6 @@ const CrearCliente = () => {
         telefono: "",
     });
 
-
     const handleInputChange = (name, value) => {
         setNewCliente((prev) => ({
             ...prev,
