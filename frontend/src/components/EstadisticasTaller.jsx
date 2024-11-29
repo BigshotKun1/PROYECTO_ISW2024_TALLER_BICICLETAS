@@ -1,10 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { obtenerEstadisticas } from '@services/estadisticas.service';
-import { Bar } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 import 'chart.js/auto';
 import '@styles/EstadisticasTaller.css';
-import { plugins } from 'chart.js/auto';
 
 const EstadisticasTaller = () => {
     const [estadisticas, setEstadisticas] = useState(null);
@@ -13,14 +12,14 @@ const EstadisticasTaller = () => {
     useEffect(() => {
         const fetchEstadisticas = async () => {
             try {
-                const token = localStorage.getItem('token'); // Obtén el token de localStorage
+                const token = localStorage.getItem('token'); 
                 console.log('Token:', token);
 
                 const data = await obtenerEstadisticas();
                 console.log('Datos de estadísticas:', data);
                 setEstadisticas(data);
             } catch (error) {
-                console.error('Error al obtener las estadísticas:', error); // Imprime el error en la consola
+                console.error('Error al obtener las estadísticas:', error);
                 setError('Error al obtener las estadísticas');
             }
         };
@@ -37,12 +36,12 @@ const EstadisticasTaller = () => {
     }
 
     const data = {
-        labels: ['Total Reparaciones', 'Total Pendientes', 'Total Completadas'],
+        labels: ['Total Pendientes', 'Total Completadas'],
         datasets: [
             {
-                label: "",
+                type: 'bar',
+                label: '',
                 data: [
-                    estadisticas.totalReparaciones,
                     estadisticas.totalPendientes,
                     estadisticas.totalCompletadas
                 ],
@@ -57,6 +56,18 @@ const EstadisticasTaller = () => {
                     'rgba(153, 102, 255, 1)'
                 ],
                 borderWidth: 1
+            },
+            {
+                type: 'line',
+                label: 'Tiempo Promedio de Reparación',
+                data: [
+                    estadisticas.tiempoPromedio, // Suponiendo que este dato esté disponible
+                    estadisticas.tiempoPromedio, // Repite el valor para cada punto de datos
+                ],
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                fill: false,
+                yAxisID: 'y1'
             }
         ]
     };
@@ -64,7 +75,12 @@ const EstadisticasTaller = () => {
     const options = {
         plugins: {
             legend: {
-                display: false
+                display: true,
+                labels: {
+                    filter: function(legendItem, chartData) {
+                            return legendItem.text === 'Tiempo Promedio de Reparación';
+                    }
+                }
             }
         },
         scales: {
@@ -76,6 +92,15 @@ const EstadisticasTaller = () => {
                         if (Number.isInteger(value)) {
                             return value;
                         }
+                    }
+                }
+            },
+            y1: {
+                beginAtZero: true,
+                position: 'right',
+                ticks: {
+                    callback: function(value) {
+                        return value.toFixed(1); // Formatea los valores a dos decimales
                     }
                 }
             }
@@ -96,7 +121,7 @@ const EstadisticasTaller = () => {
                     <p>Tiempo Promedio de Reparación: {tiempoPromedioFormateado} horas</p>
                 </div>
                 <div className="estadisticas-grafico">
-                    <Bar data={data} options={options} />
+                    <Chart type='bar' data={data} options={options} />
                 </div>
             </div>
         </div>
