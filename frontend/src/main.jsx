@@ -9,7 +9,7 @@ import Clientes from '@pages/Clientes';
 import Root from '@pages/Root';
 import ProtectedRoute from '@components/ProtectedRoute';
 import ClientesList from '@components/ClientesList';
-import EstadisticasTaller from '@pages/EstadisticasTaller';
+import PedidoReparacion from '@pages/pedidoReparacion';
 import '@styles/styles.css';
 
 const router = createBrowserRouter([
@@ -27,38 +27,38 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: '/users',
+        path: '/user',
         element: (
           <ProtectedRoute allowedRoles={['administrador']}>
             <Users />
           </ProtectedRoute>
         ),
-      },
-      {
-        path: '/cliente',
-        element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
-            <Clientes />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/cliente/all',
-        element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
-            <ClientesList />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/estadisticas',
-        element: (
-          <ProtectedRoute allowedRoles={['administrador']}>
-            <EstadisticasTaller />
-          </ProtectedRoute>
-        ),
-      },
-    ],
+    },
+    {
+      path: '/cliente',
+      element: (
+      <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+        <Clientes />
+      </ProtectedRoute>
+      ),
+  },
+  {
+    path: '/cliente/all',
+    element: (
+    <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+      <ClientesList />
+    </ProtectedRoute>
+    ),
+},
+{
+  path: '/pedidoReparacion',
+  element: (
+  <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+    <PedidoReparacion />
+  </ProtectedRoute>
+  ),
+}
+    ]
   },
   {
     path: '/auth',

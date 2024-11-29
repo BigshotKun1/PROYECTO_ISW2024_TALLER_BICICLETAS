@@ -182,7 +182,7 @@ const Navbar = () => {
                             {(userRole === 'administrador' || userRole === 'vendedor') && (
                             <li>
                                 <NavLink 
-                                    to="/ReparacionGeneral" 
+                                    to="/pedidoReparacion" 
                                     onClick={() => setMenuOpen(false)} 
                                     className={({ isActive }) => (isActive ? 'active' : '')}
                                 >
