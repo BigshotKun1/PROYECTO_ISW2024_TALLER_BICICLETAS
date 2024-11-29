@@ -89,7 +89,8 @@ const Login = () => {
         errorEmail,
         errorPassword,
         errorData,
-        handleInputChange
+        handleInputChange,
+        inputData
     } = useLogin();
 
     const loginSubmit = async (data) => {
@@ -117,6 +118,7 @@ const Login = () => {
                         placeholder: "example@gmail.cl",
                         fieldType: 'input',
                         type: "email",
+                        value: inputData.email,
                         required: true,
                         minLength: 15,
                         maxLength: 30,
@@ -132,6 +134,7 @@ const Login = () => {
                         placeholder: "**********",
                         fieldType: 'input',
                         type: "password",
+                        value: inputData.password,
                         required: true,
                         minLength: 8,
                         maxLength: 26,

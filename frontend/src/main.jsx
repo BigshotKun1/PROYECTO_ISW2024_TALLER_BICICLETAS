@@ -8,19 +8,21 @@ import Error404 from '@pages/Error404';
 import Clientes from '@pages/Clientes';
 import Root from '@pages/Root';
 import ProtectedRoute from '@components/ProtectedRoute';
-import '@styles/styles.css';
-import ClientesList from './components/ClientesList';
+import ClientesList from '@components/ClientesList';
 import PedidoReparacion from '@pages/pedidoReparacion';
+import EstadisticasTaller from './components/EstadisticasTaller';
+
+import '@styles/styles.css';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root/>,
-    errorElement: <Error404/>,
+    element: <Root />,
+    errorElement: <Error404 />,
     children: [
       {
-        index : true,
-        element: <Navigate to="/home" />  
+        index: true,
+        element: <Navigate to="/home" />
       },
       {
         path: '/home',
@@ -29,9 +31,9 @@ const router = createBrowserRouter([
       {
         path: '/user',
         element: (
-        <ProtectedRoute allowedRoles={['administrador']}>
-          <Users />
-        </ProtectedRoute>
+          <ProtectedRoute allowedRoles={['administrador']}>
+            <Users />
+          </ProtectedRoute>
         ),
     },
     {
@@ -57,19 +59,27 @@ const router = createBrowserRouter([
     <PedidoReparacion />
   </ProtectedRoute>
   ),
-}
+},
+{
+  path: '/estadisticas',
+  element: (
+  <ProtectedRoute allowedRoles={['administrador']}>
+    <EstadisticasTaller />
+  </ProtectedRoute>
+  ),
+},
     ]
   },
   {
     path: '/auth',
-    element: <Login/>
+    element: <Login />
   },
   {
     path: '/register',
-    element: <Register/>
+    element: <Register />
   }
-])
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router}/>
-)
+  <RouterProvider router={router} />
+);

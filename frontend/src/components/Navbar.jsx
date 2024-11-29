@@ -125,9 +125,7 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className={`nav-menu ${menuOpen ? 'activado' : ''}`}>
-                <ul>
-                    <div className="nav-left">
-                        <li>
+                <div className="nav-menu-container">
                             <NavLink 
                                 to="/home" 
                                 onClick={() => setMenuOpen(false)} 
@@ -135,8 +133,7 @@ const Navbar = () => {
                             >
                                 Inicio
                             </NavLink>
-                        </li>
-                        <li>
+                        
                             <NavLink 
                                 to="/quienes-somos" 
                                 onClick={() => setMenuOpen(false)} 
@@ -144,9 +141,7 @@ const Navbar = () => {
                             >
                                 Quiénes Somos
                             </NavLink>
-                        </li>
-                    </div>
-
+                </div>
                     <div className="nav-right">
                         {userRole === 'administrador' && (
                             <li>
@@ -159,7 +154,7 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                         )}
-
+                    
                         {(userRole === 'administrador' || userRole === 'vendedor') && (
                             <li>
                                 <NavLink 
@@ -184,7 +179,7 @@ const Navbar = () => {
                             </li>
                         )}
 
-                            {(userRole === 'administrador' || userRole === 'vendedor') && (
+                            {(userRole === 'mecanico') && (
                             <li>
                                 <NavLink 
                                     to="/pedidoReparacion" 
@@ -196,8 +191,17 @@ const Navbar = () => {
                             </li>
                         )}
 
-
-
+                            {(userRole === 'administrador') && (
+                            <li>
+                                <NavLink 
+                                    to="/estadisticas" 
+                                    onClick={() => setMenuOpen(false)} 
+                                    className={({ isActive }) => (isActive ? 'active' : '')}
+                                >
+                                    Estadísticas
+                                </NavLink>
+                            </li>
+                        )}
                         {/* Mostrar login y registro si el usuario no está autenticado */}
                         {!user ? (
                             <>
@@ -225,9 +229,7 @@ const Navbar = () => {
                             </li>
                         )}
                     </div>
-                </ul>
             </div>
-
             {/* Botón Hamburguesa */}
             <div className="hamburger" onClick={toggleMenu}>
                 <span className="bar"></span>
