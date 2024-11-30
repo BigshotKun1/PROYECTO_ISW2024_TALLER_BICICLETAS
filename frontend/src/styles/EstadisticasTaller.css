@@ -1,5 +1,5 @@
 .estadisticas-container {
-    background-image: url('src/assets/BICI.jpg');
+    background-image: url('../assets/BICI.jpg');
     background-size: cover;
     background-position: center;
     image-rendering: smooth;
