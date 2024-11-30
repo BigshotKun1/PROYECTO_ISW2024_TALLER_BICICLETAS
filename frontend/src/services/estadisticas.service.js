@@ -1,7 +1,7 @@
 import axios from './root.service.js';
 
 const LOCAL_API_URL = 'http://localhost:3000/api';
-const PROD_API_URL = 'https://tu-servidor.com/api';
+const PROD_API_URL = 'http://146.83.198.35:1335/api';
 
 const API_URL = window.location.hostname === 'localhost' ? LOCAL_API_URL : PROD_API_URL;
 
