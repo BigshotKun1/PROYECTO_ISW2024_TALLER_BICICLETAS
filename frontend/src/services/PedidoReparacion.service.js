@@ -1,4 +1,5 @@
-import axios from 'axios';
+/* eslint-disable no-unused-vars */
+import axios from './root.service.js';
 import { formatUserData } from '@helpers/formatData.js';
 
 
