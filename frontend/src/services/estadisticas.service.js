@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './root.service.js';
 
 export const obtenerEstadisticas = async () => {
     try {
