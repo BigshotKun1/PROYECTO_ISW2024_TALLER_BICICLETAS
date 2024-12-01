@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './root.service.js';
 
 // Obtener todas las bicicletas
 export const getBicicletas = async () => {
