@@ -21,8 +21,21 @@ export async function delProdSer(id) {
     const producto = await productoRepository.findOneBy({ id });
     return await productoRepository.remove(producto);
 }
-
+/*
 export async function updProdSer(id, updateData) {
     await productoRepository.update(id, updateData);
     return await getProdSer(id);
+}*/
+
+export async function updProdSer(id, updateData) {
+    const productoEncontrado = await productoRepository.findOneBy({ id });
+    if (!productoEncontrado) {
+        throw new Error("Producto no encontrado");
+    }
+
+    // Realizar la actualización
+    await productoRepository.update({ id }, updateData);
+
+    // Retornar el producto actualizado
+    return await productoRepository.findOneBy({ id });
 }
