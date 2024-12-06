@@ -11,6 +11,7 @@ import ProtectedRoute from '@components/ProtectedRoute';
 import ClientesList from '@components/ClientesList';
 import PedidoReparacion from '@pages/pedidoReparacion';
 import EstadisticasTaller from './components/EstadisticasTaller';
+import Producto from '@pages/Producto';
 
 import '@styles/styles.css';
 
@@ -35,41 +36,48 @@ const router = createBrowserRouter([
             <Users />
           </ProtectedRoute>
         ),
-    },
-    {
-      path: '/cliente',
-      element: (
-      <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
-        <Clientes />
-      </ProtectedRoute>
-      ),
-  },
-  {
-    path: '/cliente/all',
-    element: (
-    <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
-      <ClientesList />
-    </ProtectedRoute>
-    ),
-},
-{
-  path: '/pedidoReparacion',
-  element: (
-  <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
-    <PedidoReparacion />
-  </ProtectedRoute>
-  ),
-},
-{
-  path: '/estadisticas',
-  element: (
-  <ProtectedRoute allowedRoles={['administrador']}>
-    <EstadisticasTaller />
-  </ProtectedRoute>
-  ),
-},
-    ]
-  },
+      },
+      {
+        path: '/productos',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <Producto />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/cliente',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <Clientes />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/cliente/all',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <ClientesList />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/pedidoReparacion',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <PedidoReparacion />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/estadisticas',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador']}>
+          <EstadisticasTaller />
+          </ProtectedRoute>
+        ),
+      },
+    ]},
   {
     path: '/auth',
     element: <Login />
