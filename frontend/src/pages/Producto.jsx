@@ -1,63 +1,67 @@
 import Table from '@components/Table';
-import useUsers from '@hooks/users/useGetUsers.jsx';
+import useProductos from '@hooks/producto/useGetProductos.jsx';
 import Search from '../components/Search';
-import Popup from '../components/Popup';
+import Poprod from '../components/Poprod';
 import DeleteIcon from '../assets/deleteIcon.svg';
 import UpdateIcon from '../assets/updateIcon.svg';
 import UpdateIconDisable from '../assets/updateIconDisabled.svg';
 import DeleteIconDisable from '../assets/deleteIconDisabled.svg';
 import { useCallback, useState } from 'react';
 import '@styles/users.css';
-import useEditUser from '@hooks/users/useEditUser';
-import useDeleteUser from '@hooks/users/useDeleteUser';
+import useEditProductos from '@hooks/producto/useEditProductos';
+import useDeleteProductos from '@hooks/producto/useDeleteProductos';
 
 const Producto = () => {
-  const { users, fetchUsers, setUsers } = useUsers();
-  const [filterRut, setFilterRut] = useState('');
+  const { productos, fetchProductos, setProductos } = useProductos();
+  const [filterNombre, setFilterNombre] = useState('');
 
   const {
     handleClickUpdate,
     handleUpdate,
     isPopupOpen,
     setIsPopupOpen,
-    dataUser,
-    setDataUser
-  } = useEditUser(setUsers);
+    dataProductos,
+    setDataProductos
+  } = useEditProductos(setProductos);
 
-  const { handleDelete } = useDeleteUser(fetchUsers, setDataUser);
+  const { handleDelete } = useDeleteProductos(fetchProductos, setDataProductos);
 
-  const handleRutFilterChange = (e) => {
-    setFilterRut(e.target.value);
+  const handleNombreFilterChange = (e) => {
+    setFilterNombre(e.target.value);
   };
 
-  const handleSelectionChange = useCallback((selectedUsers) => {
-    setDataUser(selectedUsers);
-  }, [setDataUser]);
+  const handleSelectionChange = useCallback((selectedProductos) => {
+    setDataProductos(selectedProductos);
+  }, [setDataProductos]);
 
   const columns = [
-    { title: "Nombre", field: "nombreCompleto", width: 350, responsive: 0 },
-    { title: "Correo electrónico", field: "email", width: 300, responsive: 3 },
-    { title: "Rut", field: "rut", width: 150, responsive: 2 },
-    { title: "Rol", field: "rol", width: 200, responsive: 2 },
-    { title: "Creado", field: "createdAt", width: 200, responsive: 2 }
+    { title: "Nombre", field: "nombre", width: 320, responsive: 0 },
+    { title: "Precio", field: "precio", width: 105, responsive: 2 },
+    { title: "Cantidad", field: "cantidad", width: 103, responsive: 2 },
+    { title: "Marca", field: "idM", width: 100, responsive: 2 },
+    { title: "Categoría", field: "idC", width: 110, responsive: 2 },
+    { title: "Descuento", field: "descuento", width: 115, responsive: 2},
+    { title: "Total", field: "total", width: 105, responsive: 2},
+    { title: "Estado", field: "idE", width: 105, responsive: 2},
+    { title: "Creado", field: "createdAt", width: 100, responsive: 2 }
   ];
 
   return (
     <div className='main-container'>
       <div className='table-container'>
         <div className='top-table'>
-          <h1 className='title-table'>Usuarios</h1>
+          <h1 className='title-table'>Productos</h1>
           <div className='filter-actions'>
-            <Search value={filterRut} onChange={handleRutFilterChange} placeholder={'Filtrar por rut'} />
-            <button onClick={handleClickUpdate} disabled={dataUser.length === 0}>
-              {dataUser.length === 0 ? (
+            <Search value={filterNombre} onChange={handleNombreFilterChange} placeholder={'Filtrar por nombre'} />
+            <button onClick={handleClickUpdate} disabled={dataProductos.length === 0}>
+              {dataProductos.length === 0 ? (
                 <img src={UpdateIconDisable} alt="edit-disabled" />
               ) : (
                 <img src={UpdateIcon} alt="edit" />
               )}
             </button>
-            <button className='delete-user-button' disabled={dataUser.length === 0} onClick={() => handleDelete(dataUser)}>
-              {dataUser.length === 0 ? (
+            <button className='delete-product-button' disabled={dataProductos.length === 0} onClick={() => handleDelete(dataProductos)}>
+              {dataProductos.length === 0 ? (
                 <img src={DeleteIconDisable} alt="delete-disabled" />
               ) : (
                 <img src={DeleteIcon} alt="delete" />
@@ -66,15 +70,15 @@ const Producto = () => {
           </div>
         </div>
         <Table
-          data={users}
+          data={productos} // Cambia 'users' a 'products'.
           columns={columns}
-          filter={filterRut}
-          dataToFilter={'rut'}
-          initialSortName={'nombreCompleto'}
+          filter={filterNombre} // Cambia el filtro a 'nombre'.
+          dataToFilter={'nombre'} // Cambia el campo de filtro.
+          initialSortName={'nombre'} // Cambia el campo de ordenamiento inicial.
           onSelectionChange={handleSelectionChange}
         />
       </div>
-      <Popup show={isPopupOpen} setShow={setIsPopupOpen} data={dataUser} action={handleUpdate} />
+      <Poprod show={isPopupOpen} setShow={setIsPopupOpen} data={dataProductos} action={handleUpdate} />
     </div>
   );
 };
