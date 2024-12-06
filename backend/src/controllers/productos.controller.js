@@ -94,7 +94,13 @@ export async function delProd(req, res) {
 export async function updProd(req, res) {
     try {
         const { id } = req.params;
-        const updateData = req.body;
+        let updateData = req.body;
+
+        // Excluir el campo createdAt si está presente
+        if (updateData.createdAt) {
+            delete updateData.createdAt;
+        }
+
         const productoActualizado = await updProdSer(id, updateData);
         res.status(200).json({
             message: "Producto actualizado con éxito",

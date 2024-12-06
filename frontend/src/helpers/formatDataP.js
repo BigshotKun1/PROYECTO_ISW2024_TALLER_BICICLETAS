@@ -41,6 +41,7 @@ export function convertirMinusculas(obj) {
  * @param {Object} producto - Datos del producto actualizados.
  * @returns {Object} Producto con datos formateados.
  */
+/*
 export function formatPostUpdate(producto) {
     return {
         nombre: startCase(producto.nombre),
@@ -52,5 +53,19 @@ export function formatPostUpdate(producto) {
         descuento: `$${producto.descuento}`,
         total: `$${producto.total.toLocaleString()}`,
         createdAt: formatTempo(producto.createdAt, "DD-MM-YYYY")
+    };
+}*/
+
+export function formatPostUpdate(producto) { 
+    return {
+        nombre: startCase(producto.nombre || "Sin nombre"), // Valor predeterminado para nombre.
+        precio: `$${(producto.precio ?? 0).toLocaleString()}`, // Asegúrate de que precio sea un número.
+        cantidad: (producto.cantidad ?? 0).toLocaleString(), // Maneja cantidad nula o indefinida.
+        idM: producto.idM || "N/A", // Valor predeterminado para idM.
+        idC: producto.idC || "N/A", // Valor predeterminado para idC.
+        idE: producto.idE || "N/A", // Valor predeterminado para idE.
+        descuento: `$${(producto.descuento ?? 0)}`, // Maneja descuento nulo.
+        total: `$${(producto.total ?? 0).toLocaleString()}`, // Asegúrate de que total sea un número.
+        createdAt: formatTempo(producto.createdAt, "DD-MM-YYYY") || "Fecha desconocida" // Maneja fechas nulas.
     };
 }

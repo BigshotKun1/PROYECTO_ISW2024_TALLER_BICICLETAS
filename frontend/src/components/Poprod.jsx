@@ -76,8 +76,6 @@ export default function Poprod({ show, setShow, data, action }) {
                                     placeholder: productData.descuento?.toString() || "Descuento actual",
                                     fieldType: 'input',
                                     type: "number",
-                                    min: 0,
-                                    max: 100,
                                 },
                                 {
                                     label: "Estado",
