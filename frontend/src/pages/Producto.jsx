@@ -2,15 +2,17 @@ import Table from '@components/Table';
 import useProductos from '@hooks/producto/useGetProductos.jsx';
 import Search from '../components/Search';
 import Poprod from '../components/Poprod';
+import PoCprod from '../components/PoCprod';
 import DeleteIcon from '../assets/deleteIcon.svg';
 import UpdateIcon from '../assets/updateIcon.svg';
+import CreateIcon from '../assets/createIcon.svg';
 import UpdateIconDisable from '../assets/updateIconDisabled.svg';
 import DeleteIconDisable from '../assets/deleteIconDisabled.svg';
 import { useCallback, useState } from 'react';
 import '@styles/users.css';
 import useEditProductos from '@hooks/producto/useEditProductos';
-//import useDeleteProductos from '@hooks/producto/useDeleteProductos';
 import {deleteProductos} from '@services/Producto.service';
+import useCreateProductos from '@hooks/producto/useCreateProductos';
 
 const Producto = () => {
   const { productos, fetchProductos, setProductos } = useProductos();
@@ -24,6 +26,13 @@ const Producto = () => {
     dataProductos,
     setDataProductos,
   } = useEditProductos(setProductos);
+
+  const {
+    handleClickCreate,
+    handleCreate,
+    isCreatePopupOpen,
+    setIsCreatePopupOpen,
+  } = useCreateProductos(setProductos);
 
   const handleDelete = useCallback(() => {
     if (dataProductos.length === 0) return;
@@ -51,6 +60,8 @@ const Producto = () => {
     },
     [setDataProductos]
   );
+
+
 
   const columns = [
     { title: 'Nombre', field: 'nombre', width: 320, responsive: 0 },
@@ -86,7 +97,7 @@ const Producto = () => {
               )}
             </button>
             <button
-              className='delete-product-button'
+              className='Delete-product-button'
               disabled={dataProductos.length === 0}
               onClick={handleDelete}
             >
@@ -96,14 +107,20 @@ const Producto = () => {
                 <img src={DeleteIcon} alt='delete' />
               )}
             </button>
+            <button
+              className='Create_Prod'
+              onClick={handleClickCreate}
+            >
+              <img src={CreateIcon} alt='create' />
+            </button>
           </div>
         </div>
         <Table
-          data={productos} // Cambia 'users' a 'products'.
+          data={productos} 
           columns={columns}
-          filter={filterNombre} // Cambia el filtro a 'nombre'.
-          dataToFilter={'nombre'} // Cambia el campo de filtro.
-          initialSortName={'nombre'} // Cambia el campo de ordenamiento inicial.
+          filter={filterNombre} 
+          dataToFilter={'nombre'} 
+          initialSortName={'nombre'} 
           onSelectionChange={handleSelectionChange}
         />
       </div>
@@ -113,6 +130,12 @@ const Producto = () => {
         data={dataProductos}
         action={handleUpdate}
       />
+      <PoCprod
+        show={isCreatePopupOpen}
+        setShow={setIsCreatePopupOpen}
+        action={handleCreate}
+      />
+
     </div>
   );
 };

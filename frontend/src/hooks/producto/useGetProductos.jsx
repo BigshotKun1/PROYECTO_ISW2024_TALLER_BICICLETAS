@@ -8,7 +8,7 @@ const useGetProductos = () => {
         try {
             const response = await getProductos();
             const formattedData = response.map(productos => ({
-                id: productos.id, // Incluye todos los campos relevantes.
+                id: productos.id, 
                 nombre: productos.nombre,
                 precio: productos.precio,
                 cantidad: productos.cantidad,

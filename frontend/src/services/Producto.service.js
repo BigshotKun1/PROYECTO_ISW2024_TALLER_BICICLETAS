@@ -10,6 +10,7 @@ export async function getProductos() {
         return error.response?.data || { error: 'Error al obtener los productos' };
     }
 }
+
 export async function updateProductos(data, id) {
     try {
         const response = await axios.put(`/productos/${id}`, data);
@@ -20,15 +21,6 @@ export async function updateProductos(data, id) {
         return error.response?.data || { error: 'Error al actualizar el producto' };
     }
 }
-/*
-export async function deleteProductos(id) {
-    try {
-        const response = await axios.delete(`/productos/?id=${id}`); // Cambia `rut` por `id`.
-        return response.data;
-    } catch (error) {
-        return error.response?.data || { error: 'Error al eliminar el producto' };
-    }
-}*/
 
 export async function deleteProductos(id) {
     try {
@@ -41,7 +33,7 @@ export async function deleteProductos(id) {
 
 export const createProducto = async (producto) => {
     try {
-        const response = await axios.post('/api/productos', producto);
+        const response = await axios.post('/productos', producto);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || 'Error al crear producto');

@@ -26,6 +26,7 @@ const useEditProductos = (setProductos) => {
                 ));
 
                 setDataProductos([]);
+                window.location.reload();
             } catch (error) {
                 console.error('Error al actualizar el producto:', error);
                 showErrorAlert('Cancelado', 'Ocurrió un error al actualizar el producto.');
