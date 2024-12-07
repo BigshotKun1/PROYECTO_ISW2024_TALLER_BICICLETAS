@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { updateProductos } from '@services/producto.service.js'; // Cambia el servicio a productos.
+import { updateProductos } from '@services/Producto.service.js'; // Cambia el servicio a productos.
 import { showErrorAlert, showSuccessAlert } from '@helpers/sweetAlert.js';
 import { formatPostUpdate } from '@helpers/formatDataP.js';
 
