@@ -40,11 +40,11 @@ const ProductosSCHEMA = new EntitySchema({
             nullable: false,
         },
         descuentoP: {
-            type: "int",
+            type: "float",
             nullable: false,
         },
         total: {
-            type: "int",
+            type: "float",
             nullable: false,
         },
         createdAt: {
