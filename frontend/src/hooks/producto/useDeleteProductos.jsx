@@ -1,4 +1,4 @@
-import { deleteProductos } from '@services/producto.service.js'; // Cambia el servicio a productos.
+import { deleteProductos } from '@services/Producto.service.js'; // Cambia el servicio a productos.
 import { deleteDataAlert, showErrorAlert, showSuccessAlert } from '@helpers/sweetAlert.js';
 
 const useDeleteProductos = (fetchProductos, setDataProducto) => {
