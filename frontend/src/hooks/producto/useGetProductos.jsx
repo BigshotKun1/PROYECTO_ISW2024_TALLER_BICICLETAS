@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getProductos } from '@services/producto.service.js'; // Cambia el servicio a productos.
+import { getProductos } from '@services/Producto.service.js'; // Cambia el servicio a productos.
 
 const useGetProductos = () => {
     const [productos, setProductos] = useState([]);
