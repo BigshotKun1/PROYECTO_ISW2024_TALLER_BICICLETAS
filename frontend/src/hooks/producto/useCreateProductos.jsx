@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createProducto } from '@services/producto.service.js'; // Cambia el servicio a productos.
+import { createProducto } from '@services/Producto.service.js'; // Cambia el servicio a productos.
 import { showErrorAlert, showSuccessAlert } from '@helpers/sweetAlert.js';
 import { formatPostCreate } from '@helpers/formatDataP.js'; // Suponiendo que hay un helper para crear datos.
 
