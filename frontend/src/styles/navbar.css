@@ -173,18 +173,21 @@
 
 
 /* Barra de navegación principal */
+
 .navbar {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    display: block;
     background-color: #000000; /* Color de fondo de la navbar */
     opacity: 0.9;
     height: 9vh;
     z-index: 1000;
-    padding: 0 10px;
+    padding: 10px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Estilos de los enlaces dentro de la navbar */
@@ -196,29 +199,32 @@
     margin: 0;
     padding: 0;
 }
-
-/* Sección de navegación izquierda */
+.nav-menu-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
 .nav-left {
     display: flex;
     align-items: center;
-    flex-grow: 1;
+    margin-right: auto;
 }
-
-/* Sección de navegación derecha */
 .nav-right {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
 }
 
-/* Estilos para los elementos de la lista */
 .navbar li {
     display: flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 15px;	
+	margin: 0;
     position: relative;
     height: 100%;
-}
+	line-height: 0vh;
 
+
+}
 .navbar a {
     color: white;
     font-size: 1em;

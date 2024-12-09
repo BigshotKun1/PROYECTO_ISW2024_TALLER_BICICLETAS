@@ -124,120 +124,124 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <div className={`nav-menu ${menuOpen ? 'activado' : ''}`}>
-                <div className="nav-menu-container">
-                            <NavLink 
-                                to="/home" 
-                                onClick={() => setMenuOpen(false)} 
-                                className={({ isActive }) => (isActive ? 'active' : '')}
-                            >
-                                Inicio
-                            </NavLink>
-                        
-                            <NavLink 
-                                to="/quienes-somos" 
-                                onClick={() => setMenuOpen(false)} 
-                                className={({ isActive }) => (isActive ? 'active' : '')}
-                            >
-                                Quiénes Somos
-                            </NavLink>
-                </div>
-                    <div className="nav-right">
-                        {userRole === 'administrador' && (
-                            <li>
-                                <NavLink 
-                                    to="/user" 
-                                    onClick={() => setMenuOpen(false)} 
-                                    className={({ isActive }) => (isActive ? 'active' : '')}
-                                >
-                                    Usuarios
-                                </NavLink>
-                            </li>
-                        )}
-                    
-                        {(userRole === 'administrador' || userRole === 'vendedor') && (
-                            <li>
-                                <NavLink 
-                                    to="/productos" 
-                                    onClick={() => setMenuOpen(false)} 
-                                    className={({ isActive }) => (isActive ? 'active' : '')}
-                                >
-                                    Productos
-                                </NavLink>
-                            </li>
-                        )}
+  <div className={`nav-menu ${menuOpen ? 'activado' : ''}`}>
+    <div className="nav-menu-container">
+      <div className="nav-left">
+        <NavLink 
+          to="/home" 
+          onClick={() => setMenuOpen(false)} 
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
+          Inicio
+        </NavLink>
+        
+        <NavLink 
+          to="/quienes-somos" 
+          onClick={() => setMenuOpen(false)} 
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
+          Quiénes Somos
+        </NavLink>
+      </div>
 
-                            {(userRole === 'administrador' || userRole === 'vendedor' || userRole === 'mecanico') && (
-                            <li>
-                                <NavLink 
-                                    to="/cliente" 
-                                    onClick={() => setMenuOpen(false)} 
-                                    className={({ isActive }) => (isActive ? 'active' : '')}
-                                >
-                                    Clientes
-                                </NavLink>
-                            </li>
-                        )}
+      <div className="nav-right">
+        {userRole === 'administrador' && (
+          <li>
+            <NavLink 
+              to="/user" 
+              onClick={() => setMenuOpen(false)} 
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Usuarios
+            </NavLink>
+          </li>
+        )}
+        {(userRole === 'administrador' || userRole === 'vendedor') && (
+                <li>
+                    <NavLink 
+                        to="/productos" 
+                        onClick={() => setMenuOpen(false)} 
+                        className={({ isActive }) => (isActive ? 'active' : '')}
+                    >
+                        Productos
+                    </NavLink>
+                </li>
+            )}
 
-                            {(userRole === 'mecanico') && (
-                            <li>
-                                <NavLink 
-                                    to="/pedidoReparacion" 
-                                    onClick={() => setMenuOpen(false)} 
-                                    className={({ isActive }) => (isActive ? 'active' : '')}
-                                >
-                                    Reparacion General
-                                </NavLink>
-                            </li>
-                        )}
+                {(userRole === 'administrador' || userRole === 'vendedor' || userRole === 'mecanico') && (
+                <li>
+                    <NavLink 
+                        to="/cliente" 
+                        onClick={() => setMenuOpen(false)} 
+                        className={({ isActive }) => (isActive ? 'active' : '')}
+                    >
+                        Clientes
+                    </NavLink>
+                </li>
+            )}
 
-                            {(userRole === 'administrador') && (
-                            <li>
-                                <NavLink 
-                                    to="/estadisticas" 
-                                    onClick={() => setMenuOpen(false)} 
-                                    className={({ isActive }) => (isActive ? 'active' : '')}
-                                >
-                                    Estadísticas
-                                </NavLink>
-                            </li>
-                        )}
-                        {/* Mostrar login y registro si el usuario no está autenticado */}
-                        {!user ? (
-                            <>
-                                <li>
-                                    <NavLink 
-                                        to="/auth" 
-                                        onClick={() => setMenuOpen(false)} 
-                                        className={({ isActive }) => (isActive ? 'active' : '')}
-                                    >
-                                        Login
-                                    </NavLink>
-                                </li>
-                            </>
-                        ) : (
-                            <li>
-                                <button 
-                                    onClick={() => { 
-                                        logoutSubmit(); 
-                                        setMenuOpen(false); 
-                                    }}
-                                    className="logout-button"
-                                >
-                                    Cerrar sesión
-                                </button>
-                            </li>
-                        )}
-                    </div>
-            </div>
-            {/* Botón Hamburguesa */}
-            <div className="hamburger" onClick={toggleMenu}>
-                <span className="bar"></span>
-                <span className="bar"></span>
-                <span className="bar"></span>
-            </div>
-        </nav>
+                {((userRole === 'administrador' || userRole === 'vendedor' || userRole === 'mecanico') && (
+                <li>
+                    <NavLink 
+                        to="/pedidoReparacion" 
+                        onClick={() => setMenuOpen(false)} 
+                        className={({ isActive }) => (isActive ? 'active' : '')}
+                    >
+                        Reparacion General
+                    </NavLink>
+                </li>
+            ))}
+
+                {(userRole === 'administrador') && (
+                <li>
+                    <NavLink 
+                        to="/estadisticas" 
+                        onClick={() => setMenuOpen(false)} 
+                        className={({ isActive }) => (isActive ? 'active' : '')}
+                    >
+                        Estadísticas
+                    </NavLink>
+                </li>
+            )}
+
+        {!user ? (
+          <li>
+            <NavLink 
+              to="/auth" 
+              onClick={() => setMenuOpen(false)} 
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Login
+            </NavLink>
+          </li>
+        ) : (
+          <li>
+            <button 
+              onClick={() => { 
+                logoutSubmit(); 
+                setMenuOpen(false); 
+              }}
+              className="logout-button"
+            >
+              Cerrar sesión
+            </button>
+          </li>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <div className="hamburger" onClick={toggleMenu}>
+    <span className="bar"></span>
+    <span className="bar"></span>
+    <span className="bar"></span>
+  </div>
+</nav>
+
+        
+       
     );
 };
 
 export default Navbar;
+
