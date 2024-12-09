@@ -29,7 +29,6 @@ const useEditUser = (setUsers) => {
                 return user.email === formattedUser.email ? formattedUser : user;
             }));
             
-
             setDataUser([]);
             } catch (error) {
                 console.error('Error al actualizar el usuario:', error);

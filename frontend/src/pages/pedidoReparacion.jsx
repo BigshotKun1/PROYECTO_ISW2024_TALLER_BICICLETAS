@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createPedidoReparacion } from "@services/pedidoReparacion.service.js";
+import { createPedidoReparacion } from "@services/PedidoReparacion.service.js";
 import { showErrorAlert, showSuccessAlert } from "@helpers/sweetAlert.js";
 import { getClientes } from "@services/cliente.service.js"; // Servicio para obtener los clientes
 import { getBicicletasPorCliente } from "@services/bicicleta.service.js"; // Servicio para obtener las bicicletas por cliente

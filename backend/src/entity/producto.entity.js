@@ -40,11 +40,11 @@ const ProductosSCHEMA = new EntitySchema({
             nullable: false,
         },
         descuentoP: {
-            type: "int",
+            type: "float",
             nullable: false,
         },
         total: {
-            type: "int",
+            type: "float",
             nullable: false,
         },
         createdAt: {
@@ -64,17 +64,17 @@ const ProductosSCHEMA = new EntitySchema({
         marca: { 
             type: "many-to-one", 
             target: "Marcas", 
-            joinColumn: { name: "idM", referencedColumnName: "idM" },
+            joinColumn: { name: "idM", },
         },
         categoria: { 
             type: "many-to-one", 
             target: "Categoria",
-            joinColumn: { name: "idC", referencedColumnName: "idC" },
+            joinColumn: { name: "idC",  },
         },
         estado: { 
             type: "many-to-one", 
             target: "Estado",
-            joinColumn: { name: "idE", referencedColumnName: "idE" },
+            joinColumn: { name: "idE",  },
         },
     },
     relations: {

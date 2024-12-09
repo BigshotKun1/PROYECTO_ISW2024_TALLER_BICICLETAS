@@ -1,5 +1,5 @@
 import { creProdSer, delProdSer, getProdSer, getProdsSer, updProdSer } from "../services/productos.service.js";
-
+/*
 export async function creProd(req, res) {
     try {
         const producto = req.body;
@@ -22,7 +22,7 @@ export async function creProd(req, res) {
         });
     }
 }
-
+*/
 export async function getProd(req, res) {
     try {
         const { id } = req.params;
@@ -91,10 +91,46 @@ export async function delProd(req, res) {
     }
 }
 
+export async function creProd(req, res) {
+    try {
+        const { id } = req.params;
+        let updateData = req.body;
+
+        // Excluir el campo createdAt si está presente
+        if (updateData.createdAt) {
+            delete updateData.createdAt;
+        }
+
+        const productoActualizado = await updProdSer(id, updateData);
+        res.status(200).json({
+            message: "Producto actualizado con éxito",
+            data: productoActualizado
+        });
+    } catch (error) {
+        if (error.message === "Producto no encontrado") {
+            return res.status(404).json({
+                message: error.message,
+                data: null
+            });
+        }
+        console.error("Error al actualizar el producto:", error);
+        res.status(500).json({
+            message: "Hubo un error al actualizar el producto",
+            error: error.message
+        });
+    }
+}
+
 export async function updProd(req, res) {
     try {
         const { id } = req.params;
-        const updateData = req.body;
+        let updateData = req.body;
+
+        // Excluir el campo createdAt si está presente
+        if (updateData.createdAt) {
+            delete updateData.createdAt;
+        }
+
         const productoActualizado = await updProdSer(id, updateData);
         res.status(200).json({
             message: "Producto actualizado con éxito",
