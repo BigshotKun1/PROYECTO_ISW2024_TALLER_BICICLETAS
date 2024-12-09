@@ -1,5 +1,5 @@
  import { useState, useEffect } from 'react';
-import { getClientes } from '@services/cliente.service.js';  // Asegúrate de que este servicio esté bien definido
+import { getClientes } from '@services/cliente.service.js'; 
 import '@styles/cliente-table.css';
 
 export const useClientes = () => {
@@ -10,8 +10,8 @@ export const useClientes = () => {
   useEffect(() => {
     const fetchClientes = async () => {
       try {
-        const response = await getClientes(); // Llama al servicio que obtiene los clientes
-        setClientes(response); // Asegúrate de que la respuesta sea un array de clientes
+        const response = await getClientes(); 
+        setClientes(response); 
         setLoading(false);
       } catch (err) {
         setError("Error al cargar los clientes.");
