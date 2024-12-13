@@ -173,18 +173,21 @@
 
 
 /* Barra de navegación principal */
+
 .navbar {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    display: block;
     background-color: #000000; /* Color de fondo de la navbar */
     opacity: 0.9;
     height: 9vh;
     z-index: 1000;
-    padding: 0 10px;
+    padding: 10px 20px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Estilos de los enlaces dentro de la navbar */
@@ -196,29 +199,33 @@
     margin: 0;
     padding: 0;
 }
-
-/* Sección de navegación izquierda */
+.nav-menu-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
 .nav-left {
     display: flex;
     align-items: center;
-    flex-grow: 1;
+    justify-content: flex-start;
 }
-
-/* Sección de navegación derecha */
 .nav-right {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+	justify-self: flex-end;
 }
 
-/* Estilos para los elementos de la lista */
 .navbar li {
     display: flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 15px;	
+	margin: 0;
     position: relative;
     height: 100%;
-}
+	line-height: 0vh;
 
+
+}
 .navbar a {
     color: white;
     font-size: 1em;
@@ -246,7 +253,9 @@
     color: #006edf;
 }
 
-/* Estilos para el menu hamburguesa en dispositivos móviles */
+
+
+/* Estilos para el menu hamburguesa en dispositivos móviles */ /*
 .hamburger {
     display: none;
     flex-direction: column;
@@ -263,8 +272,9 @@
     background-color: white;
     margin: 4px 0;
 }
+	*/
 
-/* Estilos para el menú en pantallas pequeñas */
+/* Estilos para el menú en pantallas pequeñas */ /*
 @media (max-width: 768px) {
     .nav-menu ul {
         display: none;
@@ -303,7 +313,9 @@
     }
 }
 
-/* Estilos para pantallas medianas */
+*/
+
+/* Estilos para pantallas medianas */ /*
 @media (min-width: 768px) and (max-width: 1024px) {
     .nav-menu ul {
         display: none;
@@ -342,3 +354,5 @@
         box-sizing: border-box;
     }
 }
+
+*/

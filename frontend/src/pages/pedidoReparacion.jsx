@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPedidoReparacion } from "@services/PedidoReparacion.service.js";
@@ -8,14 +7,14 @@ import { getBicicletasPorCliente } from "@services/bicicleta.service.js"; // Ser
 import Form from "@components/Form";
 import { Link } from "react-router-dom";
 
-const PedidoReparacion = ({ rut }) => {
+const PedidoReparacion = () => {
   const navigate = useNavigate();
   const [clientes, setClientes] = useState([]);
   const [bicicletas, setBicicletas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newPedido, setNewPedido] = useState({
     clienteId: "",
-    id_Bicicletas: "",
+    id_Bicicleta: "",
     motivoReparacion: "",
   });
   const [error, setError] = useState(null);
@@ -42,56 +41,62 @@ const PedidoReparacion = ({ rut }) => {
   }, []);
 
   // Obtener las bicicletas al cambiar el cliente
+  
   useEffect(() => {
+    console.log(newPedido.clienteId);
     if (newPedido.clienteId) {
       const loadBicicletas = async () => {
+        console.log("Cliente ID (rut) que se envía:", newPedido.clienteId); // Verifica el rut antes de hacer la solicitud
         try {
-          const bicicletasResponse = await getBicicletasPorCliente(newPedido.clienteId); 
-          console.log("Bicicletas recibidas:", bicicletasResponse);
-          setBicicletas(bicicletasResponse);
+          const bicicletasResponse = await getBicicletasPorCliente(newPedido.clienteId.trim());
+          // Verifica toda la respuesta que viene del servidor
+          console.log("Respuesta completa de bicicletas:", bicicletasResponse);
+          console.log("Datos de bicicletas:", bicicletasResponse.data);
+  
+          // Verifica si la propiedad 'data' contiene un array de bicicletas
+          if (bicicletasResponse && bicicletasResponse.data && Array.isArray(bicicletasResponse.data) && bicicletasResponse.data.length > 0) {
+            setBicicletas(bicicletasResponse.data); // Asigna las bicicletas
+          } else {
+            setBicicletas([]); // Si no hay bicicletas, asigna un array vacío
+          }
+          console.log("Respuesta de la API:", bicicletasResponse);
+
         } catch (err) {
           console.error("Error al cargar las bicicletas:", err);
+          setBicicletas([]); // Si hay un error, asigna un array vacío
         }
+      
       };
       loadBicicletas();
     }
   }, [newPedido.clienteId]); // Se ejecuta cada vez que cambia clienteId
+  
 
   // Crear opciones de bicicletas para el select
   const bicicletaOptions = bicicletas.map((bicicleta) => ({
-    value: bicicleta.id,
-    label: `${bicicleta.marca} ${bicicleta.modelo}`,
-}));
-
-  useEffect(() => {
-    const fetchBicicletas = async () => {
-        try {
-            const data = await getBicicletasPorCliente(rut);
-            if (Array.isArray(data)) {
-                setBicicletas(data);
-            } else {
-                throw new Error("Datos de bicicletas no son un array");
-            }
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    fetchBicicletas();
-}, [rut]);
+    value: bicicleta.id_Bicicleta,
+    label: `${bicicleta.marca} ${bicicleta.modelo} (${bicicleta.color})`,
+  }));
 
   const handleInputChange = (name, value) => {
+    if (name === "clienteId") {
+      // Extrae solo el RUT del valor
+      const rut = value.match(/\(([^)]+)\)/); // Busca el texto dentro de paréntesis
+      if (rut && rut[1]) {
+        value = rut[1]; // Si se encuentra el RUT, asignarlo
+      }
+    }
+  
     setNewPedido((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
+  
 
   const handleSubmit = async () => {
     // Validación básica
-    if (!newPedido.clienteId || !newPedido.id_Bicicletas || !newPedido.motivoReparacion) {
+    if (!newPedido.clienteId || !newPedido.id_Bicicleta || !newPedido.motivoReparacion) {
       setError("Todos los campos son obligatorios.");
       return;
     }
@@ -131,11 +136,11 @@ const PedidoReparacion = ({ rut }) => {
           },
           {
             label: "Bicicleta",
-            name: "id_Bicicletas",
+            name: "id_Bicicleta",
             fieldType: "select",
             options: bicicletaOptions,
             required: true,
-            onChange: (e) => handleInputChange("id_Bicicletas", e.target.value),
+            onChange: (e) => handleInputChange("id_Bicicleta", e.target.value),
           },
           {
             label: "Motivo de reparación",

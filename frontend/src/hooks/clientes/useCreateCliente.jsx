@@ -6,7 +6,7 @@ const useCreateCliente = (setClientes) => {
   const createCliente = async (newCliente) => {
     setLoading(true);
     try {
-      const response = await fetch('/cliente', {
+      const response = await fetch('/cliente/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
