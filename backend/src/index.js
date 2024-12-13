@@ -86,13 +86,13 @@ async function setupAPI() {
     await setupServer();
     await createUsers();
     await createClientes();
-    await createProductos();
     await createEstados();
     await createMarcas();
     await createCategoria();
     await createBicicleta();
     await createEstados_Reparacion();
     await createpedidoReparacion();
+    await createProductos();
 
   } catch (error) {
     console.log("Error en index.js -> setupAPI(), el error es: ", error);

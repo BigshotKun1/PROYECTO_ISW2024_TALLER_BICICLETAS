@@ -12,6 +12,7 @@ import ClientesList from '@components/ClientesList';
 import PedidoReparacion from '@pages/pedidoReparacion';
 import EstadisticasTaller from './components/EstadisticasTaller';
 import Producto from '@pages/Producto';
+import Bicicleta from '@pages/Bicicleta';
 
 import '@styles/styles.css';
 
@@ -77,6 +78,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+       path: '/bicicleta',
+       element: (
+         <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+         <Bicicleta />
+         </ProtectedRoute>
+       ),
+      }
     ]},
   {
     path: '/auth',

@@ -183,7 +183,7 @@
     opacity: 0.9;
     height: 9vh;
     z-index: 1000;
-    padding: 10px;
+    padding: 10px 20px;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -207,11 +207,12 @@
 .nav-left {
     display: flex;
     align-items: center;
-    margin-right: auto;
+    justify-content: flex-start;
 }
 .nav-right {
     display: flex;
     align-items: center;
+	justify-self: flex-end;
 }
 
 .navbar li {
@@ -252,7 +253,9 @@
     color: #006edf;
 }
 
-/* Estilos para el menu hamburguesa en dispositivos móviles */
+
+
+/* Estilos para el menu hamburguesa en dispositivos móviles */ /*
 .hamburger {
     display: none;
     flex-direction: column;
@@ -269,8 +272,9 @@
     background-color: white;
     margin: 4px 0;
 }
+	*/
 
-/* Estilos para el menú en pantallas pequeñas */
+/* Estilos para el menú en pantallas pequeñas */ /*
 @media (max-width: 768px) {
     .nav-menu ul {
         display: none;
@@ -309,7 +313,9 @@
     }
 }
 
-/* Estilos para pantallas medianas */
+*/
+
+/* Estilos para pantallas medianas */ /*
 @media (min-width: 768px) and (max-width: 1024px) {
     .nav-menu ul {
         display: none;
@@ -348,3 +354,5 @@
         box-sizing: border-box;
     }
 }
+
+*/

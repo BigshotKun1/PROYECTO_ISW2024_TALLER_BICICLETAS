@@ -413,12 +413,12 @@ async function createpedidoReparacion() {
 export { 
   createUsers, 
   createClientes, 
-  createProductos, 
   createEstados, 
   createBicicleta, 
   createCategoria,
   createMarcas, 
   createEstados_Reparacion,
-  createpedidoReparacion
+  createpedidoReparacion,
+  createProductos 
   
 };

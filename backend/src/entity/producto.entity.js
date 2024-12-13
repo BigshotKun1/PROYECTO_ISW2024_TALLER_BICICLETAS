@@ -59,25 +59,23 @@ const ProductosSCHEMA = new EntitySchema({
             nullable: false,
         },
     },
-    
+
     relations: {
         marca: { 
             type: "many-to-one", 
             target: "Marcas", 
-            joinColumn: { name: "idM", },
+            joinColumn: { name: "idM" },
         },
         categoria: { 
             type: "many-to-one", 
             target: "Categoria",
-            joinColumn: { name: "idC",  },
+            joinColumn: { name: "idC" },
         },
         estado: { 
             type: "many-to-one", 
             target: "Estado",
-            joinColumn: { name: "idE",  },
+            joinColumn: { name: "idE" },
         },
-    },
-    relations: {
         pedidosReparacion: {
             target: "PedidoReparacion",
             type: "many-to-many",
@@ -90,8 +88,11 @@ const ProductosSCHEMA = new EntitySchema({
                 inverseJoinColumn: {
                     name: "pedidoReparacionId",
                     referencedColumnName: "id_PedidoReparacion",
-                }, }
-     }, },
+                },
+            },
+        },
+    },
+
     indices: [
         {
             name: "IDX_PRODUCTOS_IDM",
