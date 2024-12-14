@@ -3,11 +3,6 @@ import Productos from "../entity/producto.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 
 const productoRepository = AppDataSource.getRepository(Productos);
-/*
-export async function creProdSer(data) {
-    const newProducto = productoRepository.create(data);
-    return await productoRepository.save(newProducto);
-}*/
 
 export async function getProdSer(id) {
     return await productoRepository.findOneBy({ id });
@@ -37,9 +32,10 @@ export async function updProdSer(id, updateData) {
 
 export async function creProdSer(updateData) {
     // Obtener valores necesarios para calcular las nuevas columnas
-    const precio = updateData.precio || productoEncontrado.precio || 0;
-    const cantidad = updateData.cantidad || productoEncontrado.cantidad || 0;
-    const descuento = updateData.descuento || productoEncontrado.descuento || 0;
+
+    const precio = updateData.precio;
+    const cantidad = updateData.cantidad;
+    const descuento = updateData.descuento;
 
     // Calcular descuentoP (porcentaje del descuento aplicado)
     const descuentoP = (precio * cantidad * descuento) / 100;
@@ -51,8 +47,14 @@ export async function creProdSer(updateData) {
     updateData.descuentoP = descuentoP;
     updateData.total = total;
 
-    // Realizar la actualización
-    const crePod = await productoRepository.insert(updateData);
+    // Insertar el nuevo producto en la base de datos
+    const crePod = await productoRepository.create(updateData);
+    if (crePod) {
+        await productoRepository.save(crePod);
+    }
+    else {
+        throw new Error("Error al insertar el producto");
+    }
 
     // Retornar el producto actualizado
     return crePod;
