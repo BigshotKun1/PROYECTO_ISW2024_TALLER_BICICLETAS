@@ -13,8 +13,9 @@ import PedidoReparacion from '@pages/pedidoReparacion';
 import EstadisticasTaller from './components/EstadisticasTaller';
 import Producto from '@pages/Producto';
 import Bicicleta from '@pages/Bicicleta';
-
+import PedidosReparacionTable from '@components/pedidoReparacionList';
 import '@styles/styles.css';
+
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/cliente',
+        path: '/cliente/crearClienteYBicicleta',
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
           <Clientes />
@@ -65,8 +66,16 @@ const router = createBrowserRouter([
       {
         path: '/pedidoReparacion',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico']}>
           <PedidoReparacion />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/pedidoReparacion/all',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico']}>
+          <PedidosReparacionTable />
           </ProtectedRoute>
         ),
       },
@@ -85,7 +94,8 @@ const router = createBrowserRouter([
          <Bicicleta />
          </ProtectedRoute>
        ),
-      }
+      },
+
     ]},
   {
     path: '/auth',

@@ -39,11 +39,13 @@ const ClienteSchema = new EntitySchema({
       target: "PedidoReparacion",
       type: "one-to-many", // Un cliente puede tener muchos pedidos de reparación
       inverseSide: "cliente", // El lado inverso de la relación
+      cascade: true,
     },
     bicicletas: {
       target: "Bicicleta",
       type: "one-to-many",
       inverseSide: "cliente",
+      cascade: true,
   },
   },
   indices: [

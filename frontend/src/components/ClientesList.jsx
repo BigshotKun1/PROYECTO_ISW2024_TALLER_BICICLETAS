@@ -38,41 +38,99 @@ const ClientesList = () => {
 
 export default ClientesList;
 */
-import React from 'react';
-import { useClientes } from '@hooks/clientes/useGetClientes';
-import '@styles/cliente-table.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const ClientesTable = () => {
-    const { clientes, loading, error } = useClientes();
+const ClientesConBicicletas = () => {
+    const [clientes, setClientes] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    if (loading) {
-        return <div className="loading">Cargando...</div>;
-    }
 
-    if (error) {
-        return <div className="error">{error}</div>;
-    }
+    useEffect(() => {
+      const fetchBicicletas = async () => {
+        try {
+          // Realiza la solicitud GET
+          const response = await axios.get("/bicicleta/all");
+          
+          // Muestra la respuesta completa en consola para depurar
+          console.log('Respuesta del backend:', response);
+      
+          // Verifica si la respuesta tiene la propiedad 'data' y si es un array
+          if (response.data || !Array.isArray(response.data.data)) {
+            throw new Error("El formato de la respuesta es incorrecto.");
+          }
+      
+          // Si la respuesta es correcta, continua procesando los datos
+          const bicicletas = response.data.data;
+      
+          // Agrupa bicicletas por cliente
+          const clientesConBicicletas = bicicletas.reduce((acc, bicicleta) => {
+            const { cliente } = bicicleta;
+            if (!acc[cliente.rut]) {
+              acc[cliente.rut] = {
+                ...cliente,
+                bicicletas: [],
+              };
+            }
+            acc[cliente.rut].bicicletas.push(bicicleta);
+            return acc;
+          }, {});
+      
+          // Establece los datos de los clientes y sus bicicletas en el estado
+          setClientes(Object.values(clientesConBicicletas));
+      
+        } catch (err) {
+          console.error("Error al obtener bicicletas:", err);
+          setError("No se pudieron cargar los clientes y sus bicicletas.");
+        }
+      };
+      
+      
+
+        fetchBicicletas();
+    }, []);
+
+    if (loading) return <p>Cargando datos...</p>;
+    if (error) return <p style={{ color: "red" }}>{error}</p>;
 
     return (
-        <table className="cliente-table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Rut</th>
-                    <th>Teléfono</th>
-                </tr>
-            </thead>
-            <tbody>
-                {clientes.map((cliente) => (
-                    <tr key={cliente.rut}>
-                        <td>{cliente.nombreCompleto}</td>
-                        <td>{cliente.rut}</td>
-                        <td>{cliente.telefono}</td>
+        <div className="container">
+            <h1>Clientes y sus Bicicletas</h1>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>RUT</th>
+                        <th>Nombre Completo</th>
+                        <th>Teléfono</th>
+                        <th>Bicicletas</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {Object.values(clientes).map((cliente) => (
+                        <tr key={cliente.rut}>
+                            <td>{cliente.rut}</td>
+                            <td>{cliente.nombreCompleto}</td>
+                            <td>{cliente.telefono}</td>
+                            <td>
+                                {cliente.bicicletas.length > 0 ? (
+                                    <ul>
+                                        {cliente.bicicletas.map((bici) => (
+                                            <li key={bici.id_Bicicleta}>
+                                                {bici.marca} - {bici.modelo} ({bici.color})
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    "Sin bicicletas registradas"
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
-export default ClientesTable;
+export default ClientesConBicicletas;

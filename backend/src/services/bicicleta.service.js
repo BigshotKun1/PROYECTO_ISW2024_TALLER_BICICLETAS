@@ -2,6 +2,7 @@ import { AppDataSource } from "../config/configDb.js";
 import Bicicleta from "../entity/bicicleta.entity.js";
 import Cliente from "../entity/cliente.entity.js";
 
+/*
 export const crearBicicleta = async (datosBicicleta) => {
     const { clienteRut, marca, modelo, color } = datosBicicleta;
 
@@ -25,6 +26,39 @@ export const crearBicicleta = async (datosBicicleta) => {
     // Guardar la bicicleta en la base de datos
     return await bicicletaRepository.save(nuevaBicicleta);
 };
+*/
+
+export const crearBicicleta = async ({ rut, marca, modelo, color }) => {
+    try {
+      // Obtener el repositorio del cliente
+      const clienteRepository = AppDataSource.getRepository(Cliente);
+      const cliente = await clienteRepository.findOneBy({ rut });
+  
+      // Verificar si el cliente existe
+      if (!cliente) {
+        return [null, "Cliente no encontrado"];
+      }
+  
+      // Obtener el repositorio de bicicletas
+      const bicicletaRepository = AppDataSource.getRepository(Bicicleta);
+      
+      // Crear una nueva bicicleta
+      const nuevaBicicleta = bicicletaRepository.create({
+        marca,
+        modelo,
+        color,
+        cliente, // Asignar el cliente a la bicicleta
+      });
+  
+      // Guardar la bicicleta en la base de datos
+      const bicicletaCreada = await bicicletaRepository.save(nuevaBicicleta);
+  
+      return [bicicletaCreada, null];
+    } catch (error) {
+      console.error("Error al crear la bicicleta:", error);
+      return [null, "Error interno del servidor"];
+    }
+  };
 
 // Obtener todas las bicicletas
 export const obtenerBicicletas = async () => {
