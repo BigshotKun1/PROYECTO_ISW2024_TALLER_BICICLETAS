@@ -26,24 +26,22 @@ export async function getProd(req, res) {
 
 export async function getProds(req, res) {
     try {
-        const productos = await getProdsSer();
-        if (!productos) {
-            return res.status(404).json({ message: "Productos no encontrados" });
-        }
-        res.status(200).json({
-            message: "Productos encontrados",
-            data: productos
-        });
+      const productos = await getProdsSer();
+      if (!productos || productos.length === 0) {
+        return res.status(404).json({ message: "Productos no encontrados" });
+      }
+      res.status(200).json({
+        message: "Productos encontrados",
+        data: productos
+      });
     } catch (error) {
-        console.error("Error al obtener productos, el error es: ", 
-            error
-        );
-        res.status(500).json({
-            message: "Hubo un error al obtener los productos",
-            error: error.message
-        });
+      console.error("Error al obtener productos:", error);
+      res.status(500).json({
+        message: "Hubo un error al obtener los productos",
+        error: error.message
+      });
     }
-}
+  }
 
 export async function delProd(req, res) {
     try {
