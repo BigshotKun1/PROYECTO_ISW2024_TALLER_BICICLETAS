@@ -2,24 +2,63 @@
 import User from "../entity/user.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper.js";
+import { ROLES } from "../roles.js";
 
-export async function getUserService(query) {
+export async function createUserService(body) {
   try {
-    const { rut, id, email } = query;
+    const { rut, email, password, rol } = body;
 
     const userRepository = AppDataSource.getRepository(User);
 
-    const userFound = await userRepository.findOne({
-      where: [{ id: id }, { rut: rut }, { email: email }],
+    if (rol === ROLES.SUPERADMIN) {
+      return [null, "No se puede crear un usuario con el rol superadmin"];
+    }
+     
+    if(!Object.values(ROLES).includes(rol)) {
+      return [null, "Rol inválido"];
+    }
+
+    const existingUser = await userRepository.findOne({
+      where: [{ rut: rut }, { email: email }],
     });
+    
+    if (existingUser) return [null, "Ya existe un usuario con el mismo rut o email"];
 
-    if (!userFound) return [null, "Usuario no encontrado"];
+    const hashedPassword = await encryptPassword(password);
+    
+    const newUser = userRepository.create({
+      ...body,
+      password: hashedPassword,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    
+    await userRepository.save(newUser);
+    
+    const { password: _, ...userData } = newUser;
+    
+    return [userData, null];
+  } catch (error) {
+    console.error("Error al crear un usuario:", error);
+    return [null, "Error interno del servidor"];
+  }
+}
 
-    const { password, ...userData } = userFound;
+export async function getUserService(query) {
+  try {
+    const { rut } = query;
+
+    const userRepository = AppDataSource.getRepository(User);
+
+    const user = await userRepository.findOne({ where: { rut } });
+
+    if (!user) return [null, "Usuario no encontrado"];
+
+    const { password, ...userData } = user;
 
     return [userData, null];
   } catch (error) {
-    console.error("Error obtener el usuario:", error);
+    console.error("Error al obtener un usuario:", error);
     return [null, "Error interno del servidor"];
   }
 }
@@ -41,89 +80,65 @@ export async function getUsersService() {
   }
 }
 
-export async function updateUserService(query, body) {
+export const updateUserService = async (rut, userData, currentUser) => {
   try {
-    const { id, rut, email } = query;
-
     const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { rut } });
 
-    const userFound = await userRepository.findOne({
-      where: [{ id: id }, { rut: rut }, { email: email }],
-    });
-
-    if (!userFound) return [null, "Usuario no encontrado"];
-
-    const existingUser = await userRepository.findOne({
-      where: [{ rut: body.rut }, { email: body.email }],
-    });
-
-    if (existingUser && existingUser.id !== userFound.id) {
-      return [null, "Ya existe un usuario con el mismo rut o email"];
+    if (!user) {
+      return [null, "Usuario no encontrado"];
     }
 
-    if (body.password) {
-      const matchPassword = await comparePassword(
-        body.password,
-        userFound.password,
-      );
-
-      if (!matchPassword) return [null, "La contraseña no coincide"];
+    if (user.rol === ROLES.SUPERADMIN && currentUser.rol !== ROLES.SUPERADMIN) {
+      return [null, "No tiene acceso para actualizar a este usuario (necesita rol superadmin)"];
     }
 
-    const dataUserUpdate = {
-      nombreCompleto: body.nombreCompleto,
-      rut: body.rut,
-      email: body.email,
-      rol: body.rol,
-      updatedAt: new Date(),
-    };
-
-    if (body.newPassword && body.newPassword.trim() !== "") {
-      dataUserUpdate.password = await encryptPassword(body.newPassword);
+    if (userData.rol === ROLES.SUPERADMIN) {
+      return [null, "No se puede asignar el rol de superadmin"];
     }
 
-    await userRepository.update({ id: userFound.id }, dataUserUpdate);
-
-    const userData = await userRepository.findOne({
-      where: { id: userFound.id },
-    });
-
-    if (!userData) {
-      return [null, "Usuario no encontrado después de actualizar"];
+    if (currentUser.rol === ROLES.ADMINISTRADOR && user.rol === ROLES.ADMINISTRADOR) {
+      return [null, "No tiene acceso para actualizar este usuario (necesita rol superadmin)"];
     }
 
-    const { password, ...userUpdated } = userData;
+    if (currentUser.rol === ROLES.ADMINISTRADOR && userData.rol === ROLES.ADMINISTRADOR) {
+      return [null, "No tiene acceso para asignar el rol de administrador (necesita rol superadmin)"];
+    }
 
-    return [userUpdated, null];
+    if (userData.password) {
+      userData.password = await encryptPassword(userData.password);
+    }
+
+    Object.assign(user, userData);
+    
+    await userRepository.save(user);
+    
+    return [user, null];
   } catch (error) {
-    console.error("Error al modificar un usuario:", error);
-    return [null, "Error interno del servidor"];
+    return [null, error.message];
   }
 }
 
-export async function deleteUserService(query) {
+export const deleteUserService = async (rut, currentUser) => {
   try {
-    const { id, rut, email } = query;
-
     const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { rut } });
 
-    const userFound = await userRepository.findOne({
-      where: [{ id: id }, { rut: rut }, { email: email }],
-    });
-
-    if (!userFound) return [null, "Usuario no encontrado"];
-
-    if (userFound.rol === "administrador") {
-      return [null, "No se puede eliminar un usuario con rol de administrador"];
+    if (!user) {
+      return [null, "Usuario no encontrado"];
     }
 
-    const userDeleted = await userRepository.remove(userFound);
+    if (user.rol === "superadmin") {
+      return [null, "No se puede eliminar el usuario superadmin."];
+    }
 
-    const { password, ...dataUser } = userDeleted;
+    if (user.rol === "administrador" && currentUser.rol !== "superadmin") {
+      return [null, "No se puede eliminar un usuario administrador (Se necesita rol superadmin)."];
+    }
 
-    return [dataUser, null];
+    await userRepository.remove(user);
+    return [user, null];
   } catch (error) {
-    console.error("Error al eliminar un usuario:", error);
-    return [null, "Error interno del servidor"];
+    return [null, error.message];
   }
-}
+};

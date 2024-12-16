@@ -23,6 +23,15 @@ async function createUsers() {
     await Promise.all([
       userRepository.save(
         userRepository.create({
+          nombreCompleto: "Vicente Castillo Salazar",
+          rut: "21.005.789-7",
+          email: "superadmin2024@gmail.cl",
+          password: await encryptPassword("superadmin2024"),
+          rol: "superadmin",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
           nombreCompleto: "Diego Alexis Salazar Jara",
           rut: "21.308.770-3",
           email: "administrador202@gmail.cl",
