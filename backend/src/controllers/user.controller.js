@@ -1,5 +1,6 @@
 "use strict";
 import {
+  createUserService,
   deleteUserService,
   getUserService,
   getUsersService,
@@ -15,15 +16,35 @@ import {
   handleSuccess,
 } from "../handlers/responseHandlers.js";
 
+export async function createUser(req, res) {
+  try {
+    const { body } = req;
+
+    const { error } = userBodyValidation.validate(body);
+
+    if (error)
+      return handleErrorClient(
+        res,
+        400,
+        "Error de validación en los datos enviados",
+        error.message,
+      );
+
+    const [user, errorUser] = await createUserService(body);
+
+    if (errorUser) return handleErrorClient(res, 400, errorUser);
+
+    handleSuccess(res, 201, "Usuario creado correctamente", user);
+  } catch (error) {
+    handleErrorServer(res, 500, error.message);
+  }
+}
+
 export async function getUser(req, res) {
   try {
-    const { rut, id, email } = req.query;
+    const { rut } = req.params;
 
-    const { error } = userQueryValidation.validate({ rut, id, email });
-
-    if (error) return handleErrorClient(res, 400, error.message);
-
-    const [user, errorUser] = await getUserService({ rut, id, email });
+    const [user, errorUser] = await getUserService({ rut });
 
     if (errorUser) return handleErrorClient(res, 404, errorUser);
 
@@ -53,39 +74,15 @@ export async function getUsers(req, res) {
 
 export async function updateUser(req, res) {
   try {
-    const { rut, id, email } = req.query;
-    const { body } = req;
+    const { rut } = req.params;
+    const userData = req.body;
+    const currentUser = req.user; 
 
-    const { error: queryError } = userQueryValidation.validate({
-      rut,
-      id,
-      email,
-    });
+    const [user, errorUser] = await updateUserService(rut, userData, currentUser);
 
-    if (queryError) {
-      return handleErrorClient(
-        res,
-        400,
-        "Error de validación en la consulta",
-        queryError.message,
-      );
-    }
+    if (errorUser) return handleErrorClient(res, 400, "Error actualizando al usuario", errorUser);
 
-    const { error: bodyError } = userBodyValidation.validate(body);
-
-    if (bodyError)
-      return handleErrorClient(
-        res,
-        400,
-        "Error de validación en los datos enviados",
-        bodyError.message,
-      );
-
-    const [user, userError] = await updateUserService({ rut, id, email }, body);
-
-    if (userError) return handleErrorClient(res, 400, "Error modificando al usuario", userError);
-
-    handleSuccess(res, 200, "Usuario modificado correctamente", user);
+    handleSuccess(res, 200, "Usuario actualizado correctamente", user);
   } catch (error) {
     handleErrorServer(res, 500, error.message);
   }
@@ -93,32 +90,14 @@ export async function updateUser(req, res) {
 
 export async function deleteUser(req, res) {
   try {
-    const { rut, id, email } = req.query;
+    const { rut } = req.params;
+    const currentUser = req.user;
 
-    const { error: queryError } = userQueryValidation.validate({
-      rut,
-      id,
-      email,
-    });
+    const [user, errorUser] = await deleteUserService(rut, currentUser);
 
-    if (queryError) {
-      return handleErrorClient(
-        res,
-        400,
-        "Error de validación en la consulta",
-        queryError.message,
-      );
-    }
+    if (errorUser) return handleErrorClient(res, 404, errorUser);
 
-    const [userDelete, errorUserDelete] = await deleteUserService({
-      rut,
-      id,
-      email,
-    });
-
-    if (errorUserDelete) return handleErrorClient(res, 404, "Error eliminado al usuario", errorUserDelete);
-
-    handleSuccess(res, 200, "Usuario eliminado correctamente", userDelete);
+    handleSuccess(res, 200, "Usuario eliminado correctamente", user);
   } catch (error) {
     handleErrorServer(res, 500, error.message);
   }

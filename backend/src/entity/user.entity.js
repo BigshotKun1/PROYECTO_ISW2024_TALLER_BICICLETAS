@@ -1,5 +1,6 @@
 "use strict";
 import { EntitySchema } from "typeorm";
+import { ROLES } from "../roles.js";
 
 const UserSchema = new EntitySchema({
   name: "User",
@@ -28,8 +29,8 @@ const UserSchema = new EntitySchema({
       unique: true,
     },
     rol: {
-      type: "varchar",
-      length: 50,
+      type: "enum",
+      enum: ROLES,
       nullable: false,
     },
     password: {

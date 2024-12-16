@@ -3,6 +3,7 @@ import { Router } from "express";
 import { isAdmin } from "../middlewares/authorization.middleware.js";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import {
+  createUser,
   deleteUser,
   getUser,
   getUsers,
@@ -16,9 +17,10 @@ router
   .use(isAdmin);
 
 router
-  .get("/all", getUsers)
-  .get("/detail/", getUser)
-  .patch("/detail/", updateUser)
-  .delete("/detail/", deleteUser);
+  .post("/", createUser)         //* http://localhost:3000/api/user        - post
+  .get("/all", getUsers)         //* http://localhost:3000/api/user/all    - get
+  .get("/:rut", getUser)         //* http://localhost:3000/api/user/:rut   - get
+  .patch("/:rut", updateUser)    //* http://localhost:3000/api/user/:rut   - patch
+  .delete("/:rut", deleteUser);  //* http://localhost:3000/api/user/:rut   - delete
 
 export default router;

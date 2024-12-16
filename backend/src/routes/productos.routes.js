@@ -10,8 +10,8 @@ router
     .use(isAdminOrSeller);
 
 router.post("/", creProd); //* http://localhost:3000/api/productos - post
-router.get("/all", getProds); //* http://localhost:3000/api/productos/all - get 
 router.get("/:id",getProd); //* http://localhost:3000/api/productos/:id -get 
+router.get("/all", getProds); //* http://localhost:3000/api/productos/all - get 
 router.delete("/:id", delProd); //* http://localhost:3000/api/productos/:id - delete
 router.put("/:id", updProd); //* http://localhost:3000/api/productos/:id - put
 
