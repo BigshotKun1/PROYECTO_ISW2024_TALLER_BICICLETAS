@@ -23,6 +23,15 @@ async function createUsers() {
     await Promise.all([
       userRepository.save(
         userRepository.create({
+          nombreCompleto: "Vicente Castillo Salazar",
+          rut: "21.005.789-7",
+          email: "superadmin2024@gmail.cl",
+          password: await encryptPassword("superadmin2024"),
+          rol: "superadmin",
+        }),
+      ),
+      userRepository.save(
+        userRepository.create({
           nombreCompleto: "Diego Alexis Salazar Jara",
           rut: "21.308.770-3",
           email: "administrador202@gmail.cl",
@@ -80,7 +89,7 @@ async function createClientes() {
       ),
       userRepository.save(
         userRepository.create({
-          rut: "20.000.000-0",
+          rut: "10.056.468-8",
           nombreCompleto: "Juan Perez",
           telefono: "930737579",
         }),
@@ -234,7 +243,7 @@ async function createBicicleta() {
           marca: "Specialized",
           modelo: "Rockhopper",
           color : "Azul",
-          cliente: { rut: "20.000.000-0" },
+          cliente: { rut: "10.056.468-8" },
         }),
       ),
       userRepository.save(
@@ -383,26 +392,28 @@ async function createpedidoReparacion() {
           mecanico: { rut: "14.263.218-9" }
         })
       ),
-      /*pedidoReparacionRepository.save(
-        pedidoReparacionRepository.create({
+      userRepository.save(
+        userRepository.create({
+          id_PedidoReparacion: 2,
           motivoReparacion: "Cambio de frenos",
           descripcionReparacion: "Cambio de frenos en ambas ruedas",
-          fecha: "2024-12-12",
+          cliente: { rut: "10.056.468-8" },
           bicicleta: { id_Bicicleta: 2 },
           estadoReparacion: { idE_R: 2 },
-          mecanico: { rut: "14.263.218-9" },
+          mecanico: { rut: "14.263.218-9" }
         })
       ),
-      pedidoReparacionRepository.save(
-        pedidoReparacionRepository.create({
+      userRepository.save(
+        userRepository.create({
+          id_PedidoReparacion: 3,
           motivoReparacion: "Cambio de rueda trasera",
           descripcionReparacion: "Cambio de rueda trasera debido a desgaste",
-          fecha: "2024-12-12",
+          cliente : { rut: "21.123.456-7" },
           bicicleta: { id_Bicicleta: 3 },
           estadoReparacion: { idE_R: 3 },
-          mecanico: { rut: "14.263.218-9" },
+          mecanico: { rut: "14.263.218-9" }
         })
-      ),*/
+      ),
     ]);
     console.log("* => Pedidos de reparacion creados exitosamente");
   } catch (error) {

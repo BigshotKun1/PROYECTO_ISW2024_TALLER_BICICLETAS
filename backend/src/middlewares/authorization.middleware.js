@@ -21,12 +21,12 @@ try {
 
     const rolUser = userFound.rol;
 
-    if (rolUser !== "administrador") {
+    if (rolUser !== "administrador" && rolUser !== "superadmin") {
         return handleErrorClient(
             res,
             403,
             "Error al acceder al recurso",
-            "Se requiere un rol de administrador para realizar esta acción."
+            "Se requiere un rol de administrador o superadmin para realizar esta acción."
         );
     }
     next();
@@ -49,9 +49,10 @@ export const isAdminOrSeller = (req, res, next) => {
     return res.status(403).json({ message: "No tienes permiso para realizar esta acción." });
 }
 
+
 export const isMecanic = (req, res, next) => {
     try {
-        const userRole = req.user?.rol; // Asegúrate de que el rol del usuario esté disponible en req.user
+        const userRole = req.user.rol; // Asegúrate de que el rol del usuario esté disponible en req.user
 
         if (userRole === "mecanico") {
             return next(); // Permitir acceso

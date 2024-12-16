@@ -9,7 +9,7 @@ import {
   getClientes,
   updateCliente,
 } from "../controllers/cliente.controller.js";
-
+import { crearClienteYBicicleta } from "../controllers/cliente.controller.js";
 const router = Router();
 
 router
@@ -18,6 +18,8 @@ router
 
 router
     .post("/", createCliente) //* http://localhost:3000/api/cliente/
+    .post("/crearClienteYBicicleta", crearClienteYBicicleta) 
+    //* http://localhost:3000/api/cliente/crearClienteYBicicleta
     .get("/all", getClientes) //* http://localhost:3000/api/cliente/all
     .get("/detail/:rut", getCliente) //* http://localhost:3000/api/cliente/detail/:rut
     .patch("/detail/", updateCliente) // Falta el controlador updateCliente
