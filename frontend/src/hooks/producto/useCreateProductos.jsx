@@ -8,6 +8,7 @@ const useCreateProductos = (setProductos) => {
 
     // Abre el popup de creación
     const handleClickCreate = () => {
+        console.log('click create');
         setIsCreatePopupOpen(true); // Solo abrimos el popup sin depender de los datos previos
     };
 
@@ -15,9 +16,8 @@ const useCreateProductos = (setProductos) => {
     const handleCreate = async (newProductoData) => {
         if (newProductoData) {
             try {
-                
+                console.log('Creando producto:', newProductoData);
                 const createdProducto = await createProducto(newProductoData); 
-                console.log (newProductoData)
                 
                 showSuccessAlert('¡Producto Creado!', 'El producto ha sido creado correctamente.');
                 
@@ -26,10 +26,11 @@ const useCreateProductos = (setProductos) => {
                 
                 // Formateamos el producto creado (si es necesario)
                 const formattedProducto = formatPostCreate(createdProducto);
-
+                console.log('Producto creado sin formatear:', createdProducto);
+                console.log('Producto formateado:', formattedProducto);
+                console.log('Producto: ', createdProducto.data);
                 // Actualizamos la lista de productos con el nuevo producto creado
-                setProductos(prevProductos => [...prevProductos, formattedProducto]);
-
+                setProductos(prevProductos => [...prevProductos, createdProducto.data]);
             } catch (error) {
                 console.error('Error al crear el producto:', error);
                 showErrorAlert('Cancelado', 'Ocurrió un error al crear el producto.');

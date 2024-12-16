@@ -21,12 +21,12 @@ try {
 
     const rolUser = userFound.rol;
 
-    if (rolUser !== "administrador") {
+    if (rolUser !== "administrador" && rolUser !== "superadmin") {
         return handleErrorClient(
             res,
             403,
             "Error al acceder al recurso",
-            "Se requiere un rol de administrador para realizar esta acción."
+            "Se requiere un rol de administrador o superadmin para realizar esta acción."
         );
     }
     next();
