@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 /*
 const ClientesList = () => {
@@ -114,6 +115,9 @@ const ClientesConBicicletas = () => {
   );
 };
 
+<<<<<<< HEAD
+export default ClientesTable;
+=======
 export default ClientesConBicicletas;
 
 */
