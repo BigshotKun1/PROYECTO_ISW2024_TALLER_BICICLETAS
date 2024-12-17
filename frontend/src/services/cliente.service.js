@@ -42,26 +42,30 @@ export const createClienteBicicleta = async (newCliente) => {
   }
 };
 
-/*
-const createCliente = async (clienteData) => {
-    try {
-        const response = await axios.post('/cliente/', clienteData, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return response;
-    } catch (error) {
-        console.error('Error en la creación de cliente', error);
-        throw error;
+// Servicio para obtener los clientes con bicicletas
+export const obtenerClientesConBicicletas = async () => {
+  try {
+    // Asegúrate de usar la URL correcta de tu backend
+    const response = await axios.get("/bicicleta/cbici"); // Ajusta la URL según tu backend
+
+    // Verifica si la respuesta tiene el formato esperado
+    if (
+      !response.data ||
+      !Array.isArray(response.data.data) ||
+      response.data.status !== "Success"
+    ) {
+      throw new Error("El formato de la respuesta es incorrecto.");
     }
+
+    // Devuelve la lista de clientes con bicicletas
+    return response.data.data; // Asegúrate de que los datos que devuelves sean los correctos
+  } catch (error) {
+    console.error('Error al obtener clientes con bicicletas:', error);
+    throw error; // Re-lanza el error para ser manejado en el componente
+  }
 };
 
 
-
-*/
-
-export default createCliente;
 
 export async function getClientes() {
     try {

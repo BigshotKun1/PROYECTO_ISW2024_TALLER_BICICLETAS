@@ -82,30 +82,30 @@ async function createClientes() {
     await Promise.all([
       userRepository.save(
         userRepository.create({
-          rut: "21.005.789-7",
-          nombreCompleto: "Vicente Castillo",
-          telefono: "987654321",
+          rut: "19.123.753-3",
+          nombreCompleto: "Juan Marco Marin",
+          telefono: "+56987654321",
         }),
       ),
       userRepository.save(
         userRepository.create({
           rut: "10.056.468-8",
           nombreCompleto: "Juan Perez",
-          telefono: "930737579",
+          telefono: "+56930737579",
         }),
       ),
       userRepository.save(
         userRepository.create({
           rut: "21.123.456-7",
           nombreCompleto: "Omar Castro",
-          telefono: "987458325",
+          telefono: "+56987458325",
         }),
       ),
       userRepository.save(
         userRepository.create({
           rut: "21.036.331-9",
           nombreCompleto: "Bairon andres sanhuesa torres",
-          telefono: "962774850",
+          telefono: "+56962774850",
 
         }),
       ),
@@ -234,7 +234,7 @@ async function createBicicleta() {
           marca: "Trek",
           modelo: "Marlin 7",
           color : "Rojo",
-          cliente: { rut: "21.005.789-7" } // Usar un rut existente en la tabla clientes
+          cliente: { rut: "19.123.753-3" } // Usar un rut existente en la tabla clientes
         }) 
       ),
       userRepository.save(
@@ -386,7 +386,7 @@ async function createpedidoReparacion() {
           id_PedidoReparacion: 1,
           motivoReparacion: "Necesita un Cambio de cadena",
           descripcionReparacion: "Se realiza Cambio de cadena",
-          cliente: { rut: "21.005.789-7" },
+          cliente: { rut: "19.123.753-3" },
           bicicleta: { id_Bicicleta: 1 },
           estadoReparacion: { idE_R: 1 },
           mecanico: { rut: "14.263.218-9" }
