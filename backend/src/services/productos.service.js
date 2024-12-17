@@ -4,26 +4,44 @@ import { AppDataSource } from "../config/configDb.js";
 
 const productoRepository = AppDataSource.getRepository(Productos);
 
-export async function getProdSer(id) {
-    return await productoRepository.findOneBy({ id });
-}
+export const getProdSer = async (id) => {
+    try {
+      const productoRepository = AppDataSource.getRepository(Productos);
+      const producto = await productoRepository.findOne({ where: { id } });
+      return producto;
+    } catch (error) {
+      console.error("Error al obtener producto:", error);
+      throw new Error("Hubo un error al obtener el producto");
+    }
+  };
 
-export async function getProdsSer() {
-    try{
-    const productoRepository = AppDataSource.getRepository(Productos);
-    const productos = await productoRepository.find();
-    return productos;
-} catch (error) {
-    console.error("Error en getProdsSer: ", error.message);
-    throw error; // Re-lanzar el error para que lo maneje el controlador
-}
+export const getProdsSer = async () => {
+    try {
+      const productoRepository = AppDataSource.getRepository(Productos);
+      const productos = await productoRepository.find();
+      return productos;
+    } catch (error) {
+      console.error("Error al obtener productos:", error);
+      throw new Error("Hubo un error al obtener los productos");
+    }
+  };
 
-}
-
-export async function delProdSer(id) {
-    const producto = await productoRepository.findOneBy({ id });
-    return await productoRepository.remove(producto);
-}
+  export const delProdSer = async (id) => {
+    try {
+      const productoRepository = AppDataSource.getRepository(Productos);
+      const producto = await productoRepository.findOne({ where: { id } });
+  
+      if (!producto) {
+        throw new Error("Producto no encontrado");
+      }
+  
+      await productoRepository.remove(producto);
+      return producto;
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+      throw new Error("Hubo un error al eliminar el producto");
+    }
+  };
 
 export async function updProdSer(id, updateData) {
     const productoEncontrado = await productoRepository.findOneBy({ id });
