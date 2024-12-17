@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import Login from '@pages/Login';
 import Home from '@pages/Home';
 import Users from '@pages/Users';
+import UsersList from '@components/UsersList';
 import Register from '@pages/Register';
 import Error404 from '@pages/Error404';
 import Clientes from '@pages/Clientes';
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: '/user/all',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador']}>
+            <UsersList />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: '/productos',
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
@@ -56,7 +65,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/cliente/all',
+        path: '/bicicleta/cbici',
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
           <ClientesList />

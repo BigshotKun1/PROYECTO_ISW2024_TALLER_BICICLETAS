@@ -1,12 +1,10 @@
 .home-background {
     background-image: url('../assets/BICI.jpg'); /* Ajusta la ruta de la imagen */
     background-size: cover;
-    background-position: center;
-    image-rendering: smooth;
-    height: 100vh; /* Esto asegura que el fondo ocupe toda la altura de la ventana */
-    width: 100%; /* Esto asegura que el fondo ocupe todo el ancho */
-    background-repeat: no-repeat; /* Asegura que la imagen no se repita */
-    background-attachment: fixed;
+  background-position: center;
+  background-attachment: fixed; 
+  position: relative;
+  height: 100vh; 
 }
 
 .background-overlay {

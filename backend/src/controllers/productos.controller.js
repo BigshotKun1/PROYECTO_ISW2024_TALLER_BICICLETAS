@@ -1,4 +1,8 @@
-import { creProdSer, delProdSer, getProdSer, getProdsSer, updProdSer } from "../services/productos.service.js";
+import { creProdSer, 
+    delProdSer, 
+    getProdSer, 
+    getProdsSer, 
+    updProdSer } from "../services/productos.service.js";
 
 export async function getProd(req, res) {
     try {
@@ -24,7 +28,7 @@ export async function getProd(req, res) {
     }
 }
 
-export async function getProds(req, res) {
+export async function getProductos(req, res) {
     try {
       const productos = await getProdsSer();
       if (!productos || productos.length === 0) {
@@ -34,6 +38,7 @@ export async function getProds(req, res) {
         message: "Productos encontrados",
         data: productos
       });
+
     } catch (error) {
       console.error("Error al obtener productos:", error);
       res.status(500).json({

@@ -3,7 +3,7 @@ import { formatProductosData } from '@helpers/formatDataP.js'; // Cambia al form
 
 export async function getProductos() {
     try {
-        const { data } = await axios.get('/productos/all'); // Ajusta la ruta a la del endpoint de productos.
+        const { data } = await axios.get('/productos/'); // Ajusta la ruta a la del endpoint de productos.
         const formattedData = data.data.map(formatProductosData); // Cambia el formato al de productos.
         return formattedData;
     } catch (error) {
