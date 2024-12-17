@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from '@services/auth.service.js';
 import '@styles/navbar.css';

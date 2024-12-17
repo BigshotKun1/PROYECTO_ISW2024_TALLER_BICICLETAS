@@ -1,82 +1,100 @@
-import Table from '@components/Table';
-import useUsers from '@hooks/users/useGetUsers.jsx';
-import Search from '../components/Search';
-import Popup from '../components/Popup';
-import DeleteIcon from '../assets/deleteIcon.svg';
-import UpdateIcon from '../assets/updateIcon.svg';
-import UpdateIconDisable from '../assets/updateIconDisabled.svg';
-import DeleteIconDisable from '../assets/deleteIconDisabled.svg';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createUser } from '@services/user.service';
 import '@styles/users.css';
-import useEditUser from '@hooks/users/useEditUser';
-import useDeleteUser from '@hooks/users/useDeleteUser';
 
-const Users = () => {
-  const { users, fetchUsers, setUsers } = useUsers();
-  const [filterRut, setFilterRut] = useState('');
+const CrearUser = () => {
+    const [formData, setFormData] = useState({
+        nombreCompleto: '',
+        rut: '',
+        email: '',
+        password: '',
+        rol: 'vendedor', // Rol predeterminado
+    });
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-  const {
-    handleClickUpdate,
-    handleUpdate,
-    isPopupOpen,
-    setIsPopupOpen,
-    dataUser,
-    setDataUser
-  } = useEditUser(setUsers);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
-  const { handleDelete } = useDeleteUser(fetchUsers, setDataUser);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await createUser(formData);
+        if (response) {
+            navigate('/user/all');
+        }
+        } catch (error) {
+            setError(error.response?.data?.message || 'Error al crear el usuario');
+        }
+    };
 
-  const handleRutFilterChange = (e) => {
-    setFilterRut(e.target.value);
-  };
-
-  const handleSelectionChange = useCallback((selectedUsers) => {
-    setDataUser(selectedUsers);
-  }, [setDataUser]);
-
-  const columns = [
-    { title: "Nombre", field: "nombreCompleto", width: 350, responsive: 0 },
-    { title: "Correo electrónico", field: "email", width: 300, responsive: 3 },
-    { title: "Rut", field: "rut", width: 150, responsive: 2 },
-    { title: "Rol", field: "rol", width: 200, responsive: 2 },
-    { title: "Creado", field: "createdAt", width: 200, responsive: 2 }
-  ];
-
-  return (
-    <div className='main-container'>
-      <div className='table-container'>
-        <div className='top-table'>
-          <h1 className='title-table'>Usuarios</h1>
-          <div className='filter-actions'>
-            <Search value={filterRut} onChange={handleRutFilterChange} placeholder={'Filtrar por rut'} />
-            <button onClick={handleClickUpdate} disabled={dataUser.length === 0}>
-              {dataUser.length === 0 ? (
-                <img src={UpdateIconDisable} alt="edit-disabled" />
-              ) : (
-                <img src={UpdateIcon} alt="edit" />
-              )}
-            </button>
-            <button className='delete-user-button' disabled={dataUser.length === 0} onClick={() => handleDelete(dataUser)}>
-              {dataUser.length === 0 ? (
-                <img src={DeleteIconDisable} alt="delete-disabled" />
-              ) : (
-                <img src={DeleteIcon} alt="delete" />
-              )}
-            </button>
-          </div>
-        </div>
-        <Table
-          data={users}
-          columns={columns}
-          filter={filterRut}
-          dataToFilter={'rut'}
-          initialSortName={'nombreCompleto'}
-          onSelectionChange={handleSelectionChange}
+return (
+    <div className="create-user-container">
+        <div className="create-user-form">
+        <h1>Crear Usuario</h1>
+        {error && <p className="error">{error}</p>}
+        <form onSubmit={handleSubmit}>
+        <label>
+            Nombre:
+            <input
+            type="text"
+            name="nombreCompleto"
+            value={formData.nombreCompleto}
+            onChange={handleChange}
+            placeholder="Emilio Alarcon Gomez"
+            required
         />
-      </div>
-      <Popup show={isPopupOpen} setShow={setIsPopupOpen} data={dataUser} action={handleUpdate} />
+        </label>
+        <label>
+            RUT:
+            <input
+            type="text"
+            name="rut"
+            value={formData.rut}
+            onChange={handleChange}
+            placeholder="21.143.123-4"
+            required
+        />
+        </label>
+        <label>
+            Email:
+            <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Administrador2024@gmail.cl"
+            required
+        />
+        </label>
+        <label>
+            Contraseña:
+            <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Ingrese una contraseña"
+            required
+        />
+        </label>
+        <label>
+        Rol:
+            <select name="rol" value={formData.rol} onChange={handleChange}>
+                <option value="vendedor">Vendedor</option>
+                <option value="mecanico">Mecánico</option>
+                <option value="administrador">Administrador</option>
+            </select>
+            </label>
+            <button type="submit">Crear Usuario</button>
+        </form>
+        <button className="view-users-button" onClick={() => navigate('/user/all')}>Ver Lista de Usuarios</button>
+        </div>
     </div>
-  );
+    );
 };
 
-export default Users;
+export default CrearUser;
