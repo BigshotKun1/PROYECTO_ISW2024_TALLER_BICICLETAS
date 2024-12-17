@@ -123,6 +123,21 @@ const Producto = () => {
           initialSortName={'nombre'} 
           onSelectionChange={handleSelectionChange}
         />
+        <div>
+          <button
+              className='Create_Prod'
+              onClick={handleClickCreate}
+          >
+              <img src={CreateIcon} alt='create' />
+          </button>
+          <button
+              className='Create_Prod'
+              onClick={handleClickCreate}
+          >
+              <img src={CreateIcon} alt='create' />
+          </button>
+        </div>
+        
       </div>
       <Poprod
         show={isPopupOpen}
