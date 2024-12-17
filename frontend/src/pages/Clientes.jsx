@@ -1,16 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { createClienteBicicleta } from "@services/cliente.service.js";
+import { createClienteBicicleta, createCliente, obtenerClientesSinBicicleta } from "@services/cliente.service.js";
+import { createBicicleta } from "@services/bicicleta.service.js";
 import { showErrorAlert, showSuccessAlert } from "@helpers/sweetAlert.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Form from "@components/Form";
 import '@styles/boton.css';
+
 
 const Clientes = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [selectedForm, setSelectedForm] = useState("createCliente"); // Inicializa con "createCliente"
-
+  const [clientesSinBicicleta, setClientesSinBicicleta] = useState([]);
   const [newCliente, setNewCliente] = useState({
     rut: "",
     nombreCompleto: "",
@@ -22,13 +24,33 @@ const Clientes = () => {
     },
   });
 
+  
+  useEffect(() => {
+    const fetchClientesSinBicicleta = async () => {
+      try {
+        const response = await obtenerClientesSinBicicleta();
+        
+        // Verifica si la respuesta contiene un array
+        if (Array.isArray(response.clientes)) {
+          setClientesSinBicicleta(response.clientes);
+        } else {
+          setClientesSinBicicleta([]);
+        }
+      } catch (err) {
+        console.error("Error al obtener clientes sin bicicleta", err);
+        setError("Error al obtener los clientes.");
+      }
+    };
+    fetchClientesSinBicicleta();
+  }, []);
+
   const handleInputChange = (name, value) => {
     if (name === 'marca' || name === 'modelo' || name === 'color') {
       setNewCliente((prev) => ({
         ...prev,
-        bicicleta: {
-          ...prev.bicicleta,
-          [name]: value,
+          bicicleta: {
+            ...prev.bicicleta,
+                [name]: value,
         },
       }));
     } else {
@@ -40,23 +62,47 @@ const Clientes = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Datos enviados:", newCliente);
     try {
-      const response = await createClienteBicicleta(newCliente);
+      console.log("Datos enviados Handle:", newCliente);
+  
+      let response;
+  
+      // Dependiendo del formulario seleccionado, se realiza la solicitud correspondiente
+      if (selectedForm === "createCliente") {
+        response = await createCliente({
+          rut: newCliente.rut,
+          nombreCompleto: newCliente.nombreCompleto,
+          telefono: newCliente.telefono,
+        });
+      } else if (selectedForm === "createClienteAndBicycle") {
+        const clienteConBicicleta = {
+          rut: newCliente.rut,
+          nombreCompleto: newCliente.nombreCompleto,
+          telefono: newCliente.telefono,
+          bicicleta: newCliente.bicicleta,
+        };
+        response = await createClienteBicicleta(clienteConBicicleta);
+      } else if (selectedForm === "createBicycle") {
+        response = await createBicicleta({ bicicleta: newCliente.bicicleta, clienteRut: newCliente.rut });
+      }
+  
+      // Verificar la respuesta recibida del servidor
+      console.log("Respuesta del servidor:", response);
+  
+      // Si la respuesta es exitosa, mostrar el mensaje de éxito
       if (response.status === "Success") {
-        showSuccessAlert("¡Cliente creado!", "Cliente creado exitosamente.");
-        setTimeout(() => {
-          navigate("/cliente/all");
-        }, 3000);
+        showSuccessAlert("¡Operación exitosa!", response.message);  // Mostrar mensaje de éxito
       } else {
-        throw new Error(response.details || "Error desconocido");
+        // En caso de que no sea "Success", lanzar un error
+        throw new Error(response.message || "Error desconocido");
       }
     } catch (error) {
-      console.error("Error al crear el cliente:", error.response?.data || error.message);
-      setError(error.response?.data?.message || "Error desconocido.");
-      showErrorAlert("Error", error.response?.data?.message || "Ocurrió un error al crear el cliente.");
+      console.error("Error al procesar la solicitud:", error);
+      setError(error.message || "Error desconocido.");
+      showErrorAlert("Error", error.message || "Ocurrió un error.");
     }
   };
+  
 
   // Función para cambiar el formulario según el bloque seleccionado
   const renderForm = () => {
@@ -183,6 +229,25 @@ const Clientes = () => {
             title="Registrar Bicicleta"
             fields={[
               {
+                label: "Seleccionar Cliente",
+                name: "cliente",
+                fieldType: "select",
+                options: clientesSinBicicleta.map(cliente => ({
+                  label: `${cliente.nombreCompleto} (${cliente.rut})`,
+                  value: cliente.rut
+                })),
+                onChange: (e) => {
+                  const selectedRut = e.target.value;
+                  const selectedClient = clientesSinBicicleta.find(cliente => cliente.rut === selectedRut);
+                  setNewCliente((prev) => ({
+                    ...prev,
+                    rut: selectedRut,
+                    nombreCompleto: selectedClient ? selectedClient.nombreCompleto : '',
+                    telefono: selectedClient ? selectedClient.telefono : '',
+                  }));
+                },
+              },
+              {
                 label: "Marca de la bicicleta",
                 name: "marca",
                 placeholder: "Trek",
@@ -256,5 +321,6 @@ const Clientes = () => {
     </main>
   );
 };
+
 
 export default Clientes;

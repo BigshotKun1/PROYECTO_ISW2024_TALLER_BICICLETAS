@@ -10,10 +10,10 @@ export async function createCliente(){
     }
 }
 */
-export async function createCliente(data) {
+export async function createCliente(cliente) {
     try {
         // cliente contiene los datos necesarios para crear un cliente.
-        const response = await axios.post('/cliente/', data);
+        const response = await axios.post('/cliente/', cliente);
         return response.data;
     } catch (error) {
         // Devuelve el mensaje de error del backend o un mensaje genérico si no hay respuesta.
@@ -25,7 +25,7 @@ export async function createCliente(data) {
 export const createClienteBicicleta = async (newCliente) => {
   try {
     // Realizar la solicitud POST al backend para crear el cliente y la bicicleta
-    const response = await axios.post("/cliente/crearClienteYBicicleta", newCliente,
+    const response = await axios.post("clienteBicicleta/", newCliente,
       { headers: { "Content-Type": "application/json" } }
     );
     
@@ -41,6 +41,27 @@ export const createClienteBicicleta = async (newCliente) => {
     };
   }
 };
+
+
+export const obtenerClientesSinBicicleta = async () => {
+  try {
+    // Realizamos la solicitud a la API
+    const response = await axios.get("/clienteBicicleta/sin");
+
+    // Verificamos si la respuesta es válida
+    if (response && response.data && Array.isArray(response.data.clientes)) {
+      return response.data; // Devolvemos los datos
+    } else {
+      throw new Error("La respuesta no contiene clientes o tiene un formato incorrecto.");
+    }
+  } catch (error) {
+    // Capturamos errores y mostramos un mensaje detallado
+    const errorMessage = error.response?.data?.message || error.message || "No se pudieron obtener los clientes sin bicicleta.";
+    throw new Error(errorMessage);
+  }
+};
+
+
 
 // Servicio para obtener los clientes con bicicletas
 export const obtenerClientesConBicicletas = async () => {
@@ -64,8 +85,6 @@ export const obtenerClientesConBicicletas = async () => {
     throw error; // Re-lanza el error para ser manejado en el componente
   }
 };
-
-
 
 export async function getClientes() {
     try {
