@@ -9,7 +9,15 @@ export async function getProdSer(id) {
 }
 
 export async function getProdsSer() {
-    return await productoRepository.find();
+    try{
+    const productoRepository = AppDataSource.getRepository(Productos);
+    const productos = await productoRepository.find();
+    return productos;
+} catch (error) {
+    console.error("Error en getProdsSer: ", error.message);
+    throw error; // Re-lanzar el error para que lo maneje el controlador
+}
+
 }
 
 export async function delProdSer(id) {

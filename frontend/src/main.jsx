@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/cliente/all',
+        path: '/bicicleta/cbici',
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
           <ClientesList />

@@ -1,4 +1,8 @@
-import { creProdSer, delProdSer, getProdSer, getProdsSer, updProdSer } from "../services/productos.service.js";
+import { creProdSer, 
+    delProdSer, 
+    getProdSer, 
+    getProdsSer, 
+    updProdSer } from "../services/productos.service.js";
 
 export async function getProd(req, res) {
     try {
@@ -24,10 +28,10 @@ export async function getProd(req, res) {
     }
 }
 
-export async function getProds(req, res) {
+export async function getProductos(req, res) {
     try {
         const productos = await getProdsSer();
-        if (!productos) {
+        if (!productos || productos.length === 0) {
             return res.status(404).json({ message: "Productos no encontrados" });
         }
         res.status(200).json({

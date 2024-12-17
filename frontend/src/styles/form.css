@@ -185,12 +185,13 @@
     background-position: center;
     image-rendering: smooth;
     height: 100vh; /* Esto asegura que el fondo ocupe toda la altura de la ventana */
-    width: 100%; /* Esto asegura que el fondo ocupe todo el ancho */
+    width: 80%; /* Esto asegura que el fondo ocupe todo el ancho */
     background-repeat: no-repeat; /* Asegura que la imagen no se repita */
     background-attachment: fixed;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding-top: 100px;
 }
 
 input[type='email'] {
