@@ -125,14 +125,14 @@ const Producto = () => {
         />
         <div>
           <button
-              className='Create_Prod'
-              onClick={handleClickCreate}
+              className='Marcas'
+              onClick={console.log("boton de Marcas ")}
           >
               <img src={CreateIcon} alt='create' />
           </button>
           <button
-              className='Create_Prod'
-              onClick={handleClickCreate}
+              className='Categorias'
+              onClick={console.log("boton de Categorias ")}
           >
               <img src={CreateIcon} alt='create' />
           </button>
