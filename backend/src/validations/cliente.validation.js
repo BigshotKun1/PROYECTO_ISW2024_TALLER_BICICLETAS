@@ -16,7 +16,7 @@ const rutValidator = Joi.string()
 
 // Validación para el campo nombreCompleto
 const nombreCompletoValidator = Joi.string()
-.min(15)
+.min(10)
 .max(50)
 .pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
 .messages({
@@ -27,14 +27,14 @@ const nombreCompletoValidator = Joi.string()
     "string.pattern.base": "El nombre completo solo puede contener letras y espacios.",
 });
 
-// Validación para el campo telefono
 const telefonoValidator = Joi.string()
-.pattern(/^\d{9}$/)
-.messages({
+  .pattern(/^\+56\d{9}$/)
+  .messages({
     "string.empty": "El teléfono no puede estar vacío.",
     "string.base": "El teléfono debe ser de tipo string.",
-    "string.pattern.base": "El teléfono debe tener exactamente 9 dígitos.",
-});
+    "string.pattern.base": "El teléfono debe tener el formato +56 seguido de 9 dígitos.",
+  });
+
 
 
 // Validación del cuerpo del cliente

@@ -9,6 +9,7 @@ import productosRoutes from "./productos.routes.js"
 import marcaRoutes from "./marca.routes.js";
 import categoriaRoutes from "./categoria.routes.js";
 import estadisticasRoutes from "./estadisticas.routes.js";
+import clienteBicicletaRoutes from "./clientebicicletas.routes.js";
 
 const router = Router();
 
@@ -21,5 +22,7 @@ router
     .use("/bicicleta", bicicletaRoutes)
     .use("/marca", marcaRoutes)
     .use("/categoria", categoriaRoutes)
-    .use("/estadisticas", estadisticasRoutes);
+    .use("/estadisticas", estadisticasRoutes)
+    .use("/clienteBicicleta", clienteBicicletaRoutes);
+    
 export default router;

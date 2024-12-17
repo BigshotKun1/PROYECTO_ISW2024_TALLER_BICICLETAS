@@ -28,37 +28,51 @@ export const crearBicicleta = async (datosBicicleta) => {
 };
 */
 
-export const crearBicicleta = async ({ rut, marca, modelo, color }) => {
+export const crearBicicleta = async (req, res) => {
     try {
-      // Obtener el repositorio del cliente
-      const clienteRepository = AppDataSource.getRepository(Cliente);
-      const cliente = await clienteRepository.findOneBy({ rut });
+      // Extraer los datos del cuerpo de la solicitud
+      const { marca, modelo, color } = req.body.bicicleta; // Acceder correctamente al objeto bicicleta
+      const { clienteRut } = req.body;
+      
+      console.log("Datos recibidos:", req.body);  // Verifica que los datos lleguen correctamente
   
-      // Verificar si el cliente existe
-      if (!cliente) {
-        return [null, "Cliente no encontrado"];
+      // Verificar que los campos no sean nulos ni vacíos
+      if (!marca || !modelo || !color) {
+        return res.status(400).json({ message: "Todos los campos (marca, modelo, color) son requeridos" });
       }
   
-      // Obtener el repositorio de bicicletas
+      console.log("Verificando existencia de cliente...", clienteRut);
+      const clienteRepository = AppDataSource.getRepository(Cliente);
+      const cliente = await clienteRepository.findOneBy({ rut: clienteRut });
+  
+      if (!cliente) {
+        return res.status(404).json({ message: "Cliente no encontrado" });
+      }
+  
+      console.log("Creando bicicleta...");
       const bicicletaRepository = AppDataSource.getRepository(Bicicleta);
       
-      // Crear una nueva bicicleta
       const nuevaBicicleta = bicicletaRepository.create({
         marca,
         modelo,
         color,
-        cliente, // Asignar el cliente a la bicicleta
+        cliente, // Asociar el cliente
       });
   
-      // Guardar la bicicleta en la base de datos
-      const bicicletaCreada = await bicicletaRepository.save(nuevaBicicleta);
+      console.log("Bicicleta a guardar:", nuevaBicicleta);
   
-      return [bicicletaCreada, null];
+      const bicicletaCreada = await bicicletaRepository.save(nuevaBicicleta);
+      console.log("Bicicleta guardada:", bicicletaCreada);
+  
+      return res.status(201).json({ message: "Bicicleta creada correctamente", data: bicicletaCreada });
     } catch (error) {
-      console.error("Error al crear la bicicleta:", error);
-      return [null, "Error interno del servidor"];
+      console.error("Error al crear bicicleta:", error);
+      return res.status(500).json({ message: "Error interno del servidor" });
     }
   };
+  
+
+
 
 // Obtener todas las bicicletas
 export const obtenerBicicletas = async () => {
