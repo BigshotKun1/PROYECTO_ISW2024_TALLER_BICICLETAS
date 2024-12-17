@@ -17,7 +17,7 @@ export async function login(dataUser) {
             localStorage.setItem('token', data.data.token); // Almacena el token en localStorage
             localStorage.setItem('role', rol); // Almacena el rol en localStorage
             axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-            cookies.set('jwt-auth', data.data.token, {path:'/', expires: 1/48});
+            cookies.set('jwt-auth', data.data.token, {path:'/'});
             return response.data
         }
     } catch (error) {

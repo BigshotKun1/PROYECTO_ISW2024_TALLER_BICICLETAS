@@ -5,6 +5,7 @@ import PedidoReparacion from "../entity/pedidosReparacion.entity.js";
 import Cliente from "../entity/cliente.entity.js";
 import Bicicleta from "../entity/bicicleta.entity.js";
 import EstadoReparacion from "../entity/estado_reparacion.entity.js";
+
 import {
   handleErrorClient,
   handleErrorServer,
@@ -12,7 +13,7 @@ import {
 } from "../handlers/responseHandlers.js";
 import PDFDocument from "pdfkit";
 import ExcelJS from "exceljs";
-
+/*
 // Crear un nuevo pedido de reparación
 export const crearPedidoReparacion = async (req, res) => {
   const { clienteRut, motivoReparacion, descripcionReparacion, id_Bicicleta, idE_R } = req.body;
@@ -55,7 +56,64 @@ export const crearPedidoReparacion = async (req, res) => {
       return handleErrorServer(res, 500, "Error al crear el pedido de reparación");
   }
 };
+*/
 
+
+// pedidoReparacion.controller.js
+
+
+export const crearPedidoReparacion = async (req, res) => {
+  try {
+    // Desestructurar los valores enviados en la solicitud
+    const { clienteRut, id_Bicicleta, motivoReparacion } = req.body;
+
+    // Validar que todos los campos obligatorios estén presentes
+    if (!clienteRut || !id_Bicicleta || !motivoReparacion) {
+      return res.status(400).json({ message: 'Faltan datos requeridos: clienteRut, id_Bicicleta, motivoReparacion' });
+    }
+
+    // Obtener los repositorios
+    const clienteRepository = AppDataSource.getRepository(Cliente);
+    const bicicletaRepository = AppDataSource.getRepository(Bicicleta);
+    const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
+    const estadoReparacionRepository = AppDataSource.getRepository(EstadoReparacion);
+
+    // Verificar si el cliente existe
+    const cliente = await clienteRepository.findOneBy({ rut: clienteRut });
+    if (!cliente) {
+      return handleErrorClient(res, 404, "Cliente no encontrado");
+    }
+
+    // Verificar si la bicicleta existe
+    const bicicleta = await bicicletaRepository.findOneBy({ id_Bicicleta: id_Bicicleta });
+    if (!bicicleta) {
+      return handleErrorClient(res, 404, "Bicicleta no encontrada");
+    }
+
+    // Verificar si el estado "En reparación" existe en la base de datos
+    const estadoReparacion = await estadoReparacionRepository.findOne({ where: { estados_r: "En reparacion" } });
+    if (!estadoReparacion) {
+      return res.status(400).json({ message: "El estado 'En reparacion' no existe en la base de datos" });
+    }
+
+    // Crear un nuevo pedido de reparación
+    const nuevoPedido = pedidoReparacionRepository.create({
+      motivoReparacion, // Motivo de reparación
+      cliente,          // Cliente
+      bicicleta,        // Bicicleta
+      estadoReparacion //e  // Estado de reparación
+    });
+
+    // Guardar el pedido en la base de datos
+    await pedidoReparacionRepository.save(nuevoPedido);
+
+    // Responder con el pedido creado
+    return handleSuccess(res, 201, 'Pedido de reparación creado', nuevoPedido);
+  } catch (error) {
+    console.error('Error al crear el pedido de reparación:', error);
+    return handleErrorServer(res, 500, 'Error al crear el pedido de reparación');
+  }
+};
 
 // Obtener todos los pedidos de reparación
 export const obtenerPedidosReparacion = async (req, res) => {

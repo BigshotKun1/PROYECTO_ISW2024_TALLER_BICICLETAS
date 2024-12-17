@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Login from '@pages/Login';
 import Home from '@pages/Home';
+import Users from '@pages/Users';
 import Register from '@pages/Register';
 import Error404 from '@pages/Error404';
 import Clientes from '@pages/Clientes';
@@ -12,10 +13,9 @@ import PedidoReparacion from '@pages/pedidoReparacion';
 import EstadisticasTaller from './components/EstadisticasTaller';
 import Producto from '@pages/Producto';
 import Bicicleta from '@pages/Bicicleta';
-import Users from '@pages/Users';
-import UsersList from '@components/UsersList';
-
+import PedidosReparacionTable from '@components/pedidoReparacionList';
 import '@styles/styles.css';
+
 
 const router = createBrowserRouter([
   {
@@ -34,16 +34,8 @@ const router = createBrowserRouter([
       {
         path: '/user',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'superadmin']}>
+          <ProtectedRoute allowedRoles={['administrador']}>
             <Users />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/user/all', 
-        element: (
-          <ProtectedRoute allowedRoles={['administrador', 'superadmin']}>
-            <UsersList />
           </ProtectedRoute>
         ),
       },
@@ -56,7 +48,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/cliente',
+        path: '/cliente/crearClienteYBicicleta',
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
           <Clientes />
@@ -64,7 +56,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/cliente/all',
+        path: '/bicicleta/cbici',
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
           <ClientesList />
@@ -74,8 +66,16 @@ const router = createBrowserRouter([
       {
         path: '/pedidoReparacion',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico']}>
           <PedidoReparacion />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/pedidoReparacion/all',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico']}>
+          <PedidosReparacionTable />
           </ProtectedRoute>
         ),
       },
@@ -94,7 +94,8 @@ const router = createBrowserRouter([
          <Bicicleta />
          </ProtectedRoute>
        ),
-      }
+      },
+
     ]},
   {
     path: '/auth',

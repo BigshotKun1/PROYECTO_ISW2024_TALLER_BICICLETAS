@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import '@styles/form.css';
+// import '@styles/form.css';
+import '@styles/Formulario.css';
 import HideIcon from '../assets/HideIcon.svg';
 import ViewIcon from '../assets/ViewIcon.svg';
 

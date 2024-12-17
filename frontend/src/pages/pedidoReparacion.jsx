@@ -11,9 +11,10 @@ const PedidoReparacion = () => {
   const navigate = useNavigate();
   const [clientes, setClientes] = useState([]);
   const [bicicletas, setBicicletas] = useState([]);
+  const [motivosReparacion, setMotivosReparacion] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newPedido, setNewPedido] = useState({
-    clienteId: "",
+    clienteRut: "",
     id_Bicicleta: "",
     motivoReparacion: "",
   });
@@ -30,7 +31,7 @@ const PedidoReparacion = () => {
         if (clientesResponse.length > 0) {
           setNewPedido((prev) => ({
             ...prev,
-            clienteId: clientesResponse[0].id, // Asignamos un cliente por defecto
+            clienteRut: clientesResponse[0].id, // Asignamos un cliente por defecto
           }));
         }
       } catch (err) {
@@ -43,12 +44,12 @@ const PedidoReparacion = () => {
   // Obtener las bicicletas al cambiar el cliente
   
   useEffect(() => {
-    console.log(newPedido.clienteId);
-    if (newPedido.clienteId) {
+    console.log(newPedido.clienteRut);
+    if (newPedido.clienteRut) {
       const loadBicicletas = async () => {
-        console.log("Cliente ID (rut) que se envía:", newPedido.clienteId); // Verifica el rut antes de hacer la solicitud
+        console.log("Cliente ID (rut) que se envía:", newPedido.clienteRut); // Verifica el rut antes de hacer la solicitud
         try {
-          const bicicletasResponse = await getBicicletasPorCliente(newPedido.clienteId.trim());
+          const bicicletasResponse = await getBicicletasPorCliente(newPedido.clienteRut.trim());
           // Verifica toda la respuesta que viene del servidor
           console.log("Respuesta completa de bicicletas:", bicicletasResponse);
           console.log("Datos de bicicletas:", bicicletasResponse.data);
@@ -69,7 +70,7 @@ const PedidoReparacion = () => {
       };
       loadBicicletas();
     }
-  }, [newPedido.clienteId]); // Se ejecuta cada vez que cambia clienteId
+  }, [newPedido.clienteRut]); 
   
 
   // Crear opciones de bicicletas para el select
@@ -79,7 +80,7 @@ const PedidoReparacion = () => {
   }));
 
   const handleInputChange = (name, value) => {
-    if (name === "clienteId") {
+    if (name === "clienteRut") {
       // Extrae solo el RUT del valor
       const rut = value.match(/\(([^)]+)\)/); // Busca el texto dentro de paréntesis
       if (rut && rut[1]) {
@@ -96,10 +97,11 @@ const PedidoReparacion = () => {
 
   const handleSubmit = async () => {
     // Validación básica
-    if (!newPedido.clienteId || !newPedido.id_Bicicleta || !newPedido.motivoReparacion) {
+    if (!newPedido.clienteRut || !newPedido.id_Bicicleta || !newPedido.motivoReparacion) {
       setError("Todos los campos son obligatorios.");
       return;
     }
+    console.log("Datos del pedido de reparación antes de enviar:", newPedido); // Verifica los datos
 
     try {
       const response = await createPedidoReparacion(newPedido);
@@ -125,14 +127,14 @@ const PedidoReparacion = () => {
         fields={[
           {
             label: "Cliente",
-            name: "clienteId",
+            name: "clienteRut",
             fieldType: "select",
             options: clientes.map((cliente) => ({
               value: cliente.id,
               label: `${cliente.nombreCompleto} (${cliente.rut})`,
             })),
             required: true,
-            onChange: (e) => handleInputChange("clienteId", e.target.value),
+            onChange: (e) => handleInputChange("clienteRut", e.target.value),
           },
           {
             label: "Bicicleta",

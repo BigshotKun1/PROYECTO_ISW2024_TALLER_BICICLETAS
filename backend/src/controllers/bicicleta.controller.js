@@ -11,6 +11,26 @@ export const crearBicicletaController = async (req, res) => {
     }
 };
 
+// Crear una nueva bicicleta y asociarla a un cliente
+export const crearBicicleta = async (req, res) => {
+    const { rut } = req.params;  // RUT del cliente
+    const { marca, modelo, color } = req.body;  // Datos de la bicicleta
+  
+    try {
+      // Llamar al servicio de bicicletas para crearla
+      const [bicicleta, errorBicicleta] = await bicicletaService.crearBicicleta({ rut, marca, modelo, color });
+  
+      if (errorBicicleta) {
+        return handleErrorClient(res, 400, errorBicicleta);
+      }
+  
+      // Respuesta exitosa
+      return handleSuccess(res, 201, "Bicicleta creada y asociada al cliente exitosamente", bicicleta);
+    } catch (err) {
+      return handleErrorServer(res, 500, err.message);
+    }
+  };
+
 // Obtener todas las bicicletas
 export const obtenerBicicletasController = async (req, res) => {
     try {

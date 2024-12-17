@@ -68,14 +68,14 @@ const Navbar = () => {
                     )}
                     {(userRole === 'administrador' || userRole === 'vendedor' || userRole === 'mecanico') && (
                         <NavLink
-                            to="/cliente"
+                            to="/cliente/crearClienteYBicicleta"
                             onClick={() => setMenuOpen(false)}
                             className={({ isActive }) => (isActive ? 'active' : '')}
                         >
                             Clientes
                         </NavLink>
                     )}
-                    {(userRole === 'administrador' || userRole === 'vendedor' || userRole === 'mecanico') && (
+                    {(userRole === 'administrador' || userRole === 'vendedor') && (
                         <NavLink
                             to="/pedidoReparacion"
                             onClick={() => setMenuOpen(false)}
@@ -84,7 +84,16 @@ const Navbar = () => {
                             Reparación General
                         </NavLink>
                     )}
-                    {userRole === 'administrador' && (
+                    {(userRole === 'mecanico') && (
+                        <NavLink
+                            to="/pedidoReparacion/all"
+                            onClick={() => setMenuOpen(false)}
+                            className={({ isActive }) => (isActive ? 'active' : '')}
+                        >
+                            Reparación General
+                        </NavLink>
+                    )}
+                    {userRole === 'administrador' && ( 
                         <NavLink
                             to="/estadisticas"
                             onClick={() => setMenuOpen(false)}

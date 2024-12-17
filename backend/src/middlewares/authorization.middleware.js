@@ -49,9 +49,10 @@ export const isAdminOrSeller = (req, res, next) => {
     return res.status(403).json({ message: "No tienes permiso para realizar esta acción." });
 }
 
+
 export const isMecanic = (req, res, next) => {
     try {
-        const userRole = req.user?.rol; // Asegúrate de que el rol del usuario esté disponible en req.user
+        const userRole = req.user.rol; // Asegúrate de que el rol del usuario esté disponible en req.user
 
         if (userRole === "mecanico") {
             return next(); // Permitir acceso

@@ -82,30 +82,30 @@ async function createClientes() {
     await Promise.all([
       userRepository.save(
         userRepository.create({
-          rut: "21.005.789-7",
-          nombreCompleto: "Vicente Castillo",
-          telefono: "987654321",
+          rut: "19.123.753-3",
+          nombreCompleto: "Juan Marco Marin",
+          telefono: "+56987654321",
         }),
       ),
       userRepository.save(
         userRepository.create({
-          rut: "20.000.000-0",
+          rut: "10.056.468-8",
           nombreCompleto: "Juan Perez",
-          telefono: "930737579",
+          telefono: "+56930737579",
         }),
       ),
       userRepository.save(
         userRepository.create({
           rut: "21.123.456-7",
           nombreCompleto: "Omar Castro",
-          telefono: "987458325",
+          telefono: "+56987458325",
         }),
       ),
       userRepository.save(
         userRepository.create({
           rut: "21.036.331-9",
           nombreCompleto: "Bairon andres sanhuesa torres",
-          telefono: "962774850",
+          telefono: "+56962774850",
 
         }),
       ),
@@ -234,7 +234,7 @@ async function createBicicleta() {
           marca: "Trek",
           modelo: "Marlin 7",
           color : "Rojo",
-          cliente: { rut: "21.005.789-7" } // Usar un rut existente en la tabla clientes
+          cliente: { rut: "19.123.753-3" } // Usar un rut existente en la tabla clientes
         }) 
       ),
       userRepository.save(
@@ -243,7 +243,7 @@ async function createBicicleta() {
           marca: "Specialized",
           modelo: "Rockhopper",
           color : "Azul",
-          cliente: { rut: "20.000.000-0" },
+          cliente: { rut: "10.056.468-8" },
         }),
       ),
       userRepository.save(
@@ -386,32 +386,34 @@ async function createpedidoReparacion() {
           id_PedidoReparacion: 1,
           motivoReparacion: "Necesita un Cambio de cadena",
           descripcionReparacion: "Se realiza Cambio de cadena",
-          cliente: { rut: "21.005.789-7" },
+          cliente: { rut: "19.123.753-3" },
           bicicleta: { id_Bicicleta: 1 },
           estadoReparacion: { idE_R: 1 },
           mecanico: { rut: "14.263.218-9" }
         })
       ),
-      /*pedidoReparacionRepository.save(
-        pedidoReparacionRepository.create({
+      userRepository.save(
+        userRepository.create({
+          id_PedidoReparacion: 2,
           motivoReparacion: "Cambio de frenos",
           descripcionReparacion: "Cambio de frenos en ambas ruedas",
-          fecha: "2024-12-12",
+          cliente: { rut: "10.056.468-8" },
           bicicleta: { id_Bicicleta: 2 },
           estadoReparacion: { idE_R: 2 },
-          mecanico: { rut: "14.263.218-9" },
+          mecanico: { rut: "14.263.218-9" }
         })
       ),
-      pedidoReparacionRepository.save(
-        pedidoReparacionRepository.create({
+      userRepository.save(
+        userRepository.create({
+          id_PedidoReparacion: 3,
           motivoReparacion: "Cambio de rueda trasera",
           descripcionReparacion: "Cambio de rueda trasera debido a desgaste",
-          fecha: "2024-12-12",
+          cliente : { rut: "21.123.456-7" },
           bicicleta: { id_Bicicleta: 3 },
           estadoReparacion: { idE_R: 3 },
-          mecanico: { rut: "14.263.218-9" },
+          mecanico: { rut: "14.263.218-9" }
         })
-      ),*/
+      ),
     ]);
     console.log("* => Pedidos de reparacion creados exitosamente");
   } catch (error) {

@@ -57,7 +57,7 @@ export const getBicicletasPorCliente = async (clienteId) => {
     throw new Error("El servidor devolvió un formato inesperado");
     }
 };*/
-
+/*
 export const getBicicletasPorCliente = async (rut) => {
     try {
         const response = await axios.get(`bicicleta/cliente/${rut}`);
@@ -83,7 +83,7 @@ export const getBicicletasPorCliente = async (rut) => {
         throw new Error("El servidor devolvió un formato inesperado");
     }
 };
-
+*/
 /*
 // Eliminar una bicicleta
 export const deleteBicicleta = async (id) => {
@@ -96,3 +96,13 @@ export const deleteBicicleta = async (id) => {
     }
 };
 */
+
+export const getBicicletasPorCliente = async (rut) => {
+    try {
+      const response = await axios.get(`/bicicleta/cliente/${rut}`);
+      return response.data; // Devuelve las bicicletas
+    } catch (error) {
+      console.error('Error al obtener bicicletas:', error);
+      throw error;
+    }
+  };
