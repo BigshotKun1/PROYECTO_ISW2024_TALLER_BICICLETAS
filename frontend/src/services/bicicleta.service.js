@@ -14,8 +14,17 @@ export const getBicicletas = async () => {
 
 // Crear una nueva bicicleta
 export const createBicicleta = async (bicicleta) => {
+    
+    /*const bicicleta = {
+        clienteRut,
+        marca,
+        modelo,
+        color,
+    };
+*/
     try {
-        const response = await axios.post('/bicicleta/', bicicleta);
+        console.log("datos service:", bicicleta);
+        const response = await axios.post('/bicicleta', bicicleta);
         return response.data;
     } catch (error) {
         console.error('Error al crear la bicicleta:', error);

@@ -8,6 +8,7 @@ import {
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import { isAdminOrSeller } from "../middlewares/authorization.middleware.js";
 import { obtenerClientesConBicicletasController } from "../controllers/clienteBicicleta.controller.js";
+import { crearBicicleta } from "../services/bicicleta.service.js";
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router
     .use(isAdminOrSeller);
 
 router  
-.post("/", isAdminOrSeller, crearBicicletaController) //* http://localhost:3000/api/bicicleta/
+.post("/", isAdminOrSeller, crearBicicleta) //* http://localhost:3000/api/bicicleta/
 .get("/all", obtenerBicicletasController) //* http://localhost:3000/api/bicicleta/all
 .get("/cbici", obtenerClientesConBicicletasController) //* http://localhost:3000/api/bicicleta/cliente
 .get("/cliente/:rut", obtenerBicicletasPorClienteController) //* http://localhost:3000/api/bicicleta/cliente/:rut
