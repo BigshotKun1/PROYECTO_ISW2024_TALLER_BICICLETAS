@@ -350,4 +350,3 @@ const ClientesConBicicletas = () => {
 };
 
 export default ClientesConBicicletas;
->>>>>>> 8233e108146f4ccd28cb9e563df2daabf92ec7e4
