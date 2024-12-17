@@ -1,91 +1,173 @@
-.main-container {
+.create-user-container {
+    background-image: url('../assets/BICI.jpg');
+    background-size: cover;
+    background-position: center;
+    image-rendering: smooth;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+  }
+  
+  .create-user-form {
+    background-color: #eaf5ff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    text-align: center;
+  }
+  
+  .create-user-form h1 {
+    margin-bottom: 10px;
+    font-size: 31px;
+    color: rgb(45, 40, 121);
+  }
+  
+  .create-user-form label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: bold;
+    color: #141414;
+  }
+  
+  .create-user-form input,
+  .create-user-form select {
     width: 100%;
+    padding: 9px;
+    margin-bottom: 15px;
+    border: 1px solid #505050;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-image: none;
+  }
+
+  .create-user-form input::placeholder {
+    color: #aaa; 
+  }
+  
+  .create-user-form button {
+    width: 65%;
+    padding: 11px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .create-user-form button:hover {
+    background-color: #773be6;
+  }
+  
+  .create-user-form .view-users-button {
+    margin-top: 7px;
+    background-color: #31a54c;
+  }
+  
+  .create-user-form .view-users-button:hover {
+    background-color: #218838;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 12px;
+  }
+
+  input[type='email'] {
+	background-image: url('../assets/MentionIcon.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 25px 25px;
+}
+input[name='rut'] {
+	background-image: url('../assets/IdentityCardIcon.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 25px 25px;
 }
 
-.table-container {
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
+input[name='nombreCompleto'] {
+	background-image: url('../assets/PersonIcon.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 25px 25px;
 }
 
-.top-table {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+/* Estilos para la lista de usuarios */
+.users-list-container {
+  background-image: url('../assets/BICI.jpg');
+  background-size: cover;
+  background-position: center;
+  image-rendering: smooth;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
 }
 
-.title-table {
-    color: #003366;
-    margin-left: 70px;
+.title-container {
+  background-color: #004792;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 115px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.829);
 }
 
-.filter-actions {
-    display: flex;
-    gap: 10px;
-    button {
-        background: rgba(255, 255, 255, 0.87);
-        border: #fff;
-        cursor: pointer;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        
-    }
+.title-container h1 {
+  margin: 0;
+  font-size: 22px;
 }
 
-.delete-user-button {
-    margin-right: 70px;
+.users-table {
+  width: 100%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.979); /* Fondo semitransparente */
+  box-shadow: 0 0 10px rgb(0, 0, 0);
+  border-radius: 15px;
+  overflow: hidden;
 }
 
-@media (max-width: 767px) {
-    .title-table {
-        margin: 0;
-    }
-    .top-table {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .delete-user-button {
-        margin-right: 0;
-    }
-
-    .filter-actions {
-        margin-bottom: 10px;
-    }
-    .table-container {
-        margin: 0;
-        width: 352px;
-        height: 500px;
-    }
-    .popup {
-        width: 350px;
-        height: 600px;
-    }
-    .popup .form {
-        padding: 20px;
-    }
-
-    .popup .close {
-        margin-right: 0;
-    }
-
-    .popup .options-class {
-        width: 10px;
-    }
+.users-table th,
+.users-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #000000;
+  color: #000000;
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
-    .title-table {
-        margin-left: 35px;
-    }
+.users-table th {
+  background-color: #3269a5;
+  color: #fff;
+}
 
-    .delete-user-button {
-        margin-right: 35px;
-    }
+.users-table tr:hover {
+  background-color: rgba(180, 36, 36, 0.1); /* Fondo semitransparente al pasar el cursor */
+}
+
+.users-table td:last-child {
+  text-align: center;
+}
+
+.users-table button {
+  margin: 5px 5px ;
+  padding: 3px 7px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.users-table button:hover {
+  background-color: #004085;
 }
