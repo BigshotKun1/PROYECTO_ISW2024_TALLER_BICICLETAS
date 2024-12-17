@@ -28,7 +28,7 @@ export async function getProd(req, res) {
     }
 }
 
-export async function getProductos(req, res) {
+export async function getProds(req, res) {
     try {
       const productos = await getProdsSer();
       if (!productos || productos.length === 0) {

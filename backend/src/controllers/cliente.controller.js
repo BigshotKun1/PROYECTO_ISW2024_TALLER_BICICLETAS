@@ -37,22 +37,8 @@ const { error } = clienteBodyValidation.validate(req.body);
     return handleErrorServer(res, 500, err.message);
   }
 };
+
 /*
-// Crear cliente y bicicleta
-export const crearClienteYBicicleta = async (req, res) => {
-  const { cliente, bicicleta } = req.body;
-
-  try {
-    const [clienteBicicleta, error] = await createClienteYBicicletaService(cliente, bicicleta);
-
-    if (error) return handleErrorClient(res, 400, error);
-
-    return handleSuccess(res, 201, "Cliente y bicicleta creados exitosamente", clienteBicicleta);
-  } catch (err) {
-    return handleErrorServer(res, 500, err.message);
-  }
-};
-*/
 export const crearClienteYBicicleta = async (req, res) => {
   const { rut, nombreCompleto, telefono, bicicleta } = req.body;
    // Asegúrate de que estos datos están en el cuerpo de la solicitud
@@ -65,7 +51,7 @@ export const crearClienteYBicicleta = async (req, res) => {
       handleErrorServer(res, 500, error.message);
   }
 };
-
+*/
 /*
 // Crear un nuevo cliente
 export const createCliente = async (req, res) => {
