@@ -10,19 +10,50 @@ export const crearClienteYBicicletaService = async ({ cliente, bicicleta }) => {
   const { marca, modelo, color } = bicicleta;
 
   try {
+    // Validar si el cliente ya existe por RUT
+    const clienteExistente = await clienteRepository.findOne({ where: { rut } });
+    if (clienteExistente) {
+      const error = new Error("Ya existe un cliente con el mismo rut");
+      error.statusCode = 400; // Código de estado correcto para errores de validación
+      throw error;
+    }
+
+    // Validar si el cliente ya existe por teléfono
+    const telefonoExistente = await clienteRepository.findOne({ where: { telefono } });
+    if (telefonoExistente) {
+      const error = new Error("Ya existe un cliente con el mismo teléfono");
+      error.statusCode = 400;
+      throw error;
+    }
+
     // Crear cliente
     const nuevoCliente = clienteRepository.create({ rut, nombreCompleto, telefono });
     await clienteRepository.save(nuevoCliente);
 
-    // Crear bicicleta y asociarla al cliente
-    const nuevaBicicleta = bicicletaRepository.create({ marca, modelo, color, cliente: nuevoCliente });
+    // Crear bicicleta asociada al cliente
+    const nuevaBicicleta = bicicletaRepository.create({
+      marca,
+      modelo,
+      color,
+      cliente: nuevoCliente,
+    });
     await bicicletaRepository.save(nuevaBicicleta);
 
     return { cliente: nuevoCliente, bicicleta: nuevaBicicleta };
   } catch (error) {
-    throw new Error(`Error al crear cliente y bicicleta: ${error.message}`);
+    // Propagar errores de validación
+    if (error.statusCode) {
+      throw error;
+    }
+
+    // Otros errores internos
+    console.error("Error interno del servidor:", error);
+    throw new Error("Error interno del servidor");
   }
 };
+
+
+
 
 
 

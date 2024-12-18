@@ -58,7 +58,10 @@ export const crearClienteYBicicleta = async (req, res) => {
 
   try {
     // Llamamos al servicio que crea el cliente y la bicicleta
-    const result = await crearClienteYBicicletaService({ cliente: { rut, nombreCompleto, telefono }, bicicleta });
+    const result = await crearClienteYBicicletaService({
+      cliente: { rut, nombreCompleto, telefono },
+      bicicleta,
+    });
 
     // Enviar respuesta con éxito
     return res.status(201).json({
@@ -66,11 +69,18 @@ export const crearClienteYBicicleta = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    // Manejar errores de creación
+    // Manejar errores de validación
+    if (error.statusCode === 400) {
+      return res.status(400).json({ message: error.message });
+    }
+
+    // Manejar errores internos
+    console.error("Error interno:", error); // Para depuración
     return res.status(500).json({
-      message: `Error al crear cliente y bicicleta: ${error.message}`,
+      message: "Error interno del servidor",
     });
   }
 };
+
 
 

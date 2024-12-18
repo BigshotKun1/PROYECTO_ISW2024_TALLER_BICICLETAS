@@ -3,29 +3,39 @@ import Cliente from "../entity/cliente.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 
 export async function createClienteService(body) {
-    try {
-        const clienteRepository = AppDataSource.getRepository(Cliente);
+  try {
+    const clienteRepository = AppDataSource.getRepository(Cliente);
 
-        const existingCliente = await clienteRepository.findOne({
-            where: [{ rut: body.rut }],
-        });
+    // Verificar si ya existe un cliente con el mismo RUT
+    const existingClienteByRut = await clienteRepository.findOne({
+      where: [{ rut: body.rut }],
+    });
 
-        if (existingCliente) return [null, "Ya existe un cliente con el mismo rut"];
+    if (existingClienteByRut) return [null, "Ya existe un cliente con el mismo rut"];
 
-        const newCliente = clienteRepository.create({
-            rut: body.rut,
-            nombreCompleto: body.nombreCompleto,
-            telefono: body.telefono,
-        });
+    // Verificar si ya existe un cliente con el mismo teléfono
+    const existingClienteByTelefono = await clienteRepository.findOne({
+      where: [{ telefono: body.telefono }],
+    });
 
-        const clienteCreated = await clienteRepository.save(newCliente);
+    if (existingClienteByTelefono) return [null, "Ya existe un cliente con el mismo teléfono"];
 
-        return [clienteCreated, null];
-    } catch (error) {
-        console.error("Error al crear un cliente:", error);
-        return [null, "Error interno del servidor"];
-    }
+    // Crear el nuevo cliente
+    const newCliente = clienteRepository.create({
+      rut: body.rut,
+      nombreCompleto: body.nombreCompleto,
+      telefono: body.telefono,
+    });
+
+    const clienteCreated = await clienteRepository.save(newCliente);
+
+    return [clienteCreated, null];
+  } catch (error) {
+    console.error("Error al crear un cliente:", error);
+    return [null, "Error interno del servidor"];
+  }
 }
+
 
 export async function getClienteService(query) {
   try {
