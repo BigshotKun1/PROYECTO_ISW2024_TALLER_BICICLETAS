@@ -1,5 +1,6 @@
 import axios from './root.service.js';
 
+
 export async function getUsers() {
   try {
     const response = await axios.get(`/user/all`);
@@ -12,8 +13,7 @@ export async function getUsers() {
 
 export async function createUser(data) {
   try {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const response = await axios.post('/user', { ...data, currentUser });
+    const response = await axios.post('/user', data);
     return response.data;
   } catch (error) {
     console.error("Error al crear usuario:", error);

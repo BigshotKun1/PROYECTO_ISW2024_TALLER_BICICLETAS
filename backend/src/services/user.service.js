@@ -6,7 +6,7 @@ import { ROLES } from "../roles.js";
 
 export async function createUserService(body) {
   try {
-    const { rut, email, password, rol, currentUser } = body;
+    const { rut, email, password, rol } = body;
 
     const userRepository = AppDataSource.getRepository(User);
 
@@ -14,7 +14,7 @@ export async function createUserService(body) {
       return [null, "No se puede crear un usuario con el rol superadmin"];
     }
   
-    if (rol === ROLES.ADMINISTRADOR && currentUser.rol !== ROLES.SUPERADMIN) {
+    if (rol === ROLES.ADMINISTRADOR && body.currentUser.rol !== ROLES.SUPERADMIN) {
       return [null, "No tiene acceso para asignar el rol de administrador (necesita rol superadmin)"];
     }
 
