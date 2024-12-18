@@ -252,3 +252,42 @@ input[name='nombreCompleto'] {
 .modal-content button[type="button"]:hover {
   background-color: #c82333;
 }
+
+/* Estilos para el contenedor de búsqueda */
+.search-container {
+  background-color: #00628f;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 10px;
+}
+
+.search-container label {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.search-container input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.search-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+  background-color: #7336e4;
+}
