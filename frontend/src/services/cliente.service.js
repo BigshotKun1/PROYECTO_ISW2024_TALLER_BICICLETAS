@@ -12,6 +12,7 @@ export async function createCliente(){
 */
 export async function createCliente(cliente) {
     try {
+      console.log('Cliente:', cliente);
         // cliente contiene los datos necesarios para crear un cliente.
         const response = await axios.post('/cliente/', cliente);
         return response.data;
@@ -20,28 +21,6 @@ export async function createCliente(cliente) {
         return error.response?.data || { message: "Error al crear el cliente" };
     }
 }
-
-// Función para crear un cliente y su bicicleta
-export const createClienteBicicleta = async (newCliente) => {
-  try {
-    // Realizar la solicitud POST al backend para crear el cliente y la bicicleta
-    const response = await axios.post("clienteBicicleta/", newCliente,
-      { headers: { "Content-Type": "application/json" } }
-    );
-    
-    return {
-      status: "Success",
-      data: response.data,
-    };
-  } catch (error) {
-    // Manejo de errores en la solicitud
-    return {
-      status: "Error",
-      details: error.response?.data?.message || "Error desconocido",
-    };
-  }
-};
-
 
 export const obtenerClientesSinBicicleta = async () => {
   try {
