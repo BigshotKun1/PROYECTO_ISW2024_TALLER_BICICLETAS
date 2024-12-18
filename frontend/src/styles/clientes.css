@@ -1,0 +1,228 @@
+.create-user-container {
+  background-image: url('../assets/BICI.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+}
+.form-container {
+  margin-top: 20px;
+  background-color: #eaf5ff;
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 100px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.create-cliente-form {
+  background-color: #eaf5ff;
+  padding: 30px 50px 30px 50px; /* Arriba, derecha, abajo, izquierda */
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 60%;
+  max-width: 500px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+
+.create-cliente-form h1 {
+  margin-bottom: 40px;
+  font-size: 30px;
+  color: rgb(0, 0, 0);
+}
+
+.create-cliente-form label {
+  display: block;
+  margin-bottom: 3px;
+  text-align: left;
+  font-weight: bold;
+  color: #000000;
+}
+
+.create-cliente-form input,
+.create-cliente-form select {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 2px solid #505050;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-image: none;
+}
+
+.create-cliente-form input::placeholder {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.create-cliente-form button {
+  width: 70%;
+  padding: 14px;
+  background-color: #003366;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+/*
+.create-cliente-form button:hover {
+  background-color: #280eb8;
+}
+
+.create-cliente-form .view-cliente-button {
+  margin-top: 10px;
+  background-color: #31a54c;
+}
+
+.create-cliente-form .view-cliente-button:hover {
+  background-color: #218838;
+}
+*/
+.error {
+  color: red;
+  margin-bottom: 15px;
+}
+
+input[type='email'] {
+	background-image: url('../assets/MentionIcon.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 25px 25px;
+}
+input[name='rut'] {
+	background-image: url('../assets/IdentityCardIcon.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 25px 25px;
+}
+
+input[name='nombreCompleto'] {
+	background-image: url('../assets/PersonIcon.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 25px 25px;
+}
+
+input[name='telefono'] {
+  background-image: url('../assets/call-medicine-svgrepo-com.svg'); /* Ruta relativa al ícono */
+  background-repeat: no-repeat; /* Asegura que no se repita */
+  background-position: right 10px center; /* Coloca el ícono a la derecha */
+  background-size: 25px 25px; /* Tamaño del ícono */
+  padding-right: 40px; /* Espacio para evitar que el texto sobreponga el ícono */
+  border-radius: 5px; /* Opcional: Redondea los bordes */
+}
+
+input[name='marca'] {
+  background-image: url('../assets/tag-svgrepo-com.svg'); /* Ruta relativa al ícono */
+  background-repeat: no-repeat; /* Asegura que no se repita */
+  background-position: right 10px center; /* Coloca el ícono a la derecha */
+  background-size: 25px 25px; /* Tamaño del ícono */
+  padding-right: 40px; /* Espacio para evitar que el texto sobreponga el ícono */
+  border-radius: 5px; /* Opcional: Redondea los bordes */
+}
+
+input[name='modelo'] {
+  background-image: url('../assets/bicycling-svgrepo-com.svg'); /* Ruta relativa al ícono */
+  background-repeat: no-repeat; /* Asegura que no se repita */
+  background-position: right 10px center; /* Coloca el ícono a la derecha */
+  background-size: 25px 25px; /* Tamaño del ícono */
+  padding-right: 40px; /* Espacio para evitar que el texto sobreponga el ícono */
+  border-radius: 5px; /* Opcional: Redondea los bordes */
+}
+input[name='color'] {
+  background-image: url('../assets/pallete-svgrepo-com.svg'); /* Ruta relativa al ícono */
+  background-repeat: no-repeat; /* Asegura que no se repita */
+  background-position: right 10px center; /* Coloca el ícono a la derecha */
+  background-size: 25px 25px; /* Tamaño del ícono */
+  padding-right: 40px; /* Espacio para evitar que el texto sobreponga el ícono */
+  border-radius: 5px; /* Opcional: Redondea los bordes */
+}
+
+/* Estilos para la lista de usuarios */
+.cliente-list-container {
+background-image: url('../assets/BICI.jpg');
+background-size: cover;
+background-position: center;
+image-rendering: smooth;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+height: 100vh;
+min-height: 100vh;
+}
+
+.title-container {
+background-color: #004792;
+color: #fff;
+padding: 10px 20px;
+border-radius: 115px;
+margin-bottom: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.829);
+}
+
+.title-container h1 {
+margin: 0;
+font-size: 22px;
+}
+
+.cliente-table {
+width: 100%;
+max-width: 1000px;
+border-collapse: collapse;
+background-color: rgba(255, 255, 255, 0.979); /* Fondo semitransparente */
+box-shadow: 0 0 10px rgb(0, 0, 0);
+border-radius: 15px;
+overflow: hidden;
+}
+
+.cliente-table th,
+.cliente-table td {
+padding: 10px;
+text-align: left;
+border-bottom: 1px solid #000000;
+color: #000000;
+}
+
+.cliente-table th {
+background-color: #3269a5;
+color: #fff;
+}
+
+.cliente-table tr:hover {
+background-color: rgba(180, 36, 36, 0.1); /* Fondo semitransparente al pasar el cursor */
+}
+
+.cliente-table td:last-child {
+text-align: center;
+}
+
+.cliente-table button {
+margin: 5px 5px ;
+padding: 3px 7px;
+background-color: #007bff;
+color: #fff;
+border: none;
+border-radius: 10px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.cliente-table button:hover {
+background-color: #004085;
+}
