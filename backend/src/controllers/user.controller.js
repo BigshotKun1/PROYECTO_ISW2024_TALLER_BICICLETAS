@@ -30,11 +30,12 @@ export async function createUser(req, res) {
         error.message,
       );
 
-    const [user, errorUser] = await createUserService(body);
+    const [user, errorUser] = await createUserService(req.body);
 
-    if (errorUser) return handleErrorClient(res, 400, errorUser);
-
-    handleSuccess(res, 201, "Usuario creado correctamente", user);
+    if (errorUser) {
+      return res.status(400).json({ message: errorUser });
+    }
+    return res.status(201).json({ message: "Usuario creado correctamente", user });
   } catch (error) {
     handleErrorServer(res, 500, error.message);
   }

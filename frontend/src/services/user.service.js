@@ -12,7 +12,8 @@ export async function getUsers() {
 
 export async function createUser(data) {
   try {
-    const response = await axios.post('/user', data);
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const response = await axios.post('/user', { ...data, currentUser });
     return response.data;
   } catch (error) {
     console.error("Error al crear usuario:", error);

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getUsers, updateUser, deleteUser } from '@services/user.service';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '@styles/users.css';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [error, setError] = useState('');
   const [editingUser, setEditingUser] = useState(null);
   const [searchRut, setSearchRut] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -17,7 +18,7 @@ const UsersList = () => {
         setUsers(usersData);
         setFilteredUsers(usersData);
       } catch (error) {
-        setError(error.response?.data?.message || 'Error al obtener los usuarios');
+        toast.error(error.response?.data?.message || 'Error al obtener los usuarios');
       }
     };
     fetchUsers();
@@ -33,7 +34,7 @@ const UsersList = () => {
       setUsers(users.filter(user => user.rut !== rut));
       setFilteredUsers(filteredUsers.filter(user => user.rut !== rut));
     } catch (error) {
-      setError(error.response?.data?.message || 'Error al eliminar el usuario');
+      toast.error(error.response?.data?.message || 'Error al eliminar el usuario');
     }
   };
 
@@ -44,21 +45,24 @@ const UsersList = () => {
       setFilteredUsers(filteredUsers.map(user => (user.rut === updatedUser.rut ? response.data : user)));
       setEditingUser(null);
     } catch (error) {
-      setError(error.response?.data?.message || 'Error al actualizar el usuario');
+      toast.error(error.response?.data?.message || 'Error al actualizar el usuario');
     }
   };
 
   const handleSearch = () => {
     const filtered = users.filter(user => user.rut.includes(searchRut));
+    if (filtered.length === 0) {
+      toast.error('No se encontró el usuario con el RUT ingresado');
+    }
     setFilteredUsers(filtered);
     if (searchRut.trim() === '') {
       setFilteredUsers(users);
-      setError('');
+      toast.error('No se encontró el usuario con el RUT ingresado');
     } else {
       const result = users.filter(user => user.rut === searchRut);
       setFilteredUsers(result.length > 0 ? result : []);
       if (result.length === 0) {
-        setError('');
+        toast.error('No se encontró el usuario con el RUT ingresado');
       }
     }
   };
@@ -97,7 +101,6 @@ const UsersList = () => {
     setSearchRut(e.target.value);
     if (e.target.value.trim() === '') {
       setFilteredUsers(users);
-      setError('');
     }
   };
 
@@ -119,7 +122,7 @@ const UsersList = () => {
       <div className="title-container">
         <h1>Usuarios</h1>
       </div>
-      {error && <p className="error">{error}</p>}
+      <ToastContainer />
       <table className="users-table">
         <thead>
           <tr>
