@@ -17,16 +17,17 @@ const Estado_RSchema = new EntitySchema({
         },
     },
     relations: {
-        pedidoReparacion: { // Relación inversa
-            type: "one-to-many",
+        pedidoReparacion: { // Relación de un estado a muchos pedidos
+            type: "many-to-one", // Corregido: un estado puede estar en muchos pedidos
             target: "PedidoReparacion",
-            inverseSide: "estadoReparacion",
+            inverseSide: "estadoReparacion", // Relación inversa en PedidoReparacion
+            nullable: true, // El estado puede ser nulo en los pedidos
         },
     },
     indices: [
         {
             name: "IDX_ESTADOS_REPARACION",
-            columns: ["idE_R"], // Cambio aquí
+            columns: ["idE_R"], 
             unique: true,
         },
     ],

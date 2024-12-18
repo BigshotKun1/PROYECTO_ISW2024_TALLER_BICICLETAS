@@ -1,5 +1,3 @@
-/* import { useEffect, useState } from 'react';
-import backgroundImage from '../assets/IMAGEN INSANA DE LAS BICICLETAS.jpg';
 
 const Home = () => {
   const [usuario, setUsuario] = useState(null);
@@ -53,6 +51,7 @@ export default Home;
 */
 
 import '../styles/home-background.css';
+
 import { useEffect, useState } from 'react';
 
 const Home = () => {
@@ -91,8 +90,3 @@ const Home = () => {
 export default Home;
 
 
-/*<nav style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
-          <a href="/productos" style={{ textDecoration: 'none', color: 'white' }}>Productos</a>
-          <a href="/reparaciones" style={{ textDecoration: 'none', color: 'blue' }}>Reparaciones</a>
-          <a href="/clientes" style={{ textDecoration: 'none', color: 'blue' }}>Clientes</a>
-        </nav> */
