@@ -11,7 +11,7 @@ const CrearUser = () => {
         rut: '',
         email: '',
         password: '',
-        rol: 'vendedor', // Rol predeterminado
+        rol: 'vendedor',
     });
     
     const navigate = useNavigate();

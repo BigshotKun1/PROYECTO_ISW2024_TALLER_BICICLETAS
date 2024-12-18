@@ -241,6 +241,7 @@ const EditUserForm = ({ user, onUpdate, onCancel }) => {
             <option value="vendedor">Vendedor</option>
             <option value="mecanico">Mecánico</option>
             <option value="administrador">Administrador</option>
+            <option value="superadmin">Superadmin</option>
           </select>
         </label>
         <button type="submit">Actualizar</button>
