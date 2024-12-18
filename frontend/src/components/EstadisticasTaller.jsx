@@ -13,10 +13,9 @@ const EstadisticasTaller = () => {
         const fetchEstadisticas = async () => {
             try {
                 const token = localStorage.getItem('token'); 
-                console.log('Token:', token);
 
                 const data = await obtenerEstadisticas();
-                console.log('Datos de estadísticas:', data);
+
                 setEstadisticas(data);
             } catch (error) {
                 console.error('Error al obtener las estadísticas:', error);

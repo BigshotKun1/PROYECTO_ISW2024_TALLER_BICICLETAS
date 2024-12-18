@@ -1,3 +1,5 @@
+/* Estilos para la creación de usuario */
+
 .create-user-container {
     background-image: url('../assets/BICI.jpg');
     background-size: cover;
@@ -37,7 +39,8 @@
     width: 100%;
     padding: 9px;
     margin-bottom: 15px;
-    border: 1px solid #505050;
+    background-color: #f3f7fa;
+    border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
     box-sizing: border-box;
@@ -61,11 +64,11 @@
   }
   
   .create-user-form button:hover {
-    background-color: #773be6;
+    background-color: #7b00ee;
   }
   
   .create-user-form .view-users-button {
-    margin-top: 7px;
+    margin-top: 5px;
     background-color: #31a54c;
   }
   
@@ -74,8 +77,16 @@
   }
   
   .error {
-    color: red;
-    margin-bottom: 12px;
+    background-color: #00628f;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 10px;
+  }
+
+  .error label {
+    color: #00ff15;
   }
 
   input[type='email'] {
@@ -130,22 +141,22 @@ input[name='nombreCompleto'] {
   width: 100%;
   max-width: 1000px;
   border-collapse: collapse;
-  background-color: rgba(255, 255, 255, 0.979); /* Fondo semitransparente */
+  background-color: #eaf5fffb; /* Fondo semitransparente */
   box-shadow: 0 0 10px rgb(0, 0, 0);
-  border-radius: 15px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
 .users-table th,
 .users-table td {
   padding: 10px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #000000;
   color: #000000;
 }
 
 .users-table th {
-  background-color: #3269a5;
+  background-color: #195799;
   color: #fff;
 }
 
@@ -170,4 +181,121 @@ input[name='nombreCompleto'] {
 
 .users-table button:hover {
   background-color: #004085;
+}
+
+/* Estilos para el modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #eaf5ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 10px;
+  text-align: left;
+  font-weight: bold;
+  color: #555;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #f3f7fa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* Asegúrate de que el padding no cause problemas de visualización */
+}
+
+.modal-content input::placeholder {
+  color: #aaa; /* Color del placeholder */
+}
+
+.modal-content button {
+  width: 65%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #5500c5;
+}
+
+.modal-content button[type="button"] {
+  margin-top: 5px;
+  background-color: #dc3545;
+}
+
+.modal-content button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+/* Estilos para el contenedor de búsqueda */
+.search-container {
+  background-color: #00628f;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 10px;
+}
+
+.search-container label {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.search-container input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.search-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+  background-color: #7336e4;
 }

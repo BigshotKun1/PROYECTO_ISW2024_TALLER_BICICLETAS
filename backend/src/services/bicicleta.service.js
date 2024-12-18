@@ -28,7 +28,7 @@ export const crearBicicleta = async (datosBicicleta) => {
 };
 */
 
-export const crearBicicleta = async (req, res) => {
+export const crearBicicletaconRUT = async (req, res) => {
     try {
       // Extraer los datos del cuerpo de la solicitud
       const { marca, modelo, color } = req.body.bicicleta; // Acceder correctamente al objeto bicicleta
@@ -58,9 +58,7 @@ export const crearBicicleta = async (req, res) => {
         color,
         cliente, // Asociar el cliente
       });
-  
-      console.log("Bicicleta a guardar:", nuevaBicicleta);
-  
+
       const bicicletaCreada = await bicicletaRepository.save(nuevaBicicleta);
       console.log("Bicicleta guardada:", bicicletaCreada);
   

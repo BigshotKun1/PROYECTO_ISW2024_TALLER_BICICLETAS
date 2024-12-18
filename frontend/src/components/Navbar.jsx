@@ -48,7 +48,7 @@ const Navbar = () => {
 
                 {/* Enlaces del lado derecho */}
                 <div className="nav-right">
-                    {userRole === 'administrador' && (
+                    {(userRole === 'administrador' || userRole === 'superadmin') && (
                         <NavLink
                             to="/user"
                             onClick={() => setMenuOpen(false)}

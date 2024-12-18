@@ -1,5 +1,6 @@
 import axios from './root.service.js';
 
+
 export async function getUsers() {
   try {
     const response = await axios.get(`/user/all`);
