@@ -57,7 +57,7 @@ const Navbar = () => {
                             Usuarios
                         </NavLink>
                     )}
-                    {(userRole === 'administrador' || userRole === 'vendedor') && (
+                    {(userRole === 'superadmin' || userRole === 'administrador' || userRole === 'vendedor') && (
                         <NavLink
                             to="/productos"
                             onClick={() => setMenuOpen(false)}
@@ -66,7 +66,7 @@ const Navbar = () => {
                             Productos
                         </NavLink>
                     )}
-                    {(userRole === 'administrador' || userRole === 'vendedor' || userRole === 'mecanico') && (
+                    {(userRole === 'superadmin' || userRole === 'administrador' || userRole === 'vendedor') && (
                         <NavLink
                             to="/cliente/crearClienteYBicicleta"
                             onClick={() => setMenuOpen(false)}
@@ -75,7 +75,7 @@ const Navbar = () => {
                             Clientes
                         </NavLink>
                     )}
-                    {(userRole === 'administrador' || userRole === 'vendedor') && (
+                    {(userRole === 'superadmin' || userRole === 'administrador' || userRole === 'vendedor') && (
                         <NavLink
                             to="/pedidoReparacion"
                             onClick={() => setMenuOpen(false)}
@@ -84,7 +84,7 @@ const Navbar = () => {
                             Reparación General
                         </NavLink>
                     )}
-                    {(userRole === 'mecanico') && (
+                    {(userRole === 'mecanico' || userRole === 'superadmin') && (
                         <NavLink
                             to="/pedidoReparacion/all"
                             onClick={() => setMenuOpen(false)}
@@ -93,7 +93,7 @@ const Navbar = () => {
                             Reparación General
                         </NavLink>
                     )}
-                    {userRole === 'administrador' && ( 
+                    {userRole === 'administrador' || userRole === 'superadmin' && ( 
                         <NavLink
                             to="/estadisticas"
                             onClick={() => setMenuOpen(false)}

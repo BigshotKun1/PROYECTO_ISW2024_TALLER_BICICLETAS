@@ -51,7 +51,7 @@ const router = createBrowserRouter([
       {
         path: '/productos',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'superadmin']}>
           <Producto />
           </ProtectedRoute>
         ),
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
       {
         path: '/cliente/crearClienteYBicicleta',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'superadmin']}>
           <Clientes />
           </ProtectedRoute>
         ),
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
       {
         path: '/bicicleta/cbici',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'superadmin']}>
           <ClientesList />
           </ProtectedRoute>
         ),
@@ -75,7 +75,7 @@ const router = createBrowserRouter([
       {
         path: '/pedidoReparacion',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico']}>
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico', 'superadmin']}>
           <PedidoReparacion />
           </ProtectedRoute>
         ),
@@ -83,7 +83,7 @@ const router = createBrowserRouter([
       {
         path: '/pedidoReparacion/all',
         element: (
-          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico']}>
+          <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'mecanico', 'superadmin']}>
           <PedidosReparacionTable />
           </ProtectedRoute>
         ),
@@ -91,7 +91,7 @@ const router = createBrowserRouter([
       {
         path: '/estadisticas',
         element: (
-          <ProtectedRoute allowedRoles={['administrador']}>
+          <ProtectedRoute allowedRoles={['administrador', 'superadmin']}>
           <EstadisticasTaller />
           </ProtectedRoute>
         ),
@@ -99,7 +99,7 @@ const router = createBrowserRouter([
       {
        path: '/bicicleta',
        element: (
-         <ProtectedRoute allowedRoles={['administrador', 'vendedor']}>
+         <ProtectedRoute allowedRoles={['administrador', 'vendedor', 'superadmin']}>
          <Bicicleta />
          </ProtectedRoute>
        ),
