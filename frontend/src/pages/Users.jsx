@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '@services/user.service';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '@styles/users.css';
 
 const CrearUser = () => {
@@ -11,7 +13,7 @@ const CrearUser = () => {
         password: '',
         rol: 'vendedor', // Rol predeterminado
     });
-    const [error, setError] = useState('');
+    
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -27,7 +29,7 @@ const CrearUser = () => {
             navigate('/user/all');
         }
         } catch (error) {
-            setError(error.response?.data?.message || 'Error al crear el usuario');
+            toast.error(error.response?.data?.message || 'Error al crear el usuario');
         }
     };
 
@@ -35,7 +37,6 @@ return (
     <div className="create-user-container">
         <div className="create-user-form">
         <h1>Crear Usuario</h1>
-        {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit}>
         <label>
             Nombre:
@@ -93,8 +94,10 @@ return (
         </form>
         <button className="view-users-button" onClick={() => navigate('/user/all')}>Ver Lista de Usuarios</button>
         </div>
+        <ToastContainer />
     </div>
     );
 };
+
 
 export default CrearUser;

@@ -11,6 +11,11 @@ try {
 
     const userFound = await userRepository.findOneBy({ email: req.user.email });
 
+    const { user } = req;
+    if (!user) {
+        return res.status(401).json({ message: "Usuario no autenticado" });
+    }
+    req.body.currentUser = user;
     if (!userFound) {
     return handleErrorClient(
         res,
