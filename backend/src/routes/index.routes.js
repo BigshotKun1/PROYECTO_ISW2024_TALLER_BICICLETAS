@@ -10,6 +10,7 @@ import marcaRoutes from "./marca.routes.js";
 import categoriaRoutes from "./categoria.routes.js";
 import estadisticasRoutes from "./estadisticas.routes.js";
 import clienteBicicletaRoutes from "./clientebicicletas.routes.js";
+import estadoReparacionRoutes from "./estado_reparacion.routes.js";
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router
     .use("/marca", marcaRoutes)
     .use("/categoria", categoriaRoutes)
     .use("/estadisticas", estadisticasRoutes)
-    .use("/clienteBicicleta", clienteBicicletaRoutes);
+    .use("/clienteBicicleta", clienteBicicletaRoutes)
+    .use("/estadoReparacion", estadoReparacionRoutes);
     
 export default router;

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from '@services/auth.service.js';
 import '@styles/navbar.css';
@@ -36,18 +35,10 @@ const Navbar = () => {
                     >
                         Inicio
                     </NavLink>
-
-                    <NavLink
-                        to="/quienes-somos"
-                        onClick={() => setMenuOpen(false)}
-                        className={({ isActive }) => (isActive ? 'active' : '')}
-                    >
-                        Quiénes Somos
-                    </NavLink>
                 </div>
 
                 {/* Enlaces del lado derecho */}
-                <div className="nav-right">
+                <div className={`nav-right ${menuOpen ? 'activado' : ''}`}>
                     {(userRole === 'administrador' || userRole === 'superadmin') && (
                         <NavLink
                             to="/user"
@@ -57,7 +48,7 @@ const Navbar = () => {
                             Usuarios
                         </NavLink>
                     )}
-                    {(userRole === 'administrador' || userRole === 'vendedor') && (
+                    {(userRole === 'superadmin' || userRole === 'administrador' || userRole === 'vendedor') && (
                         <NavLink
                             to="/productos"
                             onClick={() => setMenuOpen(false)}
@@ -66,7 +57,7 @@ const Navbar = () => {
                             Productos
                         </NavLink>
                     )}
-                    {(userRole === 'administrador' || userRole === 'vendedor' || userRole === 'mecanico') && (
+                    {(userRole === 'superadmin' || userRole === 'administrador' || userRole === 'vendedor') && (
                         <NavLink
                             to="/cliente/crearClienteYBicicleta"
                             onClick={() => setMenuOpen(false)}
@@ -75,7 +66,7 @@ const Navbar = () => {
                             Clientes
                         </NavLink>
                     )}
-                    {(userRole === 'administrador' || userRole === 'vendedor') && (
+                    {(userRole === 'superadmin' || userRole === 'administrador' || userRole === 'vendedor') && (
                         <NavLink
                             to="/pedidoReparacion"
                             onClick={() => setMenuOpen(false)}
@@ -84,7 +75,7 @@ const Navbar = () => {
                             Reparación General
                         </NavLink>
                     )}
-                    {(userRole === 'mecanico') && (
+                    {(userRole === 'mecanico' || userRole === 'superadmin') && (
                         <NavLink
                             to="/pedidoReparacion/all"
                             onClick={() => setMenuOpen(false)}
@@ -93,7 +84,7 @@ const Navbar = () => {
                             Reparación General
                         </NavLink>
                     )}
-                    {userRole === 'administrador' && ( 
+                    {userRole === 'administrador' || userRole === 'superadmin' && ( 
                         <NavLink
                             to="/estadisticas"
                             onClick={() => setMenuOpen(false)}

@@ -121,7 +121,7 @@ const PedidoReparacion = () => {
   };
 
   return (
-    <main className="container">
+    <main className="create-user-container">
       <Form
         title="Crear Pedido de Reparación"
         fields={[
@@ -155,11 +155,7 @@ const PedidoReparacion = () => {
         ]}
         buttonText="Registrar Pedido"
         onSubmit={handleSubmit}
-        footerContent={
-          <p>
-            ¿Ya tienes pedidos registrados?, <Link to="/pedidoReparacion/all">¡Ver pedidos!</Link>
-          </p>
-        }
+       
       />
       {error && <p style={{ color: "red" }}>{error}</p>}
     </main>
