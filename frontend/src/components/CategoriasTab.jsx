@@ -13,9 +13,6 @@ const CategoriaTab = () => {
     return <div>{error}</div>;
   }
 
-
-  console.log("Categorías recibidas en CategoriasTab:", categorias);
-
   return (
     <div className="categorias-container">
       <CategoriaList categorias={categorias} /> 

@@ -3,7 +3,6 @@ import axios from './root.service.js';
 export async function getCategorias() {
     try {
         const { data } = await axios.get('/categoria/all');  // Ruta relativa para obtener todas las categorías
-
         return data.data;  // Devuelvo solo los datos de las categorías
     } catch (error) {
         console.error("Error al obtener las categorías:", error);
