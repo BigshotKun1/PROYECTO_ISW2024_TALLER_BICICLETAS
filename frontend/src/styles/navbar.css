@@ -179,8 +179,8 @@
     width: 100%;
     top: 0;
     left: 0;
-    background-color: #000000; /* Color de fondo de la navbar */
-    opacity: 0.9;
+    background: linear-gradient(90deg, #4b6cb7, #182848);
+    opacity: 0.95;
     height: 9vh;
     z-index: 1000;
     padding: 10px 20px;
@@ -188,6 +188,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos de los enlaces dentro de la navbar */
@@ -198,7 +199,25 @@
     height: 100%;
     margin: 0;
     padding: 0;
+	list-style: none;
 }
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #ffcc00; /* Color al pasar el cursor */
+    transform: scale(1.1); /* Efecto de escala */
+}
+
 .nav-menu-container {
     display: flex;
     justify-content: space-between;
@@ -223,8 +242,6 @@
     position: relative;
     height: 100%;
 	line-height: 0vh;
-
-
 }
 .navbar a {
     color: white;
