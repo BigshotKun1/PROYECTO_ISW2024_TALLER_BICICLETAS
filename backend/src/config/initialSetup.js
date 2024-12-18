@@ -42,7 +42,7 @@ async function createUsers() {
       userRepository.save(
         userRepository.create({
           nombreCompleto: "Juan Carlos Salazar Araya",
-          rut: "9.123.678.5",
+          rut: "9.123.678-5",
           email: "Administrador2024@gmail.cl",
           password: await encryptPassword("admin2024"),
           rol: "administrador",
