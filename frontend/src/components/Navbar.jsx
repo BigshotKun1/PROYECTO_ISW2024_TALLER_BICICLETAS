@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from '@services/auth.service.js';
 import '@styles/navbar.css';
@@ -36,18 +35,10 @@ const Navbar = () => {
                     >
                         Inicio
                     </NavLink>
-
-                    <NavLink
-                        to="/quienes-somos"
-                        onClick={() => setMenuOpen(false)}
-                        className={({ isActive }) => (isActive ? 'active' : '')}
-                    >
-                        Quiénes Somos
-                    </NavLink>
                 </div>
 
                 {/* Enlaces del lado derecho */}
-                <div className="nav-right">
+                <div className={`nav-right ${menuOpen ? 'activado' : ''}`}>
                     {(userRole === 'administrador' || userRole === 'superadmin') && (
                         <NavLink
                             to="/user"

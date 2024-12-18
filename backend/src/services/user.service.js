@@ -13,7 +13,11 @@ export async function createUserService(body) {
     if (rol === ROLES.SUPERADMIN) {
       return [null, "No se puede crear un usuario con el rol superadmin"];
     }
-     
+  
+    if (rol === ROLES.ADMINISTRADOR && body.currentUser.rol !== ROLES.SUPERADMIN) {
+      return [null, "No tiene acceso para asignar el rol de administrador (necesita rol superadmin)"];
+    }
+
     if(!Object.values(ROLES).includes(rol)) {
       return [null, "Rol inválido"];
     }
