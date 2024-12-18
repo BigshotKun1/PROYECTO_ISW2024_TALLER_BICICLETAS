@@ -252,6 +252,7 @@ import { useCallback } from 'react';
 import '@styles/users.css';  // Estilos personalizados
 import { obtenerClientesConBicicletas } from '@services/cliente.service.js'; // Importar el servicio
 
+
 const ClientesConBicicletas = () => {
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);

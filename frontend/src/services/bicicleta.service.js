@@ -14,23 +14,24 @@ export const getBicicletas = async () => {
 
 // Crear una nueva bicicleta
 export const createBicicleta = async (bicicleta) => {
-    
-    /*const bicicleta = {
-        clienteRut,
-        marca,
-        modelo,
-        color,
-    };
-*/
     try {
-        console.log("datos service:", bicicleta);
-        const response = await axios.post('/bicicleta', bicicleta);
-        return response.data;
+      const response = await axios.post('/bicicleta', bicicleta);
+      return response.data;
     } catch (error) {
-        console.error('Error al crear la bicicleta:', error);
-        throw error;
+      console.error('Error al crear la bicicleta:', error);
+      if (error.response) {
+        console.error("Datos del error desde el servidor:", error.response.data);
+        throw new Error(error.response.data.message || 'Error desconocido del servidor');
+      } else if (error.request) {
+        console.error("No hubo respuesta del servidor:", error.request);
+        throw new Error('Error de red o el servidor no responde');
+      } else {
+        console.error("Error inesperado:", error.message);
+        throw new Error('Ocurrió un error inesperado');
+      }
     }
-};
+  };
+  
 /*
 export const getBicicletasPorCliente = async (rut) => {
     try {
