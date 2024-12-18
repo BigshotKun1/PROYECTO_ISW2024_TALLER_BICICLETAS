@@ -13,10 +13,43 @@ import '@styles/users.css';
 import useEditProductos from '@hooks/producto/useEditProductos';
 import {deleteProductos} from '@services/Producto.service';
 import useCreateProductos from '@hooks/producto/useCreateProductos';
+import { Box, Tabs, Tab } from '@mui/material';
+import MarcasTab from '@components/MarcasTab';
+import CategoriasTab from '@components/CategoriasTab';
+
+function CustomTabPanel({ children, value, index, ...other }) {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `tab-${index}`,
+    'aria-controls': `tabpanel-${index}`,
+  };
+}
+
+
+
 
 const Producto = () => {
+  const [value, setValue] = useState(0);
   const { productos, fetchProductos, setProductos } = useProductos();
   const [filterNombre, setFilterNombre] = useState('');
+
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const {
     handleClickUpdate,
@@ -61,8 +94,6 @@ const Producto = () => {
     [setDataProductos]
   );
 
-
-
   const columns = [
     { title: 'Nombre', field: 'nombre', width: 320, responsive: 0 },
     { title: 'Precio', field: 'precio', width: 105, responsive: 2 },
@@ -77,6 +108,22 @@ const Producto = () => {
 
   return (
     <div className='main-container'>
+      <div style={{ marginTop: '120px' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs"sx={{
+              "& .MuiTab-root": {
+                fontWeight: "700",
+                fontSize: "20px",
+                color: "#000000"
+              },
+          }}>
+            <Tab label="Productos" {...a11yProps(0)} />
+            <Tab label="Marcas" {...a11yProps(1)} />
+            <Tab label="Categorías" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+      </div>
+      <CustomTabPanel value={value} index={0}>
       <div className='table-container'>
         <div className='top-table'>
           <h1 className='title-table'>Productos</h1>
@@ -122,22 +169,7 @@ const Producto = () => {
           dataToFilter={'nombre'} 
           initialSortName={'nombre'} 
           onSelectionChange={handleSelectionChange}
-        />
-        <div>
-          <button
-              className='Marcas'
-              onClick={console.log("boton de Marcas ")}
-          >
-              <img src={CreateIcon} alt='create' />
-          </button>
-          <button
-              className='Categorias'
-              onClick={console.log("boton de Categorias ")}
-          >
-              <img src={CreateIcon} alt='create' />
-          </button>
-        </div>
-        
+        />        
       </div>
       <Poprod
         show={isPopupOpen}
@@ -150,8 +182,19 @@ const Producto = () => {
         setShow={setIsCreatePopupOpen}
         action={handleCreate}
       />
+      </CustomTabPanel>
 
+      <CustomTabPanel value={value} index={1}>
+      <h1>Marcas</h1>
+      <MarcasTab /> 
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={2}>
+      <h1>Categorias</h1>
+      <CategoriasTab /> 
+      </CustomTabPanel>
     </div>
+    
   );
 };
 
