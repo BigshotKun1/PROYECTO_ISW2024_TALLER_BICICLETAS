@@ -7,7 +7,7 @@ import Bicicleta from "../entity/bicicleta.entity.js";
 import Categoria from "../entity/categoria.entity.js";
 import Marcas from "../entity/marcas.entity.js";
 import PedidoReparacion from "../entity/pedidosReparacion.entity.js";
-import EstadosReparacion from "../entity/estado_reparacion.entity.js";
+import EstadosReparacion from "../entity/estado_reparacion.js";
 import { AppDataSource } from "./configDb.js";
 import { encryptPassword } from "../helpers/bcrypt.helper.js";
 import passport from "passport";

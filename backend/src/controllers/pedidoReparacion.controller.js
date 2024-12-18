@@ -4,7 +4,7 @@ import { AppDataSource } from "../config/configDb.js";
 import PedidoReparacion from "../entity/pedidosReparacion.entity.js";
 import Cliente from "../entity/cliente.entity.js";
 import Bicicleta from "../entity/bicicleta.entity.js";
-import EstadoReparacion from "../entity/estado_reparacion.entity.js";
+import EstadoReparacion from "../entity/estado_reparacion.js";
 
 import {
   handleErrorClient,
@@ -13,54 +13,6 @@ import {
 } from "../handlers/responseHandlers.js";
 import PDFDocument from "pdfkit";
 import ExcelJS from "exceljs";
-/*
-// Crear un nuevo pedido de reparación
-export const crearPedidoReparacion = async (req, res) => {
-  const { clienteRut, motivoReparacion, descripcionReparacion, id_Bicicleta, idE_R } = req.body;
-
-  // Validación de campos
-  if (!clienteRut || !motivoReparacion || !descripcionReparacion || !id_Bicicleta || !idE_R) {
-      return handleErrorClient(res, 400, "Todos los campos son obligatorios");
-  }
-
-  try {
-      const clienteRepository = AppDataSource.getRepository(Cliente);
-      const bicicletaRepository = AppDataSource.getRepository(Bicicleta);
-      const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
-
-      // Verificar si el cliente existe
-      const cliente = await clienteRepository.findOneBy({ rut: clienteRut });
-      if (!cliente) {
-          return handleErrorClient(res, 404, "Cliente no encontrado");
-      }
-
-      // Verificar si la bicicleta existe
-      const bicicleta = await bicicletaRepository.findOneBy({ id_Bicicleta });
-      if (!bicicleta) {
-          return handleErrorClient(res, 404, "Bicicleta no encontrada");
-      }
-
-      // Crear y guardar el pedido de reparación
-      const pedidoReparacion = pedidoReparacionRepository.create({
-          cliente,
-          motivoReparacion,
-          descripcionReparacion,
-          bicicleta,
-          estadoReparacion: idE_R,
-      });
-
-      await pedidoReparacionRepository.save(pedidoReparacion);
-      return handleSuccess(res, 201, "Pedido de reparación creado exitosamente", pedidoReparacion);
-  } catch (error) {
-      console.error(error);
-      return handleErrorServer(res, 500, "Error al crear el pedido de reparación");
-  }
-};
-*/
-
-
-// pedidoReparacion.controller.js
-
 
 export const crearPedidoReparacion = async (req, res) => {
   try {
@@ -233,44 +185,23 @@ export const exportarHistorialReparaciones = async (req, res) => {
 
 export const actualizarPedidoReparacion = async (req, res) => {
   const { id_PedidoReparacion } = req.params;
-  const { motivoReparacion, descripcionReparacion, clienteRut, id_Bicicleta, idE_R } = req.body;
+  const { descripcionReparacion, idE_R } = req.body;
 
   try {
     const pedidoReparacionRepository = AppDataSource.getRepository(PedidoReparacion);
     const pedido = await pedidoReparacionRepository.findOne({
       where: { id_PedidoReparacion },
-      relations: ["estadoReparacion", "cliente", "bicicleta"],
+      relations: ["estadoReparacion"],
     });
 
     if (!pedido) {
       return handleErrorClient(res, 404, "Pedido de reparación no encontrado");
     }
 
-    // Actualizar los campos del pedido de reparación solo si están presentes en la solicitud
-    if (motivoReparacion) pedido.motivoReparacion = motivoReparacion;
+    // Actualizar solo los campos necesarios
     if (descripcionReparacion) pedido.descripcionReparacion = descripcionReparacion;
 
-    // Actualizar la relación con Cliente si está presente en la solicitud
-    if (clienteRut) {
-      const clienteRepository = AppDataSource.getRepository("Cliente");
-      const cliente = await clienteRepository.findOne({ where: { rut: clienteRut } });
-      if (!cliente) {
-        return handleErrorClient(res, 404, "Cliente no encontrado");
-      }
-      pedido.cliente = cliente;
-    }
-
-    // Actualizar la relación con Bicicleta si está presente en la solicitud
-    if (id_Bicicleta) {
-      const bicicletaRepository = AppDataSource.getRepository("Bicicleta");
-      const bicicleta = await bicicletaRepository.findOne({ where: { id_Bicicleta } });
-      if (!bicicleta) {
-        return handleErrorClient(res, 404, "Bicicleta no encontrada");
-      }
-      pedido.bicicleta = bicicleta;
-    }
-
-    // Actualizar la relación con EstadoReparacion si está presente en la solicitud
+    // Actualizar el estado de reparación si está presente
     if (idE_R) {
       const estadoReparacionRepository = AppDataSource.getRepository("EstadoReparacion");
       const estadoReparacion = await estadoReparacionRepository.findOne({ where: { idE_R } });
@@ -288,5 +219,26 @@ export const actualizarPedidoReparacion = async (req, res) => {
     return handleSuccess(res, 200, "Pedido de reparación actualizado exitosamente", pedido);
   } catch (error) {
     return handleErrorServer(res, 500, "Error al actualizar el pedido de reparación", error);
+  }
+};
+
+const getEstadosReparacion = async (req, res) => {
+  try {
+    // Obtener todos los estados únicos de reparación de los pedidos
+    const repository = AppDataSource.getRepository(PedidoReparacion);
+    const estados = await repository
+      .createQueryBuilder("pedido")
+      .leftJoinAndSelect("pedido.estadoReparacion", "estado")
+      .select("estado.estados_r")
+      .distinct(true) // Para obtener valores únicos
+      .getRawMany();
+
+    // Extraer solo los estados de la respuesta
+    const estadosUnicos = estados.map(estado => estado.estados_r);
+
+    return res.json(estadosUnicos);
+  } catch (error) {
+    console.error("Error al obtener los estados:", error);
+    return res.status(500).json({ message: "Error al obtener los estados de reparación" });
   }
 };
